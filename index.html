@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generator Berita Acara</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+
+  :root {
+  --main-gradient: linear-gradient(135deg, #c90000, #7a0000);
+}
+
+ /* Halaman login */
+    #loginPage {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: url('asset/—Pngtree—architectural\ table\ with\ blueprints\ and_5582855.jpg') no-repeat center center/cover; /* ganti sesuai file bg kamu */
+
+    }
+    #loginPage .card {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+      text-align: center;
+      max-width: 380px;
+      width: 100%;
+    }
+    #loginPage img {
+      width: 140px;
+      margin-bottom: 1rem;
+    }
+    #loginPage h3 {
+      font-weight: bold;
+      color: #636363;
+      margin-bottom: 1.5rem;
+    }
+    .btn-login {
+      background-color: #c90000;
+      color: #fff;
+      font-weight: 500;
+      width: 100%;
+    }
+    .btn-login:hover {
+      background: var(--main-gradient);
+      color: #fff;
+    }
+
+body { background:#eef1f5; }
+
+body, .page {
+  font-family: Cambria, "Times New Roman", serif;
+  font-size: 12pt;
+  line-height: 1.4;
+}
+
+h5 {
+  font-weight: bold;
+  font-size: 12pt;
+  margin-top: 8px;
+  margin-bottom: 3px;
+}
+
+/* ===== HEADER ===== */
+.topbar {
+  background:white;
+  padding:15px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:1px solid #ddd;
+}
+
+/* ===== LAYOUT ===== */
+.wrapper-flex {
+  display:flex;
+  gap:20px;
+  padding:20px;
+}
+
+.form-panel {
+  width:35%;
+}
+
+.preview-panel {
+  width:65%;
+}
+
+/* CARD */
+.card { border-radius:10px; }
+
+/* ===== A4 ===== */
+.page {
+  width:210mm;
+  min-height:297mm;
+  padding:20mm;
+  background:white;
+  margin:auto;
+  position:relative;
+  box-sizing:border-box;
+
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+
+/* ===== KOP ===== */
+.kop {
+  text-align:center;
+  padding-bottom:10px;
+}
+.kop::after{
+  display:none;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  position:absolute;
+  bottom:20mm;
+  width:100%;
+  text-align:center;
+}
+
+.kop img, .footer img { max-height:80px; max-width:100%; }
+
+.signature { height:80px; }
+
+.justify { text-align:justify; }
+.center { text-align:center; }
+.bold { font-weight:bold; }
+.italic { font-style:italic; }
+
+.section-title {
+  font-weight:600;
+  margin-top:15px;
+  margin-bottom:5px;
+}
+
+/* ===== KOP CUSTOM ===== */
+.kop {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:10px;
+}
+
+.kop-left {
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.kop-left img {
+  height:60px;
+}
+
+.kop-right {
+  text-align:right;
+  font-size:14px;
+}
+
+.kop-title {
+  font-weight:bold;
+  font-size:18px;
+}
+
+/* ===== ORNAMEN KANAN ATAS ===== */
+.kop-decor {
+  position:absolute;
+  top:0;
+  right:0;
+  height:80px;
+}
+
+/* ===== FOOTER MERAH ===== */
+.footer {
+  position:absolute;
+  bottom:0;
+  left:20mm;
+  width:calc(100% - 40mm); /* kiri + kanan */
+}
+
+.footer img {
+  width:100%;
+  height:auto;
+}
+
+/* GRID LAMPIRAN 3x3 */
+.lampiran-grid {
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:10px;
+  margin-top:10px;
+}
+
+.lampiran-grid img {
+  width:100%;
+  height:80px;
+  object-fit:cover;
+}
+.table-small {
+  font-size:12px;
+}
+
+.table-very-small {
+  font-size:10px;
+}
+
+.content-flex {
+  flex-grow:1;
+}
+
+.preview { margin-top:20px; }
+
+h5 {
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+p {
+  margin-bottom: 6px;
+}
+
+/* ===== FIX TTD AGAR SELALU ADA ===== */
+.ttd-area {
+  min-height: 100px;
+}
+
+/* kalau tidak ada gambar tetap ambil space */
+.signature {
+  height: 80px;
+  display:block;
+  margin:auto;
+}
+
+.title-ba {
+  font-weight: bold;
+  text-decoration: underline;
+  margin-bottom: 2px;
+  letter-spacing: 0.5px;
+}
+
+/* ===== TABLE AUTO FIT ===== */
+table {
+  table-layout: fixed;
+  width:100%;
+}
+
+td, th {
+  word-wrap: break-word;
+}
+
+.content-flex {
+  flex-grow:1;
+  overflow:hidden;
+}
+
+.tabel-material {
+  font-size: 12px;
+  border: 1px solid #000;
+}
+
+.tabel-material th {
+  text-align: center;
+  font-weight: bold;
+  vertical-align: middle;
+}
+
+.tabel-material td {
+  vertical-align: middle;
+}
+
+/* CENTER KOLOM TERTENTU */
+.tabel-material td:nth-child(1),
+.tabel-material td:nth-child(3),
+.tabel-material td:nth-child(4),
+.tabel-material td:nth-child(5) {
+  text-align: center;
+}
+
+/* BIAR RAPAT KAYA CONTOH */
+.tabel-material td,
+.tabel-material th {
+  padding: 4px !important;
+}
+
+.nama-ttd {
+  font-weight: bold;
+  text-decoration: underline;
+  margin-bottom: 2px;
+}
+
+.jabatan-ttd {
+  font-style: italic;
+  margin-top: 0;
+}
+
+.nama-ttd {
+  font-weight: bold;
+  text-decoration: underline;
+  margin-bottom: 1px;
+  line-height: 1.1;
+}
+
+.jabatan-ttd {
+  font-style: italic;
+  margin-top: 0;
+  line-height: 1.1;
+}
+
+#loadingOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.spinner {
+  width: 60px;
+  height: 60px;
+  border: 6px solid #fff;
+  border-top: 6px solid #c90000;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@media print {
+  body * { visibility: hidden; }
+  #output, #output * { visibility: visible; }
+  #output { position:absolute; left:0; top:0; }
+  .page { margin:0; }
+}
+
+/* ===== AUTO SCALE CONTENT BIAR MUAT 1 HALAMAN ===== */
+.content-area {
+  max-height: 170mm;
+  overflow: hidden;
+}
+
+/* default normal */
+.content-area {
+  font-size: 14px;
+}
+
+/* kalau isi panjang → kecil */
+.content-area.long {
+  font-size: 12px;
+}
+
+/* kalau sangat panjang → lebih kecil */
+.content-area.xlong {
+  font-size: 10px;
+}
+
+/* tabel ikut mengecil */
+.content-area.long table {
+  font-size: 11px;
+}
+
+.content-area.xlong table {
+  font-size: 9px;
+}
+
+/* biar tabel rapat */
+table td, table th {
+  padding: 3px !important;
+}
+
+.ttd-container {
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+  margin-top: 30px;
+}
+
+.ttd-box {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* area tanda tangan */
+.signature {
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.signature img {
+  max-height: 80px;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+/* nama */
+.nama-ttd {
+  font-weight: bold;
+  text-decoration: underline;
+  margin-bottom: 2px;
+}
+
+/* jabatan */
+.jabatan-ttd {
+  font-style: italic;
+  margin-top: 0;
+}
+
+#toast {
+  opacity: 0;
+  transform: translate(-50%, -20px);
+  transition: all 0.3s ease;
+}
+
+.app-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: var(--main-gradient);
+  color: #fff;
+  text-align: center;
+  padding: 10px 0;
+  z-index: 999;
+   font-family: Cambria, "Times New Roman", serif;
+}
+
+.surat-footer {
+  position: absolute;
+  bottom: 0;
+  left: 20mm;
+  width: calc(100% - 40mm);
+}
+
+.surat-footer img {
+  width: 100%;
+  height: auto;
+}
+
+.kop-line {
+  margin-top: 8px;
+  margin-bottom: 10px;
+  border-top: 3px solid #000;   /* garis tebal */
+  border-bottom: 1px solid #000; /* garis tipis */
+}
+
+#loginPage {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: url('Asset/miniature-workers-building-house-model-blueprints-miniature-workers-building-house-model-blueprints-plans-ai-generated-452105719.webp') no-repeat center center/cover;
+  font-family: Cambria, "Times New Roman", serif;
+}
+
+#loginPage .card,
+#loginPage h3,
+#loginPage label,
+#loginPage input,
+#loginPage button {
+  font-family: Cambria, "Times New Roman", serif;
+}
+* {
+  font-family: Cambria, "Times New Roman", serif;
+}
+
+.wrapper-flex {
+  display:flex;
+  gap:20px;
+  padding:20px;
+  align-items:flex-start;
+}
+
+/* panel kiri */
+.form-panel {
+  width:32%;
+}
+
+/* panel kanan */
+.preview-panel {
+  width:68%;
+}
+
+.card {
+  border:none;
+  border-radius:16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+}
+
+.btn {
+  border-radius:10px;
+  transition: all 0.25s ease;
+  font-weight: 500;
+}
+
+/* tombol merah utama */
+.btn-danger {
+  background: var(--main-gradient);
+  border:none;
+}
+
+.btn-danger:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 8px 20px rgba(255,0,0,0.3);
+}
+
+/* tombol abu */
+.btn-secondary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* tombol light */
+.btn-light:hover {
+  background:#f1f1f1;
+  transform: scale(1.03);
+}
+
+.topbar {
+  background: linear-gradient(90deg, #ffffff, #f8f9fa);
+  padding:15px 25px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:1px solid #eee;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+}
+
+.topbar h5 {
+  margin:0;
+  font-weight:600;
+}
+
+.form-control {
+  border-radius:10px;
+  border:1px solid #ddd;
+  transition: all 0.2s ease;
+}
+
+.form-control:focus {
+  border-color:#c90000;
+  box-shadow: 0 0 0 2px rgba(201,0,0,0.15);
+}
+
+
+/* ===== SIDEBAR ===== */
+
+#sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 240px;
+  height: 100%;
+  background: linear-gradient(180deg, #c90000, #7a0000);
+  color: #fff;
+  padding: 15px;
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+/* collapse */
+#sidebar.collapsed {
+  width: 70px;
+}
+
+/* header */
+.sidebar-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.logo-text {
+  font-weight: bold;
+  font-size: 18px;
+  transition: opacity 0.3s;
+}
+
+#sidebar.collapsed .logo-text {
+  opacity: 0;
+}
+
+/* tombol toggle */
+.toggle-btn {
+  background: white;
+  border: none;
+  border-radius: 8px;
+  padding: 5px 8px;
+  cursor: pointer;
+}
+
+/* menu */
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar-menu li {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:10px;
+  border-radius:10px;
+  cursor:pointer;
+  position:relative;
+  transition: all 0.25s ease;
+}
+
+/* hover effect */
+.sidebar-menu li:hover {
+  background: rgba(255,255,255,0.15);
+  transform: translateX(5px);
+}
+
+/* icon */
+.sidebar-menu li i {
+  font-size:18px;
+}
+
+/* text */
+.sidebar-menu li span {
+  transition: opacity 0.3s;
+}
+
+/* hilangkan text saat collapse */
+#sidebar.collapsed li span {
+  opacity: 0;
+}
+
+/* ===== TOOLTIP ===== */
+#sidebar.collapsed li::after {
+  content: attr(data-title);
+  position: absolute;
+  left: 80px;
+  background: #222;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(-50%);
+  top: 50%;
+  pointer-events: none;
+  transition: 0.2s;
+}
+
+#sidebar.collapsed li:hover::after {
+  opacity: 1;
+}
+
+/* ===== MAIN CONTENT SHIFT ===== */
+#mainPage {
+  margin-left: 240px;
+  transition: all 0.3s ease;
+}
+
+#mainPage.full {
+  margin-left: 70px;
+}
+
+/* header */
+.sidebar-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+/* menu */
+.sidebar-menu {
+  list-style:none;
+  padding:0;
+}
+
+.sidebar-menu li {
+  padding:10px;
+  border-radius:8px;
+  cursor:pointer;
+  transition: all 0.2s ease;
+}
+
+.sidebar-menu li:hover {
+  background: rgba(255,255,255,0.2);
+  transform: translateX(5px);
+}
+
+/* ===== KONTEN GESER ===== */
+#mainPage {
+  margin-left:230px;
+  transition: all 0.3s ease;
+}
+
+#mainPage.full {
+  margin-left:70px;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+.wrapper-flex {
+  margin-left: 0;
+}
+
+#sidebar {
+  display: none;
+}
+
+.brand-main {
+  position: relative;
+  overflow: hidden;
+}
+
+.brand-main::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.5), transparent);
+  animation: shine 3s infinite;
+}
+
+@keyframes shine {
+  to {
+    left: 100%;
+  }
+}
+
+.page {
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity:0; transform: translateY(10px);}
+  to { opacity:1; transform: translateY(0);}
+}
+
+/* ===== GLOBAL IMPROVEMENT ===== */
+body {
+  background: linear-gradient(135deg, #eef1f5, #f7f9fc);
+}
+
+/* container biar rapi */
+.wrapper-flex {
+  padding: 30px;
+  gap: 25px;
+}
+
+/* card lebih premium */
+.card {
+  border-radius: 18px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+}
+
+/* judul section */
+.section-title {
+  font-weight: 600;
+  font-size: 14px;
+  color: #444;
+  margin-bottom: 6px;
+}
+
+/* input lebih modern */
+.form-control {
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 14px;
+}
+
+/* hover input */
+.form-control:focus {
+  border-color: #c90000;
+  box-shadow: 0 0 0 3px rgba(201,0,0,0.1);
+}
+
+
+
+</style>
+</head>
+<body>
+
+<div id="sidebar">
+  <div class="sidebar-header">
+    
+  </div>
+
+  <ul class="sidebar-menu">
+    <li onclick="toggleSidebar()" data-title="Toggle">
+      ☰ <span>Menu</span>
+    </li>
+<li onclick="scrollToForm()" data-title="Form Input">
+    <i>📝</i><span>Form Input</span>
+  </li>
+
+  <li onclick="generate()" data-title="Generate">
+    <i>⚡</i><span>Generate</span>
+  </li>
+
+  <li onclick="window.print()" data-title="Print PDF">
+    <i>🖨</i><span>Print PDF</span>
+  </li>
+    <!-- 🔥 INI LOGOUT -->
+  <li onclick="logout()" data-title="Logout">
+    <i>🚪</i><span>Logout</span>
+  </li>
+  </ul>
+</div>
+
+<div id="toast" style="
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #c90000;
+  color: white;
+  padding: 14px 22px;
+  border-radius: 10px;
+  display: none;
+  z-index: 9999;
+  font-size: 15px;
+  text-align: center;
+  min-width: 220px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+">
+  Notifikasi
+</div>
+
+<!-- Footer: letakkan setelah semua div utama -->
+<footer class="app-footer">
+  <div class="container text-center">
+    <p class="mb-0 small">&copy; 2025 <strong>Admin Project</strong>. All rights reserved.</p>
+  </div>
+</footer>
+
+  <!-- Loading Spinner -->
+<div id="loadingOverlay" style="display:none;">
+  <div class="spinner"></div>
+</div>
+
+  <!-- Halaman Login -->
+  <div id="loginPage">
+    <div class="card">
+      <div class="text-center">
+        <img src="Asset/RSP.png" alt="Logo Rumah Ningrat">
+      </div>
+      <h3>Login User</h3>
+      <form id="loginForm">
+        <div class="mb-3 text-start">
+          <label class="form-label">Username</label>
+          <input type="text" id="username" class="form-control" required>
+        </div>
+        <div class="mb-3 text-start">
+          <label class="form-label">Password</label>
+          <input type="password" id="password" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-login">Login</button>
+      </form>
+    </div>
+  </div>
+
+
+<!-- HEADER -->
+<div id="mainPage" style="display:none;">
+
+  <div class="wrapper-flex">
+
+    <!-- FORM -->
+    <div class="form-panel">
+      <div class="card p-3">
+
+        <div class="section-title">Jenis BA</div>
+        <select id="jenis" class="form-control mb-2" onchange="toggleJenis()">
+          <option value="material">Pengajuan Material</option>
+          <option value="keterangan">Keterangan Pekerjaan</option>
+          <option value="adendum">Adendum / Kendala</option>
+        </select>
+
+        <div class="section-title">Pihak</div>
+        <input id="nama1" class="form-control mb-1" placeholder="Nama Dibuat">
+        <input id="jabatan1" class="form-control mb-2" placeholder="Jabatan">
+
+        <input id="nama2" class="form-control mb-1" placeholder="Nama Diketahui">
+        <input id="jabatan2" class="form-control mb-2" placeholder="Jabatan">
+
+        <input id="nama3" class="form-control mb-1" placeholder="Nama Disetujui">
+        <input id="jabatan3" class="form-control mb-2" placeholder="Jabatan">
+
+        <div class="section-title">Isi Surat</div>
+        <textarea id="latar" class="form-control mb-2" placeholder="Latar Belakang"></textarea>
+        <textarea id="tujuan" class="form-control mb-2" placeholder="Maksud & Tujuan"></textarea>
+
+        <div id="materialBox" style="display:none;">
+          <h6>Material</h6>
+          <table class="table table-bordered" id="materialTable">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Nama Material</th>
+                <th>Spesifikasi</th>
+                <th>Jumlah</th>
+                <th>Satuan</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+          <button onclick="addRow()" class="btn btn-sm btn-danger">+ Tambah</button>
+        </div>
+
+        <div id="adendumBox" style="display:none;">
+          <textarea id="kejadian" class="form-control mt-2" placeholder="Keterangan Kejadian"></textarea>
+        </div>
+
+        <textarea id="penutup" class="form-control mt-2" placeholder="Penutup"></textarea>
+
+        <div class="section-title">Tanda Tangan</div>
+        <input type="file" id="ttd1" class="form-control mb-1">
+        <input type="file" id="ttd2" class="form-control mb-1">
+        <input type="file" id="ttd3" class="form-control mb-2">
+
+        <div class="section-title">Lampiran</div>
+        <input type="file" id="lampiran" multiple class="form-control mb-2">
+
+        <button onclick="generate()" class="btn btn-danger w-100">Generate Dokumen</button>
+
+      </div>
+    </div>
+
+    <!-- PREVIEW -->
+    <div class="preview-panel">
+      <div id="output" class="preview"></div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- PREVIEW -->
+<div class="preview-panel">
+<div id="output" class="preview"></div>
+</div>
+
+</div>
+
+<script>
+
+  function generate(){
+  let loading = document.getElementById("loadingOverlay");
+  loading.style.display = "flex";
+
+  setTimeout(()=>{
+    document.getElementById('output').innerHTML = page1 + page2;
+    loading.style.display = "none";
+    scrollToPreview();
+  }, 500);
+}
+
+function toggleSidebar(){
+  let sidebar = document.getElementById("sidebar");
+  let main = document.getElementById("mainPage");
+
+  sidebar.classList.toggle("collapsed");
+  main.classList.toggle("full");
+}
+
+/* scroll helper */
+function scrollToForm(){
+  document.querySelector(".form-panel").scrollIntoView({behavior:"smooth"});
+}
+
+function scrollToPreview(){
+  document.querySelector(".preview-panel").scrollIntoView({behavior:"smooth"});
+}
+
+function showToast(msg, color="#dc3545"){
+  let toast = document.getElementById("toast");
+  toast.innerText = msg;
+  toast.style.background = color;
+  toast.style.display = "block";
+
+  setTimeout(() => {
+    toast.style.opacity = "1";
+    toast.style.transform = "translate(-50%, 0)";
+  }, 10);
+
+  setTimeout(() => {
+    toast.style.opacity = "0";
+    toast.style.transform = "translate(-50%, -20px)";
+    setTimeout(() => {
+      toast.style.display = "none";
+    }, 300);
+  }, 2000);
+}
+
+ document.addEventListener("DOMContentLoaded", function() {
+
+  const loginForm = document.getElementById("loginForm");
+  const loginPage = document.getElementById("loginPage");
+  const mainPage = document.getElementById("mainPage");
+
+  loginForm.addEventListener("submit", function(e){
+    e.preventDefault();
+
+    const user = document.getElementById("username").value;
+    const pass = document.getElementById("password").value;
+
+if(user === "admin" && pass === "admin123"){
+
+  let loading = document.getElementById("loadingOverlay");
+  loading.style.display = "flex";
+
+  setTimeout(() => {
+    loginPage.style.display = "none";
+    mainPage.style.display = "block";
+
+    // ✅ tampilkan sidebar
+    document.getElementById("sidebar").style.display = "block";
+
+    loading.style.display = "none";
+    showToast("Login berhasil!");
+  }, 1000);
+
+} else {
+  showToast("Username / Password salah!", "#dc3545");
+}
+  });
+
+});
+
+function logout(){
+  let loading = document.getElementById("loadingOverlay");
+
+  loading.style.display = "flex";
+
+  setTimeout(() => {
+    document.getElementById("mainPage").style.display = "none";
+    document.getElementById("loginPage").style.display = "flex";
+
+    // ❌ sembunyikan sidebar
+    document.getElementById("sidebar").style.display = "none";
+
+    loading.style.display = "none";
+    showToast("Berhasil logout!");
+  }, 1000);
+
+  document.getElementById("username").value = "";
+  document.getElementById("password").value = "";
+}
+
+function toggleJenis(){
+  let j = document.getElementById('jenis').value;
+
+  document.getElementById('materialBox').style.display =
+    j === 'material' ? 'block' : 'none';
+
+  document.getElementById('adendumBox').style.display =
+    j === 'adendum' ? 'block' : 'none';
+}
+
+function addRow(){
+let rows = document.querySelectorAll('#materialTable tbody tr').length;
+
+if(rows >= 20){
+  alert("Maksimal 20 material!");
+  return;
+}
+
+let count = rows + 1;
+let row=`<tr>
+<td>${count}</td>
+<td><input class='form-control'></td>
+<td><input class='form-control'></td>
+<td><input class='form-control'></td>
+<td><input class='form-control'></td>
+</tr>`;
+
+document.querySelector('#materialTable tbody')
+.insertAdjacentHTML('beforeend',row);
+}
+
+function toRoman(num){
+const r=[[1000,'M'],[900,'CM'],[500,'D'],[400,'CD'],[100,'C'],[90,'XC'],[50,'L'],[40,'XL'],[10,'X'],[9,'IX'],[5,'V'],[4,'IV'],[1,'I']];
+let res=''; for(let [v,s] of r){while(num>=v){res+=s;num-=v;}} return res;
+}
+
+function img(id){
+let f=document.getElementById(id).files[0];
+return f?URL.createObjectURL(f):'';
+}
+
+function getRunningNumber(){
+  let now = new Date();
+
+  let year = now.getFullYear();
+  let month = now.getMonth() + 1; // 1–12
+
+  // key unik per bulan
+  let key = `ba_${year}_${month}`;
+
+  let num = localStorage.getItem(key);
+
+  num = num ? parseInt(num) + 1 : 1;
+
+  localStorage.setItem(key, num);
+
+  // format jadi 3 digit: 001, 002, dst
+  return String(num).padStart(3, '0');
+}
+
+function generate(){
+
+let jenis=document.getElementById('jenis').value;
+let logo = "asset/RSP.png";
+let footer = "asset/KAKI.jpeg";
+
+let nama1=document.getElementById('nama1').value;
+let jabatan1=document.getElementById('jabatan1').value;
+let nama2=document.getElementById('nama2').value;
+let jabatan2=document.getElementById('jabatan2').value;
+let nama3=document.getElementById('nama3').value;
+let jabatan3=document.getElementById('jabatan3').value;
+
+let latar=document.getElementById('latar').value;
+let tujuan=document.getElementById('tujuan').value;
+let kejadian=document.getElementById('kejadian')?.value||'';
+let penutup=document.getElementById('penutup').value;
+
+// ===== SECTION DINAMIS =====
+let latarHTML = latar.trim() ? `
+<h5>Latar Belakang</h5>
+<p class='justify'>${latar}</p>
+` : "";
+
+let tujuanHTML = tujuan.trim() ? `
+<h5>Maksud dan Tujuan</h5>
+<p class='justify'>${tujuan}</p>
+` : "";
+
+let penutupHTML = penutup.trim() ? `
+<h5>Penutup</h5>
+<p class='justify'>${penutup}</p>
+` : "";
+
+let ttd1=img('ttd1');
+let ttd2=img('ttd2');
+let ttd3=img('ttd3');
+
+let today=new Date();
+let nomorUrut=getRunningNumber();
+let nomor=`${nomorUrut}/BA/RSP/${toRoman(today.getMonth()+1)}/${today.getFullYear()}`;
+
+function resetNomor(){
+  let now = new Date();
+  let key = `ba_${now.getFullYear()}_${now.getMonth()+1}`;
+  localStorage.removeItem(key);
+  alert("Nomor bulan ini direset!");
+}
+
+/* ===== AUTO SCALE ===== */
+let totalText = latar.length + tujuan.length + penutup.length;
+let contentClass = "";
+if(totalText > 1200) contentClass = "long";
+if(totalText > 2000) contentClass = "xlong";
+
+/* ===== MATERIAL ===== */
+let tambahan='';
+
+if(jenis==='material'){
+  let rows=document.querySelectorAll('#materialTable tbody tr');
+let table = `
+<table class='table table-bordered tabel-material'>
+<tr>
+  <th style="width:40px;">No</th>
+  <th>Nama Material/Barang</th>
+  <th style="width:170px;">Spesifikasi / Ukuran</th>
+  <th style="width:80px;">Qty</th>
+  <th style="width:80px;">Satuan</th>
+</tr>
+`;
+rows.forEach((r)=>{
+let c=r.querySelectorAll('input');
+
+table+=`
+<tr>
+  <td class="center">${r.cells[0].innerText}</td>
+  <td>${c[0].value}</td>
+  <td class="center">${c[1].value}</td>
+  <td class="center">${c[2].value}</td>
+  <td class="center">${c[3].value}</td>
+</tr>`;
+});
+table+='</table>';
+tambahan=table;
+}
+
+if(jenis==='adendum' && kejadian.trim()){
+  tambahan = `
+  <h5>Keterangan Kejadian</h5>
+  <p class='justify'>${kejadian}</p>
+  `;
+}
+
+/* ===== LAMPIRAN FIX (TIDAK KE-CROP) ===== */
+let lampiranFiles = document.getElementById('lampiran').files;
+let total = lampiranFiles.length;
+
+// tentukan kolom
+let kolom = 1;
+if(total == 1) kolom = 1;
+else if(total == 2) kolom = 2;
+else if(total <= 4) kolom = 2;
+else kolom = 3;
+
+// mulai HTML
+let lampiranHTML = `
+<div style="
+  display:grid;
+  grid-template-columns: repeat(${kolom}, 1fr);
+  gap:10px;
+  height:100%;
+">
+`;
+
+// isi gambar
+for(let i=0; i<total; i++){
+  let url = URL.createObjectURL(lampiranFiles[i]);
+
+  lampiranHTML += `
+    <div style="
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid #ccc;
+      padding:5px;
+    ">
+      <img src="${url}" style="
+        max-width:100%;
+        max-height:240mm;
+        object-fit:contain;
+      ">
+    </div>
+  `;
+}
+
+lampiranHTML += `</div>`;
+
+/* ===== KOP ===== */
+function kop(){
+return `
+<div class='kop'>
+  <div class='kop-left'>
+    <img src='${logo}'>
+  </div>
+
+  <div class='kop-right'>
+    <div class='kop-title'>RAJA SUKSES PROPERTINDO</div>
+    <div>Jl. Trusmi Kulon No. 148</div>
+    <div>Telp. (0231) 321416 Plered - Cirebon</div>
+  </div>
+</div>
+
+<!-- GARIS KOP -->
+<div class="kop-line"></div>
+`;
+}
+
+/* ===== FOOTER ===== */
+function foot(){
+return `
+<div class='surat-footer'>
+  <img src='${footer}'>
+</div>
+`;
+}
+
+/* ===== PAGE 1 ===== */
+let page1=`
+<div class='page'>
+${kop()}
+
+<h4 style="
+  text-align:center;
+  font-weight:bold;
+  text-decoration: underline;
+  margin-bottom: 2px;
+  letter-spacing: 0.5px;
+">
+  BERITA ACARA
+</h4>
+<p style="
+  text-align:center;
+  margin-top:0;
+  margin-bottom:10px;
+">
+  Nomor: ${nomor}
+</p>
+
+<p>Nama : ${nama1}<br>Jabatan : ${jabatan1}</p>
+
+<div class="content-flex content-area ${contentClass}">
+
+${latarHTML}
+${tujuanHTML}
+${tambahan}
+${penutupHTML}
+
+</div>
+
+<div class="ttd-container">
+
+  <div class="ttd-box">
+    <p>DIBUAT</p>
+    <div class="signature">
+      ${ttd1 ? `<img src='${ttd1}'>` : `<div style="height:80px;"></div>`}
+    </div>
+    <p class="nama-ttd">${nama1}</p>
+    <p class="jabatan-ttd">${jabatan1}</p>
+  </div>
+
+  <div class="ttd-box">
+    <p>DIKETAHUI</p>
+    <div class="signature">
+      ${ttd2 ? `<img src='${ttd2}'>` : `<div style="height:80px;"></div>`}
+    </div>
+    <p class="nama-ttd">${nama2}</p>
+    <p class="jabatan-ttd">${jabatan2}</p>
+  </div>
+
+  <div class="ttd-box">
+    <p>DISETUJUI</p>
+    <div class="signature">
+      ${ttd3 ? `<img src='${ttd3}'>` : `<div style="height:80px;"></div>`}
+    </div>
+    <p class="nama-ttd">${nama3}</p>
+    <p class="jabatan-ttd">${jabatan3}</p>
+  </div>
+
+</div>
+
+${foot()}
+</div>`;
+
+/* ===== PAGE 2 ===== */
+let page2 = total > 0 ? `
+<div class='page'>
+
+${kop()}
+
+<h4 class="center title-ba">LAMPIRAN</h4>
+
+<div style="
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+">
+  <div style="width:100%;">
+    ${lampiranHTML}
+  </div>
+</div>
+
+${foot()}
+
+</div>
+` : "";
+
+document.getElementById('output').innerHTML=page1+page2;
+}
+</script>
+</div>
+</body>
+</html>
