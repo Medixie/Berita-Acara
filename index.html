@@ -906,7 +906,104 @@ body {
   border: 1px solid #ddd;
 }
 
+/* ================================
+   CONTAINER TTD
+================================ */
+.ttd-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 30px;
+}
 
+/* ================================
+   BOX PER KOLOM
+================================ */
+.ttd-box {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ================================
+   JUDUL
+================================ */
+.ttd-header {
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ttd-title {
+  font-weight: bold;
+  margin: 0;
+}
+
+/* ================================
+   AREA TTD (TINGGI SAMA)
+================================ */
+.signature-box,
+.signature-placeholder {
+  height: 110px; /* 🔥 biar sejajar */
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* 🔥 isi di tengah vertikal */
+  align-items: center;     /* 🔥 tengah horizontal */
+
+  margin: 6px 0;
+}
+
+/* ================================
+   SIGNED LABEL
+================================ */
+.signed-label {
+  font-size: 11px;
+  color: #2e7d32;
+  margin-bottom: 3px;
+  text-align: center;
+}
+
+/* ================================
+   GAMBAR TTD
+================================ */
+.signature img {
+  max-height: 65px;
+  object-fit: contain;
+}
+
+/* ================================
+   TANGGAL (CENTER)
+================================ */
+.ttd-time {
+  font-size: 10px;
+  color: #a8adb3;
+  margin-top: 3px;
+  text-align: center;
+}
+
+/* ================================
+   NAMA & JABATAN
+================================ */
+.nama-ttd {
+  font-weight: bold;
+  text-decoration: underline;
+  margin-bottom: 2px;
+  text-align: center;
+}
+
+.jabatan-ttd {
+  font-style: italic;
+  margin: 0;
+  text-align: center;
+}
+
+p {
+  text-align: justify;
+}
 
 </style>
 </head>
@@ -1402,6 +1499,16 @@ function getRunningNumber(){
   return String(num).padStart(3, '0');
 }
 
+/* ===== TAMBAHKAN DI SINI ===== */
+function generateUUID() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
+    .replace(/[xy]/g, function(c) {
+      let r = Math.random() * 16 | 0;
+      let v = c === 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    }).toUpperCase();
+}
+
 function generate(){
 
 let jenis=document.getElementById('jenis').value;
@@ -1606,47 +1713,73 @@ ${penutupHTML}
 
   <!-- DIBUAT -->
   <div class="ttd-box">
-    <p>DIBUAT</p>
-
-    <div class="signature">
-      ${ttd1 ? `<img src='${ttd1}'>` : `<div style="height:80px;"></div>`}
+    <div class="ttd-header">
+      <p class="ttd-title">DIBUAT</p>
     </div>
 
-    <p style="color:#a8adb3; font-size:10px; letter-spacing:0.5px; margin-bottom:2px;">
-      ${waktu}
-    </p>
+    ${ttd1 ? `
+      <div class="signature-box">
+        <div class="signed-label">✔ Signed by:</div>
+
+        <div class="signature">
+          <img src='${ttd1}'>
+        </div>
+      </div>
+    ` : `
+      <div class="signature-placeholder"></div>
+    `}
+
+    <div class="ttd-time">${waktu}</div>
 
     <p class="nama-ttd">${nama1}</p>
     <p class="jabatan-ttd">${jabatan1}</p>
   </div>
 
+
   <!-- DIKETAHUI -->
   <div class="ttd-box">
-    <p>DIKETAHUI</p>
-
-    <div class="signature">
-      ${ttd2 ? `<img src='${ttd2}'>` : `<div style="height:80px;"></div>`}
+    <div class="ttd-header">
+      <p class="ttd-title">DIKETAHUI</p>
     </div>
 
-    <p style="color:#a8adb3; font-size:10px; letter-spacing:0.5px; margin-bottom:2px;">
-      ${waktu}
-    </p>
+    ${ttd2 ? `
+      <div class="signature-box">
+        <div class="signed-label">✔ Signed by:</div>
+
+        <div class="signature">
+          <img src='${ttd2}'>
+        </div>
+      </div>
+    ` : `
+      <div class="signature-placeholder"></div>
+    `}
+
+    <div class="ttd-time">${waktu}</div>
 
     <p class="nama-ttd">${nama2}</p>
     <p class="jabatan-ttd">${jabatan2}</p>
   </div>
 
+
   <!-- DISETUJUI -->
   <div class="ttd-box">
-    <p>DISETUJUI</p>
-
-    <div class="signature">
-      ${ttd3 ? `<img src='${ttd3}'>` : `<div style="height:80px;"></div>`}
+    <div class="ttd-header">
+      <p class="ttd-title">DISETUJUI</p>
     </div>
 
-    <p style="color:#a8adb3; font-size:10px; letter-spacing:0.5px; margin-bottom:2px;">
-      ${waktu}
-    </p>
+    ${ttd3 ? `
+      <div class="signature-box">
+        <div class="signed-label">✔ Signed by:</div>
+
+        <div class="signature">
+          <img src='${ttd3}'>
+        </div>
+      </div>
+    ` : `
+      <div class="signature-placeholder"></div>
+    `}
+
+    <div class="ttd-time">${waktu}</div>
 
     <p class="nama-ttd">${nama3}</p>
     <p class="jabatan-ttd">${jabatan3}</p>
