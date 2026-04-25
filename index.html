@@ -9,7 +9,7 @@
 <style>
 
   :root {
-  --main-gradient: linear-gradient(135deg, #c90000, #7a0000);
+  --main-gradient: linear-gradient(135deg, #dd0000, #7a0000);
 }
 
  /* Halaman login */
@@ -90,7 +90,7 @@ h5 {
 .page {
   width:210mm;
   min-height:297mm;
-  padding:20mm;
+  padding:12mm 12mm 15mm 12mm; /* atas kanan bawah kiri */
   background:white;
   margin:auto;
   position:relative;
@@ -108,6 +108,10 @@ h5 {
 }
 .kop::after{
   display:none;
+}
+
+.kop {
+  margin-top: -8mm;
 }
 
 /* ===== FOOTER ===== */
@@ -790,7 +794,15 @@ body {
   box-shadow: 0 0 0 3px rgba(201,0,0,0.1);
 }
 
+#confirmBox .btn-danger {
+  background: linear-gradient(135deg, #c90000, #7a0000);
+  border: none;
+}
 
+#confirmBox .btn-secondary {
+  background: #ddd;
+  border: none;
+}
 
 </style>
 </head>
@@ -840,6 +852,31 @@ body {
   box-shadow: 0 10px 25px rgba(0,0,0,0.25);
 ">
   Notifikasi
+</div>
+
+<div id="confirmBox" style="
+  position: fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background: rgba(0,0,0,0.5);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+">
+  <div style="
+    background:#fff;
+    padding:25px;
+    border-radius:12px;
+    text-align:center;
+    width:300px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.3);
+  ">
+    <p style="margin-bottom:20px;">Hapus baris ini?</p>
+    
+    <button onclick="confirmYes()" class="btn btn-danger">Ya</button>
+    <button onclick="confirmNo()" class="btn btn-secondary">Batal</button>
+  </div>
 </div>
 
 <!-- Footer: letakkan setelah semua div utama -->
@@ -916,6 +953,7 @@ body {
                 <th>Spesifikasi</th>
                 <th>Jumlah</th>
                 <th>Satuan</th>
+                <th style="width:50px;">Aksi</th> <!-- TAMBAH INI -->
               </tr>
             </thead>
             <tbody></tbody>
@@ -960,6 +998,38 @@ body {
 
 <script>
 
+  let rowToDelete = null;
+
+function hapusRow(btn){
+  rowToDelete = btn.closest('tr');
+  document.getElementById("confirmBox").style.display = "flex";
+}
+
+function confirmYes(){
+  if(rowToDelete){
+    rowToDelete.remove();
+
+    // rapihin nomor
+    let rows = document.querySelectorAll('#materialTable tbody tr');
+    rows.forEach((r, i) => {
+      r.cells[0].innerText = i + 1;
+    });
+
+    showToast("Baris berhasil dihapus!", "#7a0000"); // 🔥 merah gelap
+  }
+
+  closeConfirm();
+}
+
+function confirmNo(){
+  closeConfirm();
+}
+
+function closeConfirm(){
+  document.getElementById("confirmBox").style.display = "none";
+  rowToDelete = null;
+}
+
   function generate(){
   let loading = document.getElementById("loadingOverlay");
   loading.style.display = "flex";
@@ -969,6 +1039,20 @@ body {
     loading.style.display = "none";
     scrollToPreview();
   }, 500);
+}
+
+function getTanggalJamIndo(){
+  let now = new Date();
+
+  let tgl = String(now.getDate()).padStart(2,'0');
+  let bln = String(now.getMonth()+1).padStart(2,'0');
+  let thn = now.getFullYear();
+
+  let jam = String(now.getHours()).padStart(2,'0');
+  let menit = String(now.getMinutes()).padStart(2,'0');
+  let detik = String(now.getSeconds()).padStart(2,'0');
+
+  return `${tgl}-${bln}-${thn} ${jam}:${menit}:${detik}`;
 }
 
 function toggleSidebar(){
@@ -988,10 +1072,18 @@ function scrollToPreview(){
   document.querySelector(".preview-panel").scrollIntoView({behavior:"smooth"});
 }
 
-function showToast(msg, color="#dc3545"){
+function showToast(msg, type="danger"){
   let toast = document.getElementById("toast");
   toast.innerText = msg;
-  toast.style.background = color;
+
+  // warna berdasarkan type
+  let bg = {
+    danger: "linear-gradient(135deg, #ff6b6b, #d62828)",
+    success: "linear-gradient(135deg, #4CAF50, #2e7d32)",
+    warning: "linear-gradient(135deg, #ffb74d, #f57c00)"
+  };
+
+  toast.style.background = bg[type] || bg.danger;
   toast.style.display = "block";
 
   setTimeout(() => {
@@ -1033,7 +1125,7 @@ if(user === "admin" && pass === "admin123"){
     document.getElementById("sidebar").style.display = "block";
 
     loading.style.display = "none";
-    showToast("Login berhasil!");
+    showToast("Login berhasil!", "success");
   }, 1000);
 
 } else {
@@ -1056,7 +1148,7 @@ function logout(){
     document.getElementById("sidebar").style.display = "none";
 
     loading.style.display = "none";
-    showToast("Berhasil logout!");
+    showToast("Berhasil logout!", "success");
   }, 1000);
 
   document.getElementById("username").value = "";
@@ -1074,24 +1166,59 @@ function toggleJenis(){
 }
 
 function addRow(){
-let rows = document.querySelectorAll('#materialTable tbody tr').length;
+  let tbody = document.querySelector('#materialTable tbody');
+  let rows = tbody.querySelectorAll('tr').length;
 
-if(rows >= 20){
-  alert("Maksimal 20 material!");
-  return;
+  if(rows >= 20){
+    alert("Maksimal 20 material!");
+    return;
+  }
+
+  let count = rows + 1;
+
+  let row = `
+  <tr>
+    <td>${count}</td>
+    <td><input class='form-control'></td>
+    <td><input class='form-control'></td>
+    <td><input class='form-control'></td>
+    <td><input class='form-control'></td>
+    <td style="text-align:center;">
+      <button onclick="hapusRow(this)" class="btn btn-sm btn-danger">✕</button>
+    </td>
+  </tr>`;
+
+  tbody.insertAdjacentHTML('beforeend', row);
 }
 
-let count = rows + 1;
-let row=`<tr>
-<td>${count}</td>
-<td><input class='form-control'></td>
-<td><input class='form-control'></td>
-<td><input class='form-control'></td>
-<td><input class='form-control'></td>
-</tr>`;
 
-document.querySelector('#materialTable tbody')
-.insertAdjacentHTML('beforeend',row);
+function hapusRow(btn){
+  rowToDelete = btn.closest('tr');
+  document.getElementById("confirmBox").style.display = "flex";
+}
+
+function confirmYes(){
+  if(rowToDelete){
+    rowToDelete.remove();
+
+    let rows = document.querySelectorAll('#materialTable tbody tr');
+    rows.forEach((r, i) => {
+      r.cells[0].innerText = i + 1;
+    });
+
+    showToast("Baris berhasil dihapus!", "#7a0000");
+  }
+
+  closeConfirm();
+}
+
+function confirmNo(){
+  closeConfirm();
+}
+
+function closeConfirm(){
+  document.getElementById("confirmBox").style.display = "none";
+  rowToDelete = null;
 }
 
 function toRoman(num){
@@ -1162,6 +1289,7 @@ let ttd2=img('ttd2');
 let ttd3=img('ttd3');
 
 let today=new Date();
+let waktu = getTanggalJamIndo();
 let nomorUrut=getRunningNumber();
 let nomor=`${nomorUrut}/BA/RSP/${toRoman(today.getMonth()+1)}/${today.getFullYear()}`;
 
@@ -1324,29 +1452,50 @@ ${penutupHTML}
 
 <div class="ttd-container">
 
+  <!-- DIBUAT -->
   <div class="ttd-box">
     <p>DIBUAT</p>
+
     <div class="signature">
       ${ttd1 ? `<img src='${ttd1}'>` : `<div style="height:80px;"></div>`}
     </div>
+
+    <p style="color:#a8adb3; font-size:10px; letter-spacing:0.5px; margin-bottom:2px;">
+      ${waktu}
+    </p>
+
     <p class="nama-ttd">${nama1}</p>
     <p class="jabatan-ttd">${jabatan1}</p>
   </div>
 
+  <!-- DIKETAHUI -->
   <div class="ttd-box">
     <p>DIKETAHUI</p>
+
     <div class="signature">
       ${ttd2 ? `<img src='${ttd2}'>` : `<div style="height:80px;"></div>`}
     </div>
+
+    <p style="color:#a8adb3; font-size:10px; letter-spacing:0.5px; margin-bottom:2px;">
+      ${waktu}
+    </p>
+
     <p class="nama-ttd">${nama2}</p>
     <p class="jabatan-ttd">${jabatan2}</p>
   </div>
 
+  <!-- DISETUJUI -->
   <div class="ttd-box">
     <p>DISETUJUI</p>
+
     <div class="signature">
       ${ttd3 ? `<img src='${ttd3}'>` : `<div style="height:80px;"></div>`}
     </div>
+
+    <p style="color:#a8adb3; font-size:10px; letter-spacing:0.5px; margin-bottom:2px;">
+      ${waktu}
+    </p>
+
     <p class="nama-ttd">${nama3}</p>
     <p class="jabatan-ttd">${jabatan3}</p>
   </div>
