@@ -580,6 +580,7 @@ table td, table th {
 }
 
 
+
 /* ===== SIDEBAR ===== */
 
 #sidebar {
@@ -588,9 +589,19 @@ table td, table th {
   left: 0;
   width: 240px;
   height: 100%;
-  background: linear-gradient(180deg, #c90000, #7a0000);
+
+  /* 🔥 background utama */
+  background: 
+    
+    url('asset/bg-batik.jpeg');
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
   color: #fff;
   padding: 15px;
+
   transition: all 0.3s ease;
   z-index: 1000;
 }
@@ -836,6 +847,20 @@ body {
   color: #555;
   margin-bottom: 5px;
 }
+
+.btn-success {
+  background: linear-gradient(135deg, #00c853, #009624); /* hijau terang */
+  border: none;
+  color: #fff;
+  font-weight: 600;
+}
+
+.btn-success:hover {
+  background: linear-gradient(135deg, #00e676, #00c853); /* lebih terang saat hover */
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 8px 20px rgba(0, 200, 83, 0.4);
+}
+
 </style>
 </head>
 <body>
@@ -850,19 +875,19 @@ body {
       ☰ <span>Menu</span>
     </li>
 <li onclick="scrollToForm()" data-title="Form Input">
-    <i>📝</i><span>Form Input</span>
+    <i>🧾</i><span>Form Input</span>
   </li>
 
   <li onclick="generate()" data-title="Generate">
-    <i>⚡</i><span>Generate</span>
+    <i>⚙️</i><span>Generate</span>
   </li>
 
   <li onclick="window.print()" data-title="Print PDF">
-    <i>🖨</i><span>Print PDF</span>
+    <i>🖨️</i><span>Print</span>
   </li>
     <!-- 🔥 INI LOGOUT -->
   <li onclick="logout()" data-title="Logout">
-    <i>🚪</i><span>Logout</span>
+    <i>⏻</i><span>Logout</span>
   </li>
   </ul>
 </div>
@@ -1012,7 +1037,9 @@ body {
         <input type="file" id="lampiran" multiple class="form-control mb-2">
 
         <button onclick="generate()" class="btn btn-danger w-100">Generate Dokumen</button>
-
+        <button onclick="simpanPDF()" class="btn btn-success w-100 mt-2">
+          Simpan & Export PDF
+        </button>
       </div>
     </div>
 
