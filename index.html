@@ -175,11 +175,22 @@ h5 {
 }
 
 /* ===== FOOTER MERAH ===== */
-.footer {
-  position:absolute;
-  bottom:0;
-  left:20mm;
-  width:calc(100% - 40mm); /* kiri + kanan */
+.surat-footer {
+  position: absolute;
+  bottom: 0;
+
+  left: -14.5mm;
+  width: calc(100% + 29mm);
+}
+
+.surat-footer img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.footer-inner {
+  width: 100%;
 }
 
 .footer img {
@@ -861,9 +872,47 @@ body {
   box-shadow: 0 8px 20px rgba(0, 200, 83, 0.4);
 }
 
+.drop-area {
+  border: 2px dashed #c90000;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  background: #fff5f5;
+  transition: 0.3s;
+}
+
+.drop-area:hover {
+  background: #ffe5e5;
+}
+
+.drop-area.dragover {
+  background: #ffd6d6;
+  border-color: #ff0000;
+}
+
+.lampiran-preview {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px,1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.lampiran-preview img {
+  width: 100%;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+
+
 </style>
 </head>
 <body>
+
+<div id="topLoader"></div>
 
 <div id="sidebar">
   <div class="sidebar-header">
@@ -1033,8 +1082,12 @@ body {
         <input type="file" id="ttd2" class="form-control mb-1">
         <input type="file" id="ttd3" class="form-control mb-2">
 
-        <div class="section-title">Lampiran</div>
-        <input type="file" id="lampiran" multiple class="form-control mb-2">
+        <div id="dropArea" class="drop-area">
+  <p>Drag & Drop gambar di sini<br>atau klik untuk upload</p>
+  <input type="file" id="lampiran" multiple hidden>
+</div>
+
+<div id="previewLampiran" class="lampiran-preview"></div>
 
         <button onclick="generate()" class="btn btn-danger w-100">Generate Dokumen</button>
         <button onclick="simpanPDF()" class="btn btn-success w-100 mt-2">
@@ -1444,7 +1497,7 @@ if(jenis==='adendum' && kejadian.trim()){
 }
 
 /* ===== LAMPIRAN FIX (TIDAK KE-CROP) ===== */
-let lampiranFiles = document.getElementById('lampiran').files;
+let lampiranFiles = filesArray;
 let total = lampiranFiles.length;
 
 // tentukan kolom
@@ -1630,6 +1683,85 @@ ${foot()}
 
 document.getElementById('output').innerHTML=page1+page2;
 }
+
+const dropArea = document.getElementById("dropArea");
+const inputFile = document.getElementById("lampiran");
+const previewBox = document.getElementById("previewLampiran");
+
+let filesArray = [];
+
+// klik = buka file
+dropArea.addEventListener("click", () => inputFile.click());
+
+// drag over
+dropArea.addEventListener("dragover", (e) => {
+  e.preventDefault();
+  dropArea.classList.add("dragover");
+});
+
+// drag leave
+dropArea.addEventListener("dragleave", () => {
+  dropArea.classList.remove("dragover");
+});
+
+// drop file
+dropArea.addEventListener("drop", (e) => {
+  e.preventDefault();
+  dropArea.classList.remove("dragover");
+
+  const files = Array.from(e.dataTransfer.files);
+  handleFiles(files);
+});
+
+// pilih manual
+inputFile.addEventListener("change", () => {
+  handleFiles(Array.from(inputFile.files));
+});
+
+// proses file
+function handleFiles(files){
+  files.forEach(file => {
+    if(file.type.startsWith("image/")){
+      filesArray.push(file);
+    }
+  });
+
+  renderPreview();
+}
+
+// tampilkan preview
+function renderPreview(){
+  previewBox.innerHTML = "";
+
+  filesArray.forEach((file, index) => {
+    let url = URL.createObjectURL(file);
+
+    previewBox.innerHTML += `
+      <div style="position:relative">
+        <img src="${url}">
+        <button onclick="removeFile(${index})" style="
+          position:absolute;
+          top:2px;
+          right:2px;
+          background:red;
+          color:white;
+          border:none;
+          border-radius:50%;
+          width:20px;
+          height:20px;
+          font-size:12px;
+        ">×</button>
+      </div>
+    `;
+  });
+}
+
+// hapus file
+function removeFile(index){
+  filesArray.splice(index,1);
+  renderPreview();
+}
+
 </script>
 </div>
 </body>
