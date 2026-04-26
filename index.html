@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Generator Berita Acara</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 <style>
@@ -441,12 +442,18 @@ table td, table th {
   bottom: 0;
   left: 0;
   width: 100%;
+
   background: var(--main-gradient);
   color: #fff;
+
+  display: flex;
+  justify-content: center;  /* 🔥 ini kunci */
+  align-items: center;
+
   text-align: center;
   padding: 10px 0;
+
   z-index: 999;
-   font-family: Cambria, "Times New Roman", serif;
 }
 
 .surat-footer {
@@ -1005,6 +1012,207 @@ p {
   text-align: justify;
 }
 
+/* ===== PIHAK PREMIUM UI ===== */
+
+.pihak-card {
+  border-radius: 18px;
+  background: linear-gradient(145deg, #ffffff, #f8f9fc);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+}
+
+/* header */
+.pihak-header {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+/* item */
+.pihak-item {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 14px;
+  margin-bottom: 10px;
+  background: #fff;
+  border: 1px solid #eee;
+  transition: 0.25s;
+}
+
+.pihak-item:hover {
+  transform: translateY(-2px);
+  border-color: #c90000;
+  box-shadow: 0 10px 25px rgba(201,0,0,0.15);
+}
+
+/* kiri */
+.pihak-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 90px;
+}
+
+/* nomor bulat */
+.pihak-number {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #c90000, #7a0000);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+/* role */
+.pihak-role {
+  font-size: 11px;
+  font-weight: 600;
+  color: #555;
+}
+
+/* form kanan */
+.pihak-form {
+  flex: 1;
+}
+
+/* select */
+.select-modern {
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  padding: 8px;
+  transition: 0.2s;
+}
+
+.select-modern:focus {
+  border-color: #c90000;
+  box-shadow: 0 0 0 2px rgba(201,0,0,0.15);
+}
+
+/* input jabatan */
+.input-modern {
+  border-radius: 10px;
+  background: #f5f5f5;
+  border: 1px solid #ddd;
+  font-size: 13px;
+}
+
+/* tombol bawah */
+.pihak-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.pihak-actions .btn {
+  border-radius: 10px;
+  font-size: 14px;
+  padding: 6px;
+  transition: 0.2s;
+}
+
+.pihak-actions .btn:hover {
+  transform: scale(1.05);
+}
+
+.select2-container--default .select2-selection--single {
+  border-radius: 10px !important;
+  height: 38px;
+  border: 1px solid #ddd;
+}
+
+.select2-container--default .select2-selection--single:focus {
+  border-color: #c90000;
+}
+
+.select2-dropdown {
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+
+/* ===== JENIS BA UI ===== */
+
+.jenis-card {
+  border-radius: 18px;
+  background: linear-gradient(145deg, #ffffff, #f8f9fc);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+}
+
+.jenis-header {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+/* option */
+.jenis-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid #eee;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: 0.25s;
+  background: #fff;
+}
+
+.jenis-option:hover {
+  transform: translateY(-2px);
+  border-color: #c90000;
+  box-shadow: 0 10px 25px rgba(201,0,0,0.15);
+}
+
+/* aktif */
+.jenis-option.active {
+  border-color: #c90000;
+  background: linear-gradient(135deg, #fff5f5, #ffe5e5);
+}
+
+/* icon */
+.jenis-icon {
+  font-size: 20px;
+}
+
+/* text */
+.jenis-title {
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.jenis-desc {
+  font-size: 11px;
+  color: #777;
+}
+
+/* samakan dengan input jabatan */
+.pihak-box .select2-container {
+  width: 100% !important;
+}
+
+.pihak-box .select2-selection--single {
+  height: 42px !important;
+  border-radius: 12px !important;
+  border: 1px solid #ddd !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* teks di dalam */
+.select2-selection__rendered {
+  line-height: 42px !important;
+  padding-left: 12px !important;
+}
+
+/* panah kanan */
+.select2-selection__arrow {
+  height: 42px !important;
+}
+
 </style>
 </head>
 <body>
@@ -1084,9 +1292,9 @@ p {
 
 <!-- Footer: letakkan setelah semua div utama -->
 <footer class="app-footer">
-  <div class="container text-center">
-    <p class="mb-0 small">&copy; 2025 <strong>Admin Project</strong>. All rights reserved.</p>
-  </div>
+  <p class="mb-0 small">
+    &copy; 2026 <strong>Admin Project</strong>. All rights reserved.
+  </p>
 </footer>
 
   <!-- Loading Spinner -->
@@ -1125,22 +1333,118 @@ p {
     <div class="form-panel">
       <div class="card p-3">
 
-        <div class="section-title">Jenis BA</div>
-        <select id="jenis" class="form-control mb-2" onchange="toggleJenis()">
-          <option value="material">Pengajuan Material</option>
-          <option value="keterangan">Keterangan Pekerjaan</option>
-          <option value="adendum">Adendum / Kendala</option>
-        </select>
+    <div class="card p-3 mb-3 jenis-card">
 
-        <div class="section-title">Pihak</div>
-        <input id="nama1" class="form-control mb-1" placeholder="Nama Dibuat">
-        <input id="jabatan1" class="form-control mb-2" placeholder="Jabatan">
+  <div class="jenis-header">📄 Jenis Berita Acara</div>
 
-        <input id="nama2" class="form-control mb-1" placeholder="Nama Diketahui">
-        <input id="jabatan2" class="form-control mb-2" placeholder="Jabatan">
+  <div class="jenis-option" onclick="setJenis('material', this)">
+    <div class="jenis-icon">📦</div>
+    <div class="jenis-text">
+      <div class="jenis-title">Pengajuan Material</div>
+      <div class="jenis-desc">Untuk permintaan barang/material project</div>
+    </div>
+  </div>
 
-        <input id="nama3" class="form-control mb-1" placeholder="Nama Disetujui">
-        <input id="jabatan3" class="form-control mb-2" placeholder="Jabatan">
+  <div class="jenis-option" onclick="setJenis('keterangan', this)">
+    <div class="jenis-icon">📝</div>
+    <div class="jenis-text">
+      <div class="jenis-title">Keterangan Pekerjaan</div>
+      <div class="jenis-desc">Penjelasan kondisi pekerjaan</div>
+    </div>
+  </div>
+
+  <div class="jenis-option" onclick="setJenis('adendum', this)">
+    <div class="jenis-icon">⚠️</div>
+    <div class="jenis-text">
+      <div class="jenis-title">Adendum / Kendala</div>
+      <div class="jenis-desc">Perubahan / kendala di lapangan</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- hidden input biar logic tetap jalan -->
+<input type="hidden" id="jenis" value="material">
+
+<div class="card pihak-card p-3 mb-3">
+
+  <div class="pihak-header">
+    <span class="pihak-title">👥 Pihak Penandatangan</span>
+  </div>
+
+  <!-- ITEM -->
+  <div class="pihak-item">
+    <div class="pihak-left">
+      <div class="pihak-number">01</div>
+      <div>
+        <div class="pihak-role">DIBUAT</div>
+      </div>
+    </div>
+
+    <div class="pihak-form">
+      <select id="nama1" class="form-control select-modern mb-1"
+        onchange="setJabatan(this,'jabatan1')"></select>
+      <input id="jabatan1" class="form-control input-modern" readonly>
+    </div>
+  </div>
+
+  <div class="pihak-item">
+    <div class="pihak-left">
+      <div class="pihak-number">02</div>
+      <div class="pihak-role">DIKETAHUI</div>
+    </div>
+
+    <div class="pihak-form">
+      <select id="nama2" class="form-control select-modern mb-1"
+        onchange="setJabatan(this,'jabatan2')"></select>
+      <input id="jabatan2" class="form-control input-modern" readonly>
+    </div>
+  </div>
+
+  <div class="pihak-item">
+    <div class="pihak-left">
+      <div class="pihak-number">03</div>
+      <div class="pihak-role">DISETUJUI</div>
+    </div>
+
+    <div class="pihak-form">
+      <select id="nama3" class="form-control select-modern mb-1"
+        onchange="setJabatan(this,'jabatan3')"></select>
+      <input id="jabatan3" class="form-control input-modern" readonly>
+    </div>
+  </div>
+
+  <!-- ACTION -->
+  <div class="pihak-actions mt-3">
+    <button onclick="tambahOrang()" class="btn btn-success mt-2 w-100 d-flex align-items-center justify-content-center gap-2">
+  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+    <circle cx="8.5" cy="7" r="4"/>
+    <line x1="20" y1="8" x2="20" y2="14"/>
+    <line x1="23" y1="11" x2="17" y2="11"/>
+  </svg>
+  Tambah Pihak
+</button>
+    <button onclick="editOrang()" class="btn btn-warning mt-2 w-100 d-flex align-items-center justify-content-center gap-2">
+  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 20h9"/>
+    <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+  </svg>
+  Edit Data
+</button>
+    <button onclick="hapusOrang()" class="btn btn-danger mt-2 w-100 d-flex align-items-center justify-content-center gap-2">
+  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="3 6 5 6 21 6"/>
+    <path d="M19 6l-1 14H6L5 6"/>
+    <path d="M10 11v6"/>
+    <path d="M14 11v6"/>
+    <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+  </svg>
+  Hapus Data
+</button>
+  </div>
+
+</div>
 
         <div class="section-title">Isi Surat</div>
         <div class="section-title">Latar Belakang</div>
@@ -1214,6 +1518,9 @@ p {
 let qLatar, qTujuan, qPenutup, qKejadian;
 
 document.addEventListener("DOMContentLoaded", function(){
+
+    loadDropdown(); // 🔥 INI WAJIB
+
 
   const toolbar = [
     ["bold", "italic", "underline"],
@@ -1310,6 +1617,21 @@ function toggleSidebar(){
 
   sidebar.classList.toggle("collapsed");
   main.classList.toggle("full");
+}
+
+function setJenis(value, el){
+  document.getElementById("jenis").value = value;
+
+  // reset semua
+  document.querySelectorAll(".jenis-option").forEach(o=>{
+    o.classList.remove("active");
+  });
+
+  // aktifkan yg diklik
+  el.classList.add("active");
+
+  // panggil fungsi lama
+  toggleJenis();
 }
 
 /* scroll helper */
@@ -1419,7 +1741,7 @@ function addRow(){
   let rows = tbody.querySelectorAll('tr').length;
 
   if(rows >= 20){
-    alert("Maksimal 20 material!");
+    showToast("Maksimal 20 material!", "warning");
     return;
   }
 
@@ -1515,33 +1837,46 @@ let jenis=document.getElementById('jenis').value;
 let logo = "Asset/kop.png";
 let footer = "Asset/fot.jpeg";
 
-let nama1=document.getElementById('nama1').value;
-let jabatan1=document.getElementById('jabatan1').value;
-let nama2=document.getElementById('nama2').value;
-let jabatan2=document.getElementById('jabatan2').value;
-let nama3=document.getElementById('nama3').value;
-let jabatan3=document.getElementById('jabatan3').value;
+let i1 = document.getElementById('nama1').value;
+let i2 = document.getElementById('nama2').value;
+let i3 = document.getElementById('nama3').value;
+
+let nama1 = i1 !== "" ? dataOrang[i1].nama : "";
+let jabatan1 = i1 !== "" ? dataOrang[i1].jabatan : "";
+
+let nama2 = i2 !== "" ? dataOrang[i2].nama : "";
+let jabatan2 = i2 !== "" ? dataOrang[i2].jabatan : "";
+
+let nama3 = i3 !== "" ? dataOrang[i3].nama : "";
+let jabatan3 = i3 !== "" ? dataOrang[i3].jabatan : "";
 
 let latar = qLatar.root.innerHTML;
-let tujuan = qTujuan.root.innerHTML;
+let latarText = qLatar.getText().trim();let tujuan = qTujuan.root.innerHTML;
 let kejadian = qKejadian ? qKejadian.root.innerHTML : '';
 let penutup = qPenutup.root.innerHTML;
 
 // ===== SECTION DINAMIS =====
-let latarHTML = latar.trim() ? `
+let latarHTML = latarText ? `
 <h5>Latar Belakang</h5>
-<p class='justify'>${latar}</p>
+<div class='justify'>${latar}</div>
 ` : "";
 
-let tujuanHTML = tujuan.trim() ? `
+let tujuanText = qTujuan.getText().trim();
+
+let tujuanHTML = tujuanText ? `
 <h5>Maksud dan Tujuan</h5>
 <p class='justify'>${tujuan}</p>
 ` : "";
 
-let penutupHTML = penutup.trim() ? `
+let penutupText = qPenutup.getText().trim();
+
+let penutupHTML = penutupText ? `
 <h5>Penutup</h5>
 <p class='justify'>${penutup}</p>
 ` : "";
+
+let kejadianText = qKejadian.getText().trim();
+
 
 let ttd1=img('ttd1');
 let ttd2=img('ttd2');
@@ -1565,41 +1900,49 @@ let contentClass = "";
 if(totalText > 1200) contentClass = "long";
 if(totalText > 2000) contentClass = "xlong";
 
-/* ===== MATERIAL ===== */
-let tambahan='';
+/* ===== MATERIAL / ADENDUM ===== */
+let tambahan = '';
 
-if(jenis==='material'){
-  let rows=document.querySelectorAll('#materialTable tbody tr');
-let table = `
-<table class='table table-bordered tabel-material'>
-<tr>
-  <th style="width:40px;">No</th>
-  <th>Nama Material/Barang</th>
-  <th style="width:170px;">Spesifikasi / Ukuran</th>
-  <th style="width:80px;">Qty</th>
-  <th style="width:80px;">Satuan</th>
-</tr>
-`;
-rows.forEach((r)=>{
-let c=r.querySelectorAll('input');
+// ===== MATERIAL =====
+if (jenis === 'material') {
+  let rows = document.querySelectorAll('#materialTable tbody tr');
 
-table+=`
-<tr>
-  <td class="center">${r.cells[0].innerText}</td>
-  <td>${c[0].value}</td>
-  <td class="center">${c[1].value}</td>
-  <td class="center">${c[2].value}</td>
-  <td class="center">${c[3].value}</td>
-</tr>`;
-});
-table+='</table>';
-tambahan=table;
+  if (rows.length > 0) {
+
+    let table = `
+    <table class='table table-bordered tabel-material'>
+      <tr>
+        <th style="width:40px;">No</th>
+        <th>Nama Material/Barang</th>
+        <th style="width:170px;">Spesifikasi / Ukuran</th>
+        <th style="width:80px;">Qty</th>
+        <th style="width:80px;">Satuan</th>
+      </tr>
+    `;
+
+    rows.forEach((r) => {
+      let c = r.querySelectorAll('input');
+
+      table += `
+      <tr>
+        <td class="center">${r.cells[0].innerText}</td>
+        <td>${c[0].value}</td>
+        <td class="center">${c[1].value}</td>
+        <td class="center">${c[2].value}</td>
+        <td class="center">${c[3].value}</td>
+      </tr>`;
+    });
+
+    table += `</table>`;
+    tambahan = table;
+  }
 }
 
-if(jenis==='adendum' && kejadian.trim()){
+// ===== ADENDUM =====
+else if (jenis === 'adendum' && kejadianText.trim() !== '') {
   tambahan = `
-  <h5>Keterangan Kejadian</h5>
-  <p class='justify'>${kejadian}</p>
+    <h5>Keterangan Kejadian</h5>
+    <div class='justify'>${kejadian}</div>
   `;
 }
 
@@ -1895,7 +2238,127 @@ function removeFile(index){
   renderPreview();
 }
 
+// 🔥 DATA DEFAULT
+let dataOrang = JSON.parse(localStorage.getItem("dataOrang")) || [
+  { nama: "Khalid Rizky Pratama", jabatan: "Pelaksana Project" },
+  { nama: "Tedi Yanuar", jabatan: "Project Manager" },
+  { nama: "Teuku Raja Sri Mustika", jabatan: "GM Production" }
+];
+
+// 🔥 LOAD DROPDOWN
+function loadDropdown(){
+  ["nama1","nama2","nama3"].forEach(id=>{
+    let select = document.getElementById(id);
+    select.innerHTML = `<option value="">-- Pilih Nama --</option>`;
+
+    dataOrang.forEach((d,i)=>{
+      select.innerHTML += `<option value="${i}">${d.nama}</option>`;
+    });
+  });
+}
+
+// 🔥 AUTO ISI JABATAN
+function setJabatan(select, targetId){
+  let index = select.value;
+  let input = document.getElementById(targetId);
+
+  if(index !== ""){
+    input.value = dataOrang[index].jabatan;
+  } else {
+    input.value = "";
+  }
+}
+
+// 🔥 TAMBAH ORANG BARU
+function tambahOrang(){
+  let nama = prompt("Masukkan Nama:");
+  let jabatan = prompt("Masukkan Jabatan:");
+
+  if(nama && jabatan){
+    dataOrang.push({nama, jabatan});
+    localStorage.setItem("dataOrang", JSON.stringify(dataOrang));
+    loadDropdown();
+    showToast("Berhasil ditambahkan!", "success");
+  }
+}
+
+// 🔥 EDIT DATA
+function editOrang(){
+  let list = dataOrang.map((d,i)=> `${i+1}. ${d.nama} (${d.jabatan})`).join("\n");
+
+  let pilih = prompt("Pilih nomor yang mau diedit:\n\n" + list);
+
+  let index = parseInt(pilih) - 1;
+
+  if(dataOrang[index]){
+    let namaBaru = prompt("Edit Nama:", dataOrang[index].nama);
+    let jabatanBaru = prompt("Edit Jabatan:", dataOrang[index].jabatan);
+
+    if(namaBaru && jabatanBaru){
+      dataOrang[index] = {nama: namaBaru, jabatan: jabatanBaru};
+
+      localStorage.setItem("dataOrang", JSON.stringify(dataOrang));
+      loadDropdown();
+
+      showToast("Data berhasil diupdate!", "success");
+
+    }
+  }
+}
+
+// 🔥 HAPUS DATA
+function hapusOrang(){
+  let list = dataOrang.map((d,i)=> `${i+1}. ${d.nama}`).join("\n");
+
+  let pilih = prompt("Pilih nomor yang mau dihapus:\n\n" + list);
+
+  let index = parseInt(pilih) - 1;
+
+  if(dataOrang[index]){
+    let konfirmasi = confirm("Yakin mau hapus " + dataOrang[index].nama + "?");
+
+    if(konfirmasi){
+      dataOrang.splice(index,1);
+
+      localStorage.setItem("dataOrang", JSON.stringify(dataOrang));
+      loadDropdown();
+
+      showToast("Data berhasil dihapus!", "success");
+
+    }
+  }
+}
+
 </script>
 </div>
+
+<!-- 1. JQUERY -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- 2. SELECT2 -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<!-- 3. INIT SELECT2 -->
+<script>
+$(document).ready(function() {
+  $("#nama1").select2({
+    placeholder: "Cari nama...",
+    width: '100%'
+  });
+
+  $("#nama2").select2({
+    placeholder: "Cari nama...",
+    width: '100%'
+  });
+
+  $("#nama3").select2({
+    placeholder: "Cari nama...",
+    width: '100%'
+  });
+});
+</script>
+
+
+
 </body>
 </html>
