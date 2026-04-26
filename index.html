@@ -1213,9 +1213,134 @@ p {
   height: 42px !important;
 }
 
+/* tombol bulat */
+#draftToggle{
+  position: fixed;
+  right: 20px;
+  top: 20px; /* 🔥 pindah ke atas */
+  width: 50px;
+  height: 50px;
+  background: #0d6efd;
+  color: white;
+  font-size: 22px;
+  border-radius: 50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  z-index:9999;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+/* panel */
+#draftPanel{
+  position: fixed;
+  right: 20px;
+  top: 20px; /* langsung di atas */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  z-index: 9999;
+}
+
+
+/* saat aktif */
+#draftPanel button{
+  padding: 10px 15px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* HIJAU (Tambah / Save) */
+#draftPanel button:nth-child(1){
+  background: linear-gradient(135deg, #00c853, #009624);
+}
+
+/* KUNING (Edit / Load) */
+#draftPanel button:nth-child(2){
+  background: linear-gradient(135deg, #ffc107, #e0a800);
+  color: #000;
+}
+
+/* MERAH (Hapus) */
+#draftPanel button:nth-child(3){
+  background: linear-gradient(135deg, #dc3545, #a71d2a);
+}
+
+#draftPanel{
+  position: fixed;
+  right: 20px;
+  top: 20px;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 9999;
+}
+
+#draftPanel button{
+  padding: 10px 18px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+  transition: all 0.25s ease;
+}
+
+/* 🔥 HOVER EFFECT */
+#draftPanel button:hover{
+  transform: translateY(-3px) scale(1.05);
+  filter: brightness(1.1);
+}
+
+/* 🔥 KLIK EFFECT */
+#draftPanel button:active{
+  transform: scale(0.95);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+}
+
+/* HIJAU */
+#draftPanel button:nth-child(1):hover{
+  box-shadow: 0 8px 20px rgba(0, 200, 83, 0.5);
+}
+
+/* KUNING */
+#draftPanel button:nth-child(2):hover{
+  box-shadow: 0 8px 20px rgba(255, 193, 7, 0.5);
+}
+
+/* MERAH */
+#draftPanel button:nth-child(3):hover{
+  box-shadow: 0 8px 20px rgba(220, 53, 69, 0.5);
+}
+
+.hidden {
+  display: none !important;
+}
+
 </style>
 </head>
 <body>
+
+<!-- PANEL DRAFT -->
+<div id="draftPanel" class="hidden">
+  <button onclick="saveDraft()">💾 Simpan Draft</button>
+  <button onclick="loadDraft()">♻️ Load Draft</button>
+  <button onclick="clearDraft()">🗑️ Hapus Draft</button>
+</div>
 
 <div id="topLoader"></div>
 
@@ -1517,6 +1642,15 @@ p {
 
 let qLatar, qTujuan, qPenutup, qKejadian;
 
+// 🔥 TARO DI SINI (GLOBAL)
+function showDraft(){
+  document.getElementById("draftPanel").classList.remove("hidden");
+}
+
+function hideDraft(){
+  document.getElementById("draftPanel").classList.add("hidden");
+}
+
 document.addEventListener("DOMContentLoaded", function(){
 
     loadDropdown(); // 🔥 INI WAJIB
@@ -1611,6 +1745,59 @@ function getTanggalJamIndo(){
   return `${tgl}-${bln}-${thn} ${jam}:${menit}:${detik}`;
 }
 
+function saveDraft(){
+  let draft = {
+    jenis: document.getElementById('jenis').value,
+
+    nama1: $("#nama1").val(),
+    nama2: $("#nama2").val(),
+    nama3: $("#nama3").val(),
+
+    latar: qLatar.root.innerHTML,
+    tujuan: qTujuan.root.innerHTML,
+    kejadian: qKejadian ? qKejadian.root.innerHTML : '',
+    penutup: qPenutup.root.innerHTML
+  };
+
+  localStorage.setItem("draftBA", JSON.stringify(draft));
+  showToast("Draft disimpan!", "success");
+}
+
+function loadDraft(){
+  let draft = JSON.parse(localStorage.getItem("draftBA"));
+
+  if(!draft){
+    showToast("Tidak ada draft!", "error");
+    return;
+  }
+
+  document.getElementById('jenis').value = draft.jenis;
+  toggleJenis();
+
+  // 🔥 INI BARU TEMPATNYA
+  $("#nama1").val(draft.nama1).trigger("change");
+  $("#nama2").val(draft.nama2).trigger("change");
+  $("#nama3").val(draft.nama3).trigger("change");
+
+  qLatar.root.innerHTML = draft.latar;
+  qTujuan.root.innerHTML = draft.tujuan;
+  if(qKejadian) qKejadian.root.innerHTML = draft.kejadian;
+  qPenutup.root.innerHTML = draft.penutup;
+
+  showToast("Draft dimuat!", "success");
+}
+
+window.addEventListener("load", () => {
+  loadDraft();
+});
+
+function clearDraft(){
+  localStorage.removeItem("draftBA");
+  showToast("Draft dihapus!", "warning");
+}
+
+
+
 function toggleSidebar(){
   let sidebar = document.getElementById("sidebar");
   let main = document.getElementById("mainPage");
@@ -1692,12 +1879,17 @@ if(user === "admin" && pass === "admin123"){
     loginPage.style.display = "none";
     mainPage.style.display = "block";
 
-    // ✅ tampilkan sidebar
+    // sidebar muncul
     document.getElementById("sidebar").style.display = "block";
+
+    // 🔥 tampilkan draft panel
+    showDraft();
 
     loading.style.display = "none";
     showToast("Login berhasil!", "success");
   }, 1000);
+
+
 
 } else {
   showToast("Username / Password salah!", "#dc3545");
@@ -1708,20 +1900,23 @@ if(user === "admin" && pass === "admin123"){
 
 function logout(){
   let loading = document.getElementById("loadingOverlay");
-
   loading.style.display = "flex";
 
   setTimeout(() => {
     document.getElementById("mainPage").style.display = "none";
     document.getElementById("loginPage").style.display = "flex";
 
-    // ❌ sembunyikan sidebar
+    // sidebar hilang
     document.getElementById("sidebar").style.display = "none";
+
+    // 🔥 sembunyikan draft panel
+    hideDraft();
 
     loading.style.display = "none";
     showToast("Berhasil logout!", "success");
   }, 1000);
 
+  // reset input login
   document.getElementById("username").value = "";
   document.getElementById("password").value = "";
 }
@@ -1831,6 +2026,8 @@ function generateUUID() {
     }).toUpperCase();
 }
 
+
+
 function generate(){
 
 let jenis=document.getElementById('jenis').value;
@@ -1885,7 +2082,7 @@ let ttd3=img('ttd3');
 let today=new Date();
 let waktu = getTanggalJamIndo();
 let nomorUrut=getRunningNumber();
-let nomor=`${nomorUrut}/BA/RSP/${toRoman(today.getMonth()+1)}/${today.getFullYear()}`;
+let nomor = `Nomor : ${nomorUrut}/BA/RSP/PROJECT/${toRoman(today.getMonth()+1)}/${today.getFullYear()}`;
 
 function resetNomor(){
   let now = new Date();
@@ -2038,7 +2235,7 @@ ${kop()}
   margin-top:0;
   margin-bottom:10px;
 ">
-  Nomor: ${nomor}
+  ${nomor}
 </p>
 
 <p>Nama : ${nama1}<br>Jabatan : ${jabatan1}</p>
