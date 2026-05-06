@@ -514,20 +514,18 @@ table td, table th {
 }
 
 .wrapper-flex {
-  display:flex;
-  gap:20px;
-  padding:20px;
-  align-items:flex-start;
+  display: flex;
+  gap: 25px;
+  padding: 30px;
+  flex-wrap: wrap; /* 🔥 ini kunci biar turun */
 }
 
-/* panel kiri */
 .form-panel {
-  width:32%;
+  flex: 1 1 350px; /* min lebar */
 }
 
-/* panel kanan */
 .preview-panel {
-  width:68%;
+  flex: 2 1 600px;
 }
 
 .card {
@@ -1330,6 +1328,8 @@ p {
 .hidden {
   display: none !important;
 }
+
+
 
 </style>
 </head>
@@ -2327,7 +2327,7 @@ ${penutupHTML}
 
 </div>
 
-${foot()}
+
 </div>`;
 
 /* ===== PAGE 2 ===== */
@@ -2349,7 +2349,7 @@ ${kop()}
   </div>
 </div>
 
-${foot()}
+
 
 </div>
 ` : "";
