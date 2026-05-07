@@ -1326,7 +1326,58 @@ p {
   display: none !important;
 }
 
+.page.compact {
+  font-size: 10pt;
+  line-height: 1.2;
+}
 
+.page.compact table {
+  font-size: 9px;
+}
+
+.page.compact td,
+.page.compact th {
+  padding: 2px !important;
+}
+
+.page.compact h5 {
+  font-size: 11px;
+  margin-bottom: 2px;
+}
+
+.page.compact p {
+  margin-bottom: 3px;
+}
+
+.page.compact .signature-box,
+.page.compact .signature-placeholder {
+  height: 75px;
+}
+
+.page.compact .signature img {
+  max-height: 45px;
+}
+
+.page.compact .ttd-container {
+  margin-top: 10px;
+  margin-bottom: 20mm;
+}
+
+@media print {
+
+  .page {
+    page-break-after: always;
+  }
+
+  table {
+    page-break-inside: avoid;
+  }
+
+  .ttd-container {
+    page-break-inside: avoid;
+  }
+
+}
 
 </style>
 </head>
@@ -2088,6 +2139,13 @@ function resetNomor(){
 
 /* ===== AUTO SCALE ===== */
 let totalText = latar.length + tujuan.length + penutup.length;
+let compactClass = "";
+
+let totalRows = document.querySelectorAll('#materialTable tbody tr').length;
+
+if(totalText > 1200 || totalRows > 12){
+  compactClass = "compact";
+}
 let contentClass = "";
 if(totalText > 1200) contentClass = "long";
 if(totalText > 2000) contentClass = "xlong";
@@ -2213,7 +2271,7 @@ return `
 
 /* ===== PAGE 1 ===== */
 let page1=`
-<div class='page'>
+<div class='page ${compactClass}'>
 ${kop()}
 
 <h4 style="
