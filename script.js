@@ -121,6 +121,59 @@ function getKalimatPembukaBA(jenis) {
   return `Pada hari ini, ${tanggalIndo}, kami yang bertanda tangan di bawah ini membuat berita acara sebagai dasar administrasi dan tindak lanjut pekerjaan.`;
 }
 
+function toggleTtd4() {
+  const useTtd4 = document.getElementById("useTtd4").checked;
+
+  const pihak4Box = document.getElementById("pihak4Box");
+  const ttd4Box = document.getElementById("ttd4Box");
+
+  if (pihak4Box) {
+    pihak4Box.style.display = useTtd4 ? "flex" : "none";
+  }
+
+  if (ttd4Box) {
+    ttd4Box.style.display = useTtd4 ? "block" : "none";
+  }
+
+  // Label form berubah sesuai jumlah TTD
+  document.getElementById("roleLabel1").innerText = "DIBUAT";
+
+  if (useTtd4) {
+    document.getElementById("roleLabel2").innerText = "DIPERIKSA";
+    document.getElementById("roleLabel3").innerText = "DIKETAHUI";
+    document.getElementById("roleLabel4").innerText = "DISETUJUI";
+  } else {
+    document.getElementById("roleLabel2").innerText = "DIKETAHUI";
+    document.getElementById("roleLabel3").innerText = "DISETUJUI";
+  }
+}
+
+function renderTtdBox(title, ttdSrc, waktu, nama, jabatan) {
+  return `
+    <div class="ttd-box">
+      <div class="ttd-header">
+        <p class="ttd-title">${title}</p>
+      </div>
+
+      ${ttdSrc ? `
+        <div class="signature-box">
+          <div class="signed-label">✔ Signed by:</div>
+          <div class="signature">
+            <img src="${ttdSrc}">
+          </div>
+        </div>
+      ` : `
+        <div class="signature-placeholder"></div>
+      `}
+
+      <div class="ttd-time">${waktu}</div>
+
+      <p class="nama-ttd">${nama}</p>
+      <p class="jabatan-ttd">${jabatan}</p>
+    </div>
+  `;
+}
+
   function generate(){
   let loading = document.getElementById("loadingOverlay");
   loading.style.display = "flex";
@@ -167,18 +220,20 @@ function getTanggalJamIndo(){
 }
 
 function saveDraft(){
-  let draft = {
-    jenis: document.getElementById('jenis').value,
+let draft = {
+  jenis: document.getElementById('jenis').value,
+  useTtd4: document.getElementById("useTtd4").checked,
 
-    nama1: $("#nama1").val(),
-    nama2: $("#nama2").val(),
-    nama3: $("#nama3").val(),
+  nama1: $("#nama1").val(),
+  nama2: $("#nama2").val(),
+  nama3: $("#nama3").val(),
+  nama4: $("#nama4").val(),
 
-    latar: qLatar.root.innerHTML,
-    tujuan: qTujuan.root.innerHTML,
-    kejadian: qKejadian ? qKejadian.root.innerHTML : '',
-    penutup: qPenutup.root.innerHTML
-  };
+  latar: qLatar.root.innerHTML,
+  tujuan: qTujuan.root.innerHTML,
+  kejadian: qKejadian ? qKejadian.root.innerHTML : '',
+  penutup: qPenutup.root.innerHTML
+};
 
   localStorage.setItem("draftBA", JSON.stringify(draft));
   showToast("Draft disimpan!", "success");
@@ -195,10 +250,14 @@ function loadDraft(){
   document.getElementById('jenis').value = draft.jenis;
   toggleJenis();
 
+  document.getElementById("useTtd4").checked = !!draft.useTtd4;
+toggleTtd4();
+
   // 🔥 INI BARU TEMPATNYA
   $("#nama1").val(draft.nama1).trigger("change");
   $("#nama2").val(draft.nama2).trigger("change");
   $("#nama3").val(draft.nama3).trigger("change");
+  $("#nama4").val(draft.nama4).trigger("change");
 
   qLatar.root.innerHTML = draft.latar;
   qTujuan.root.innerHTML = draft.tujuan;
@@ -452,9 +511,12 @@ let footer = "Asset/fot.jpeg";
 
 let kalimatPembuka = getKalimatPembukaBA(jenis);
 
-let i1 = document.getElementById('nama1').value;
-let i2 = document.getElementById('nama2').value;
-let i3 = document.getElementById('nama3').value;
+let useTtd4 = document.getElementById("useTtd4").checked;
+
+let i1 = document.getElementById("nama1").value;
+let i2 = document.getElementById("nama2").value;
+let i3 = document.getElementById("nama3").value;
+let i4 = document.getElementById("nama4") ? document.getElementById("nama4").value : "";
 
 let nama1 = i1 !== "" ? dataOrang[i1].nama : "";
 let jabatan1 = i1 !== "" ? dataOrang[i1].jabatan : "";
@@ -464,6 +526,9 @@ let jabatan2 = i2 !== "" ? dataOrang[i2].jabatan : "";
 
 let nama3 = i3 !== "" ? dataOrang[i3].nama : "";
 let jabatan3 = i3 !== "" ? dataOrang[i3].jabatan : "";
+
+let nama4 = i4 !== "" ? dataOrang[i4].nama : "";
+let jabatan4 = i4 !== "" ? dataOrang[i4].jabatan : "";
 
 let latar = qLatar.root.innerHTML;
 let latarText = qLatar.getText().trim();let tujuan = qTujuan.root.innerHTML;
@@ -493,14 +558,34 @@ let penutupHTML = penutupText ? `
 let kejadianText = qKejadian.getText().trim();
 
 
-let ttd1=img('ttd1');
-let ttd2=img('ttd2');
-let ttd3=img('ttd3');
+let ttd1 = img("ttd1");
+let ttd2 = img("ttd2");
+let ttd3 = img("ttd3");
+let ttd4 = useTtd4 ? img("ttd4") : "";
 
 let today=new Date();
 let waktu = getTanggalJamIndo();
 let nomorUrut=getRunningNumber();
 let nomor = `Nomor : ${nomorUrut}/BA/RSP/PROJECT/${toRoman(today.getMonth()+1)}/${today.getFullYear()}`;
+
+let ttdContainerClass = useTtd4 ? "ttd-container ttd-4" : "ttd-container ttd-3";
+
+let ttdHTML = "";
+
+if (useTtd4) {
+  ttdHTML = `
+    ${renderTtdBox("DIBUAT", ttd1, waktu, nama1, jabatan1)}
+    ${renderTtdBox("DIPERIKSA", ttd2, waktu, nama2, jabatan2)}
+    ${renderTtdBox("DIKETAHUI", ttd3, waktu, nama3, jabatan3)}
+    ${renderTtdBox("DISETUJUI", ttd4, waktu, nama4, jabatan4)}
+  `;
+} else {
+  ttdHTML = `
+    ${renderTtdBox("DIBUAT", ttd1, waktu, nama1, jabatan1)}
+    ${renderTtdBox("DIKETAHUI", ttd2, waktu, nama2, jabatan2)}
+    ${renderTtdBox("DISETUJUI", ttd3, waktu, nama3, jabatan3)}
+  `;
+}
 
 function resetNomor(){
   let now = new Date();
@@ -656,82 +741,14 @@ ${kop()}
     ${penutupHTML}
   </div>
 
-  <div class="ttd-container">
-
-    <!-- DIBUAT -->
-    <div class="ttd-box">
-      <div class="ttd-header">
-        <p class="ttd-title">DIBUAT</p>
-      </div>
-
-      ${ttd1 ? `
-        <div class="signature-box">
-          <div class="signed-label">✔ Signed by:</div>
-          <div class="signature">
-            <img src="${ttd1}">
-          </div>
-        </div>
-      ` : `
-        <div class="signature-placeholder"></div>
-      `}
-
-      <div class="ttd-time">${waktu}</div>
-
-      <p class="nama-ttd">${nama1}</p>
-      <p class="jabatan-ttd">${jabatan1}</p>
-    </div>
-
-    <!-- DIKETAHUI -->
-    <div class="ttd-box">
-      <div class="ttd-header">
-        <p class="ttd-title">DIKETAHUI</p>
-      </div>
-
-      ${ttd2 ? `
-        <div class="signature-box">
-          <div class="signed-label">✔ Signed by:</div>
-          <div class="signature">
-            <img src="${ttd2}">
-          </div>
-        </div>
-      ` : `
-        <div class="signature-placeholder"></div>
-      `}
-
-      <div class="ttd-time">${waktu}</div>
-
-      <p class="nama-ttd">${nama2}</p>
-      <p class="jabatan-ttd">${jabatan2}</p>
-    </div>
-
-    <!-- DISETUJUI -->
-    <div class="ttd-box">
-      <div class="ttd-header">
-        <p class="ttd-title">DISETUJUI</p>
-      </div>
-
-      ${ttd3 ? `
-        <div class="signature-box">
-          <div class="signed-label">✔ Signed by:</div>
-          <div class="signature">
-            <img src="${ttd3}">
-          </div>
-        </div>
-      ` : `
-        <div class="signature-placeholder"></div>
-      `}
-
-      <div class="ttd-time">${waktu}</div>
-
-      <p class="nama-ttd">${nama3}</p>
-      <p class="jabatan-ttd">${jabatan3}</p>
-    </div>
-
-  </div>
+<div class="${ttdContainerClass}">
+  ${ttdHTML}
+</div>
 
 </div>
 
 ${foot()}
+
 </div>`;
 
 /* ===== PAGE 2 DST KHUSUS LAMPIRAN ===== */
@@ -892,7 +909,7 @@ let dataOrang = JSON.parse(localStorage.getItem("dataOrang")) || [
 
 // 🔥 LOAD DROPDOWN
 function loadDropdown(){
-  ["nama1","nama2","nama3"].forEach(id=>{
+  ["nama1","nama2","nama3","nama4"].forEach(id=>{
     let select = document.getElementById(id);
     select.innerHTML = `<option value="">-- Pilih Nama --</option>`;
 
@@ -975,19 +992,9 @@ function hapusOrang(){
 }
 
 $(document).ready(function() {
-  $("#nama1").select2({
+  $("#nama1, #nama2, #nama3, #nama4").select2({
     placeholder: "Cari nama...",
-    width: '100%'
-  });
-
-  $("#nama2").select2({
-    placeholder: "Cari nama...",
-    width: '100%'
-  });
-
-  $("#nama3").select2({
-    placeholder: "Cari nama...",
-    width: '100%'
+    width: "100%"
   });
 });
 

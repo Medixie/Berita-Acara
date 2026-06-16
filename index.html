@@ -178,12 +178,19 @@
     <span class="pihak-title">👥 Pihak Penandatangan</span>
   </div>
 
+  <div class="form-check form-switch mb-3">
+  <input class="form-check-input" type="checkbox" id="useTtd4" onchange="toggleTtd4()">
+  <label class="form-check-label" for="useTtd4">
+    Gunakan 4 Tanda Tangan
+  </label>
+</div>
+
   <!-- ITEM -->
   <div class="pihak-item">
     <div class="pihak-left">
       <div class="pihak-number">01</div>
       <div>
-        <div class="pihak-role">DIBUAT</div>
+        <div class="pihak-role" id="roleLabel1">DIBUAT</div>
       </div>
     </div>
 
@@ -197,7 +204,7 @@
   <div class="pihak-item">
     <div class="pihak-left">
       <div class="pihak-number">02</div>
-      <div class="pihak-role">DIKETAHUI</div>
+      <div class="pihak-role" id="roleLabel2">DIKETAHUI</div>
     </div>
 
     <div class="pihak-form">
@@ -210,7 +217,7 @@
   <div class="pihak-item">
     <div class="pihak-left">
       <div class="pihak-number">03</div>
-      <div class="pihak-role">DISETUJUI</div>
+      <div class="pihak-role" id="roleLabel3">DISETUJUI</div>
     </div>
 
     <div class="pihak-form">
@@ -219,6 +226,19 @@
       <input id="jabatan3" class="form-control input-modern" readonly>
     </div>
   </div>
+
+  <div class="pihak-item" id="pihak4Box" style="display:none;">
+  <div class="pihak-left">
+    <div class="pihak-number">04</div>
+    <div class="pihak-role" id="roleLabel4">DISETUJUI</div>
+  </div>
+
+  <div class="pihak-form">
+    <select id="nama4" class="form-control select-modern mb-1"
+      onchange="setJabatan(this,'jabatan4')"></select>
+    <input id="jabatan4" class="form-control input-modern" readonly>
+  </div>
+</div>
 
   <!-- ACTION -->
   <div class="pihak-actions mt-3">
@@ -287,7 +307,11 @@
         <div class="section-title">Tanda Tangan</div>
         <input type="file" id="ttd1" class="form-control mb-1">
         <input type="file" id="ttd2" class="form-control mb-1">
-        <input type="file" id="ttd3" class="form-control mb-2">
+        <input type="file" id="ttd3" class="form-control mb-1">
+
+        <div id="ttd4Box" style="display:none;">
+          <input type="file" id="ttd4" class="form-control mb-2">
+        </div>
 
         <div id="dropArea" class="drop-area">
   <p>Drag & Drop gambar di sini<br>atau klik untuk upload</p>

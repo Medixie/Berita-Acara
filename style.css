@@ -2494,13 +2494,78 @@ p {
    .signed-label dan .ttd-time
 ========================================================= */
 
+@media print {
+  #output .ttd-box .signature-box .signed-label {
+    color: #16a34a !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  #output .ttd-box .ttd-time {
+    color: #4b5563 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
+
+/* =========================================================
+   OPTIONAL 4 TTD
+   Default 3: DIBUAT - DIKETAHUI - DISETUJUI
+   Jika aktif 4: DIBUAT - DIPERIKSA - DIKETAHUI - DISETUJUI
+========================================================= */
+
+#output .ttd-container.ttd-3 {
+  display: flex !important;
+  justify-content: space-between !important;
+  gap: 8mm !important;
+}
+
+#output .ttd-container.ttd-3 .ttd-box {
+  width: 31% !important;
+}
+
+#output .ttd-container.ttd-4 {
+  display: flex !important;
+  justify-content: space-between !important;
+  gap: 4mm !important;
+}
+
+#output .ttd-container.ttd-4 .ttd-box {
+  width: 23.5% !important;
+}
+
+/* Supaya 4 TTD tidak terlalu tinggi */
+#output .ttd-container.ttd-4 .signature-box,
+#output .ttd-container.ttd-4 .signature-placeholder {
+  height: 17mm !important;
+}
+
+#output .ttd-container.ttd-4 .signature img {
+  max-height: 12mm !important;
+}
+
+#output .ttd-container.ttd-4 .ttd-title {
+  font-size: 8.5pt !important;
+}
+
+#output .ttd-container.ttd-4 .signed-label,
+#output .ttd-container.ttd-4 .ttd-time {
+  font-size: 6.5pt !important;
+}
+
+#output .ttd-container.ttd-4 .nama-ttd {
+  font-size: 8.5pt !important;
+}
+
+#output .ttd-container.ttd-4 .jabatan-ttd {
+  font-size: 8pt !important;
+}
+
+/* Warna signed dan tanggal tetap hijau */
 #output .ttd-box .signature-box .signed-label {
-  color: #00a13b !important;
-  font-weight: 700 !important;
+  color: #008832 !important;
 }
 
 #output .ttd-box .ttd-time {
-  color: #474747 !important;
-  font-weight: 600 !important;
+  color: #3d3d3d !important;
 }
-
