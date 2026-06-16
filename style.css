@@ -1,0 +1,2506 @@
+/* =========================================================
+   style.css - Generator Berita Acara
+   Dipisahkan dari file HTML awal agar struktur lebih rapi.
+========================================================= */
+
+:root {
+  --main-gradient: linear-gradient(135deg, #dd0000, #7a0000);
+}
+
+ /* Halaman login */
+
+    #loginPage .card {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+      text-align: center;
+      max-width: 380px;
+      width: 100%;
+    }
+    #loginPage img {
+      width: 140px;
+      margin-bottom: 1rem;
+    }
+    #loginPage h3 {
+      font-weight: bold;
+      color: #636363;
+      margin-bottom: 1.5rem;
+    }
+    .btn-login {
+      background-color: #c90000;
+      color: #fff;
+      font-weight: 500;
+      width: 100%;
+    }
+    .btn-login:hover {
+      background: var(--main-gradient);
+      color: #fff;
+    }
+
+body { background:#eef1f5; }
+
+body, .page {
+  font-family: Cambria, "Times New Roman", serif;
+  font-size: 12pt;
+  line-height: 1.4;
+}
+
+h5 {
+  font-weight: bold;
+  font-size: 12pt;
+  margin-top: 8px;
+  margin-bottom: 3px;
+}
+
+/* ===== HEADER ===== */
+.topbar {
+  background:white;
+  padding:15px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:1px solid #ddd;
+}
+
+/* ===== LAYOUT ===== */
+.wrapper-flex {
+  display:flex;
+  gap:20px;
+  padding:20px;
+}
+
+.form-panel {
+  width:35%;
+}
+
+.preview-panel {
+  width:65%;
+}
+
+/* CARD */
+.card { border-radius:10px; }
+
+/* ===== A4 ===== */
+.page {
+  width: 210mm;
+  min-height: 297mm;
+
+  /* atas kanan bawah kiri */
+  padding: 12mm 12mm 35mm 12mm;
+
+  background: white;
+  margin: auto;
+  position: relative;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  justify-content:space-between;
+}
+
+/* ===== KOP ===== */
+.kop {
+  text-align:center;
+  padding-bottom:10px;
+}
+.kop::after{
+  display:none;
+}
+
+.kop {
+  margin-top: -8mm;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  position:absolute;
+  bottom:20mm;
+  width:100%;
+  text-align:center;
+}
+
+.kop img, .footer img { max-height:80px; max-width:100%; }
+
+.signature { height:80px; }
+
+.justify { text-align:justify; }
+.center { text-align:center; }
+.bold { font-weight:bold; }
+.italic { font-style:italic; }
+
+.section-title {
+  font-weight:600;
+  margin-top:15px;
+  margin-bottom:5px;
+}
+
+/* ===== KOP CUSTOM ===== */
+.kop {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:10px;
+}
+
+.kop-left {
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.kop-left img {
+  height:60px;
+}
+
+.kop-right {
+  text-align:right;
+  font-size:14px;
+}
+
+.kop-title {
+  font-weight:bold;
+  font-size:18px;
+}
+
+/* ===== ORNAMEN KANAN ATAS ===== */
+.kop-decor {
+  position:absolute;
+  top:0;
+  right:0;
+  height:80px;
+}
+
+/* ===== FOOTER MERAH ===== */
+
+.surat-footer img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.footer-inner {
+  width: 100%;
+}
+
+.footer img {
+  width:100%;
+  height:auto;
+}
+
+/* GRID LAMPIRAN 3x3 */
+.lampiran-grid {
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:10px;
+  margin-top:10px;
+}
+
+.lampiran-grid img {
+  width:100%;
+  height:80px;
+  object-fit:cover;
+}
+.table-small {
+  font-size:12px;
+}
+
+.table-very-small {
+  font-size:10px;
+}
+
+.content-flex {
+  flex-grow:1;
+}
+
+.preview { margin-top:20px; }
+
+h5 {
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+p {
+  margin-bottom: 6px;
+}
+
+/* ===== FIX TTD AGAR SELALU ADA ===== */
+.ttd-area {
+  min-height: 100px;
+}
+
+/* kalau tidak ada gambar tetap ambil space */
+.signature {
+  height: 80px;
+  display:block;
+  margin:auto;
+}
+
+.title-ba {
+  font-weight: bold;
+  text-decoration: underline;
+  margin-bottom: 2px;
+  letter-spacing: 0.5px;
+}
+
+/* ===== TABLE AUTO FIT ===== */
+table {
+  table-layout: fixed;
+  width:100%;
+}
+
+td, th {
+  word-wrap: break-word;
+}
+
+.content-flex {
+  flex-grow:1;
+  overflow:hidden;
+}
+
+.tabel-material {
+  font-size: 12px;
+  border: 1px solid #000;
+}
+
+.tabel-material th {
+  text-align: center;
+  font-weight: bold;
+  vertical-align: middle;
+}
+
+.tabel-material td {
+  vertical-align: middle;
+}
+
+/* CENTER KOLOM TERTENTU */
+.tabel-material td:nth-child(1),
+.tabel-material td:nth-child(3),
+.tabel-material td:nth-child(4),
+.tabel-material td:nth-child(5) {
+  text-align: center;
+}
+
+/* BIAR RAPAT KAYA CONTOH */
+.tabel-material td,
+.tabel-material th {
+  padding: 4px !important;
+}
+
+.nama-ttd {
+  font-weight: bold;
+  text-decoration: underline;
+  margin-bottom: 2px;
+}
+
+.jabatan-ttd {
+  font-style: italic;
+  margin-top: 0;
+}
+
+.nama-ttd {
+  font-weight: bold;
+  text-decoration: underline;
+  margin-bottom: 1px;
+  line-height: 1.1;
+}
+
+.jabatan-ttd {
+  font-style: italic;
+  margin-top: 0;
+  line-height: 1.1;
+}
+
+#loadingOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.spinner {
+  width: 60px;
+  height: 60px;
+  border: 6px solid #fff;
+  border-top: 6px solid #c90000;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@media print {
+  body * { visibility: hidden; }
+  #output, #output * { visibility: visible; }
+  #output { position:absolute; left:0; top:0; }
+  .page { margin:0; }
+}
+
+/* ===== AUTO SCALE CONTENT BIAR MUAT 1 HALAMAN ===== */
+.content-area {
+  max-height: 170mm;
+  overflow: hidden;
+}
+
+/* default normal */
+.content-area {
+  font-size: 14px;
+}
+
+/* kalau isi panjang → kecil */
+.content-area.long {
+  font-size: 12px;
+}
+
+/* kalau sangat panjang → lebih kecil */
+.content-area.xlong {
+  font-size: 10px;
+}
+
+/* tabel ikut mengecil */
+.content-area.long table {
+  font-size: 11px;
+}
+
+.content-area.xlong table {
+  font-size: 9px;
+}
+
+/* biar tabel rapat */
+table td, table th {
+  padding: 3px !important;
+}
+
+.ttd-container {
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+  margin-top: 30px;
+}
+
+.ttd-box {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* area tanda tangan */
+.signature {
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.signature img {
+  max-height: 80px;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+/* nama */
+.nama-ttd {
+  font-weight: bold;
+  text-decoration: underline;
+  margin-bottom: 2px;
+}
+
+/* jabatan */
+.jabatan-ttd {
+  font-style: italic;
+  margin-top: 0;
+}
+
+#toast {
+  opacity: 0;
+  transform: translate(-50%, -20px);
+  transition: all 0.3s ease;
+}
+
+.app-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+
+  background: var(--main-gradient);
+  color: #fff;
+
+  display: flex;
+  justify-content: center;  /* 🔥 ini kunci */
+  align-items: center;
+
+  text-align: center;
+  padding: 10px 0;
+
+  z-index: 999;
+}
+
+.surat-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+.surat-footer img {
+  width: 100%;
+  display: block;
+}
+
+.kop-line {
+  position: relative;
+  height: 6px;
+  margin-top: 8px;
+  margin-bottom: 10px;
+}
+
+.kop-line::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  border-top: 3px solid #000; /* garis tebal */
+}
+
+.kop-line::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  border-top: 1px solid #000; /* garis tipis */
+}
+
+#loginPage {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: url('Asset/bg.webp') no-repeat center center/cover;
+  font-family: Cambria, "Times New Roman", serif;
+}
+
+#loginPage .card,
+#loginPage h3,
+#loginPage label,
+#loginPage input,
+#loginPage button {
+  font-family: Cambria, "Times New Roman", serif;
+}
+* {
+  font-family: Cambria, "Times New Roman", serif;
+}
+
+.wrapper-flex {
+  display: flex;
+  gap: 25px;
+  padding: 30px;
+  flex-wrap: wrap; /* 🔥 ini kunci biar turun */
+}
+
+.form-panel {
+  flex: 1 1 350px; /* min lebar */
+}
+
+.preview-panel {
+  flex: 2 1 600px;
+}
+
+.card {
+  border:none;
+  border-radius:16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+}
+
+.btn {
+  border-radius:10px;
+  transition: all 0.25s ease;
+  font-weight: 500;
+}
+
+/* tombol merah utama */
+.btn-danger {
+  background: var(--main-gradient);
+  border:none;
+}
+
+.btn-danger:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 8px 20px rgba(255,0,0,0.3);
+}
+
+/* tombol abu */
+.btn-secondary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* tombol light */
+.btn-light:hover {
+  background:#f1f1f1;
+  transform: scale(1.03);
+}
+
+.topbar {
+  background: linear-gradient(90deg, #ffffff, #f8f9fa);
+  padding:15px 25px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:1px solid #eee;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+}
+
+.topbar h5 {
+  margin:0;
+  font-weight:600;
+}
+
+.form-control {
+  border-radius:10px;
+  border:1px solid #ddd;
+  transition: all 0.2s ease;
+}
+
+.form-control:focus {
+  border-color:#c90000;
+  box-shadow: 0 0 0 2px rgba(201,0,0,0.15);
+}
+
+
+
+/* ===== SIDEBAR ===== */
+
+#sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 240px;
+  height: 100%;
+
+  /* 🔥 background utama */
+  background: 
+    
+    url('Asset/bg-batik.jpeg');
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  color: #fff;
+  padding: 15px;
+
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+/* collapse */
+#sidebar.collapsed {
+  width: 70px;
+}
+
+/* header */
+.sidebar-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.logo-text {
+  font-weight: bold;
+  font-size: 18px;
+  transition: opacity 0.3s;
+}
+
+#sidebar.collapsed .logo-text {
+  opacity: 0;
+}
+
+/* tombol toggle */
+.toggle-btn {
+  background: white;
+  border: none;
+  border-radius: 8px;
+  padding: 5px 8px;
+  cursor: pointer;
+}
+
+/* menu */
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar-menu li {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:10px;
+  border-radius:10px;
+  cursor:pointer;
+  position:relative;
+  transition: all 0.25s ease;
+}
+
+/* hover effect */
+.sidebar-menu li:hover {
+  background: rgba(255,255,255,0.15);
+  transform: translateX(5px);
+}
+
+/* icon */
+.sidebar-menu li i {
+  font-size:18px;
+}
+
+/* text */
+.sidebar-menu li span {
+  transition: opacity 0.3s;
+}
+
+/* hilangkan text saat collapse */
+#sidebar.collapsed li span {
+  opacity: 0;
+}
+
+/* ===== TOOLTIP ===== */
+#sidebar.collapsed li::after {
+  content: attr(data-title);
+  position: absolute;
+  left: 80px;
+  background: #222;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(-50%);
+  top: 50%;
+  pointer-events: none;
+  transition: 0.2s;
+}
+
+#sidebar.collapsed li:hover::after {
+  opacity: 1;
+}
+
+/* ===== MAIN CONTENT SHIFT ===== */
+#mainPage {
+  margin-left: 240px;
+  transition: all 0.3s ease;
+}
+
+#mainPage.full {
+  margin-left: 70px;
+}
+
+/* header */
+.sidebar-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+/* menu */
+.sidebar-menu {
+  list-style:none;
+  padding:0;
+}
+
+.sidebar-menu li {
+  padding:10px;
+  border-radius:8px;
+  cursor:pointer;
+  transition: all 0.2s ease;
+}
+
+.sidebar-menu li:hover {
+  background: rgba(255,255,255,0.2);
+  transform: translateX(5px);
+}
+
+/* ===== KONTEN GESER ===== */
+#mainPage {
+  margin-left:230px;
+  transition: all 0.3s ease;
+}
+
+#mainPage.full {
+  margin-left:70px;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+.wrapper-flex {
+  margin-left: 0;
+}
+
+#sidebar {
+  display: none;
+}
+
+.brand-main {
+  position: relative;
+  overflow: hidden;
+}
+
+.brand-main::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.5), transparent);
+  animation: shine 3s infinite;
+}
+
+@keyframes shine {
+  to {
+    left: 100%;
+  }
+}
+
+.page {
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity:0; transform: translateY(10px);}
+  to { opacity:1; transform: translateY(0);}
+}
+
+/* ===== GLOBAL IMPROVEMENT ===== */
+body {
+  background: linear-gradient(135deg, #eef1f5, #f7f9fc);
+}
+
+/* container biar rapi */
+.wrapper-flex {
+  padding: 30px;
+  gap: 25px;
+}
+
+/* card lebih premium */
+.card {
+  border-radius: 18px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+}
+
+/* judul section */
+.section-title {
+  font-weight: 600;
+  font-size: 14px;
+  color: #444;
+  margin-bottom: 6px;
+}
+
+/* input lebih modern */
+.form-control {
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 14px;
+}
+
+/* hover input */
+.form-control:focus {
+  border-color: #c90000;
+  box-shadow: 0 0 0 3px rgba(201,0,0,0.1);
+}
+
+#confirmBox .btn-danger {
+  background: linear-gradient(135deg, #c90000, #7a0000);
+  border: none;
+}
+
+#confirmBox .btn-secondary {
+  background: #ddd;
+  border: none;
+}
+
+.quill-editor {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  min-height: 120px;
+}
+
+.section-title {
+  font-weight: 600;
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #00c853, #009624); /* hijau terang */
+  border: none;
+  color: #fff;
+  font-weight: 600;
+}
+
+.btn-success:hover {
+  background: linear-gradient(135deg, #00e676, #00c853); /* lebih terang saat hover */
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 8px 20px rgba(0, 200, 83, 0.4);
+}
+
+.drop-area {
+  border: 2px dashed #c90000;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  background: #fff5f5;
+  transition: 0.3s;
+}
+
+.drop-area:hover {
+  background: #ffe5e5;
+}
+
+.drop-area.dragover {
+  background: #ffd6d6;
+  border-color: #ff0000;
+}
+
+.lampiran-preview {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px,1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.lampiran-preview img {
+  width: 100%;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+/* ================================
+   CONTAINER TTD
+================================ */
+.ttd-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 30px;
+}
+
+/* ================================
+   BOX PER KOLOM
+================================ */
+.ttd-box {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ================================
+   JUDUL
+================================ */
+.ttd-header {
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ttd-title {
+  font-weight: bold;
+  margin: 0;
+}
+
+/* ================================
+   AREA TTD (TINGGI SAMA)
+================================ */
+.signature-box,
+.signature-placeholder {
+  height: 110px; /* 🔥 biar sejajar */
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* 🔥 isi di tengah vertikal */
+  align-items: center;     /* 🔥 tengah horizontal */
+
+  margin: 6px 0;
+}
+
+/* ================================
+   SIGNED LABEL
+================================ */
+.signed-label {
+  font-size: 11px;
+  color: #2e7d32;
+  margin-bottom: 3px;
+  text-align: center;
+}
+
+/* ================================
+   GAMBAR TTD
+================================ */
+.signature img {
+  max-height: 65px;
+  object-fit: contain;
+}
+
+/* ================================
+   TANGGAL (CENTER)
+================================ */
+.ttd-time {
+  font-size: 10px;
+  color: #a8adb3;
+  margin-top: 3px;
+  text-align: center;
+}
+
+/* ================================
+   NAMA & JABATAN
+================================ */
+.nama-ttd {
+  font-weight: bold;
+  text-decoration: underline;
+  margin-bottom: 2px;
+  text-align: center;
+}
+
+.jabatan-ttd {
+  font-style: italic;
+  margin: 0;
+  text-align: center;
+}
+
+p {
+  text-align: justify;
+}
+
+/* ===== PIHAK PREMIUM UI ===== */
+
+.pihak-card {
+  border-radius: 18px;
+  background: linear-gradient(145deg, #ffffff, #f8f9fc);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+}
+
+/* header */
+.pihak-header {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+/* item */
+.pihak-item {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 14px;
+  margin-bottom: 10px;
+  background: #fff;
+  border: 1px solid #eee;
+  transition: 0.25s;
+}
+
+.pihak-item:hover {
+  transform: translateY(-2px);
+  border-color: #c90000;
+  box-shadow: 0 10px 25px rgba(201,0,0,0.15);
+}
+
+/* kiri */
+.pihak-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 90px;
+}
+
+/* nomor bulat */
+.pihak-number {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #c90000, #7a0000);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+/* role */
+.pihak-role {
+  font-size: 11px;
+  font-weight: 600;
+  color: #555;
+}
+
+/* form kanan */
+.pihak-form {
+  flex: 1;
+}
+
+/* select */
+.select-modern {
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  padding: 8px;
+  transition: 0.2s;
+}
+
+.select-modern:focus {
+  border-color: #c90000;
+  box-shadow: 0 0 0 2px rgba(201,0,0,0.15);
+}
+
+/* input jabatan */
+.input-modern {
+  border-radius: 10px;
+  background: #f5f5f5;
+  border: 1px solid #ddd;
+  font-size: 13px;
+}
+
+/* tombol bawah */
+.pihak-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.pihak-actions .btn {
+  border-radius: 10px;
+  font-size: 14px;
+  padding: 6px;
+  transition: 0.2s;
+}
+
+.pihak-actions .btn:hover {
+  transform: scale(1.05);
+}
+
+.select2-container--default .select2-selection--single {
+  border-radius: 10px !important;
+  height: 38px;
+  border: 1px solid #ddd;
+}
+
+.select2-container--default .select2-selection--single:focus {
+  border-color: #c90000;
+}
+
+.select2-dropdown {
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+
+/* ===== JENIS BA UI ===== */
+
+.jenis-card {
+  border-radius: 18px;
+  background: linear-gradient(145deg, #ffffff, #f8f9fc);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+}
+
+.jenis-header {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+/* option */
+.jenis-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid #eee;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: 0.25s;
+  background: #fff;
+}
+
+.jenis-option:hover {
+  transform: translateY(-2px);
+  border-color: #c90000;
+  box-shadow: 0 10px 25px rgba(201,0,0,0.15);
+}
+
+/* aktif */
+.jenis-option.active {
+  border-color: #c90000;
+  background: linear-gradient(135deg, #fff5f5, #ffe5e5);
+}
+
+/* icon */
+.jenis-icon {
+  font-size: 20px;
+}
+
+/* text */
+.jenis-title {
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.jenis-desc {
+  font-size: 11px;
+  color: #777;
+}
+
+/* samakan dengan input jabatan */
+.pihak-box .select2-container {
+  width: 100% !important;
+}
+
+.pihak-box .select2-selection--single {
+  height: 42px !important;
+  border-radius: 12px !important;
+  border: 1px solid #ddd !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* teks di dalam */
+.select2-selection__rendered {
+  line-height: 42px !important;
+  padding-left: 12px !important;
+}
+
+/* panah kanan */
+.select2-selection__arrow {
+  height: 42px !important;
+}
+
+/* tombol bulat */
+#draftToggle{
+  position: fixed;
+  right: 20px;
+  top: 20px; /* 🔥 pindah ke atas */
+  width: 50px;
+  height: 50px;
+  background: #0d6efd;
+  color: white;
+  font-size: 22px;
+  border-radius: 50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  z-index:9999;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+/* panel */
+#draftPanel{
+  position: fixed;
+  right: 20px;
+  top: 20px; /* langsung di atas */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  z-index: 9999;
+}
+
+
+/* saat aktif */
+#draftPanel button{
+  padding: 10px 15px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* HIJAU (Tambah / Save) */
+#draftPanel button:nth-child(1){
+  background: linear-gradient(135deg, #00c853, #009624);
+}
+
+/* KUNING (Edit / Load) */
+#draftPanel button:nth-child(2){
+  background: linear-gradient(135deg, #ffc107, #e0a800);
+  color: #000;
+}
+
+/* MERAH (Hapus) */
+#draftPanel button:nth-child(3){
+  background: linear-gradient(135deg, #dc3545, #a71d2a);
+}
+
+#draftPanel{
+  position: fixed;
+  right: 20px;
+  top: 20px;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 9999;
+}
+
+#draftPanel button{
+  padding: 10px 18px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+  transition: all 0.25s ease;
+}
+
+/* 🔥 HOVER EFFECT */
+#draftPanel button:hover{
+  transform: translateY(-3px) scale(1.05);
+  filter: brightness(1.1);
+}
+
+/* 🔥 KLIK EFFECT */
+#draftPanel button:active{
+  transform: scale(0.95);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+}
+
+/* HIJAU */
+#draftPanel button:nth-child(1):hover{
+  box-shadow: 0 8px 20px rgba(0, 200, 83, 0.5);
+}
+
+/* KUNING */
+#draftPanel button:nth-child(2):hover{
+  box-shadow: 0 8px 20px rgba(255, 193, 7, 0.5);
+}
+
+/* MERAH */
+#draftPanel button:nth-child(3):hover{
+  box-shadow: 0 8px 20px rgba(220, 53, 69, 0.5);
+}
+
+.hidden {
+  display: none !important;
+}
+
+.page.compact {
+  font-size: 10pt;
+  line-height: 1.2;
+}
+
+.page.compact table {
+  font-size: 9px;
+}
+
+.page.compact td,
+.page.compact th {
+  padding: 2px !important;
+}
+
+.page.compact h5 {
+  font-size: 11px;
+  margin-bottom: 2px;
+}
+
+.page.compact p {
+  margin-bottom: 3px;
+}
+
+.page.compact .signature-box,
+.page.compact .signature-placeholder {
+  height: 75px;
+}
+
+.page.compact .signature img {
+  max-height: 45px;
+}
+
+.page.compact .ttd-container {
+  margin-top: 10px;
+  margin-bottom: 20mm;
+}
+
+@media print {
+
+  .page {
+    page-break-after: always;
+  }
+
+  table {
+    page-break-inside: avoid;
+  }
+
+  .ttd-container {
+    page-break-inside: avoid;
+  }
+
+}
+
+/* =========================================================
+   FIX LAYOUT CETAK BA
+   - Halaman 1 full dari kop sampai footer
+   - Footer surat dikunci di bawah
+   - Font dan tabel tidak mengecil ekstrem
+   - Lampiran khusus halaman 2 dst
+========================================================= */
+
+@page {
+  size: A4;
+  margin: 0;
+}
+
+/* ===== PREVIEW / OUTPUT AREA ===== */
+#output {
+  width: 100%;
+}
+
+/* ===== HALAMAN A4 ===== */
+#output .page {
+  width: 210mm !important;
+  height: 297mm !important;
+  min-height: 297mm !important;
+  max-height: 297mm !important;
+
+  background: #fff !important;
+  box-sizing: border-box !important;
+  position: relative !important;
+
+  padding: 12mm 12mm 22mm 12mm !important;
+
+  font-family: "Times New Roman", Times, serif !important;
+  font-size: 12pt !important;
+  line-height: 1.25 !important;
+  color: #000 !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+
+  margin: 0 auto 20px auto !important;
+  overflow: hidden !important;
+}
+
+/* Semua isi output pakai font surat */
+#output .page * {
+  font-family: "Times New Roman", Times, serif !important;
+}
+
+/* ===== KOP ===== */
+#output .kop {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+
+  margin: 0 0 3mm 0 !important;
+  padding: 0 !important;
+}
+
+#output .kop-left img {
+  height: 18mm !important;
+  max-height: 18mm !important;
+  width: auto !important;
+}
+
+#output .kop-right {
+  text-align: right !important;
+  font-size: 10pt !important;
+  line-height: 1.15 !important;
+}
+
+#output .kop-title {
+  font-size: 13pt !important;
+  font-weight: bold !important;
+}
+
+/* Garis kop */
+#output .kop-line {
+  height: 5px !important;
+  margin: 2mm 0 4mm 0 !important;
+}
+
+#output .kop-line::before {
+  border-top: 3px solid #000 !important;
+}
+
+#output .kop-line::after {
+  border-top: 1px solid #000 !important;
+}
+
+/* ===== JUDUL ===== */
+#output .title-ba,
+#output .page > h4 {
+  text-align: center !important;
+  font-size: 14pt !important;
+  font-weight: bold !important;
+  text-decoration: underline !important;
+  margin: 0 0 1mm 0 !important;
+  letter-spacing: 0.4px !important;
+}
+
+#output .nomor-ba {
+  text-align: center !important;
+  font-size: 10.5pt !important;
+  margin: 0 0 4mm 0 !important;
+  line-height: 1.15 !important;
+}
+
+/* ===== BODY HALAMAN 1 ===== */
+#output .ba-body {
+  flex: 1 1 auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+
+  padding-bottom: 18mm !important; /* ruang aman footer */
+  overflow: hidden !important;
+}
+
+#output .identitas-ba {
+  font-size: 11pt !important;
+  line-height: 1.2 !important;
+  margin: 0 0 2mm 0 !important;
+  text-align: left !important;
+}
+
+/* Area isi surat */
+#output .content-flex,
+#output .content-area,
+#output .content-area.long,
+#output .content-area.xlong {
+  max-height: none !important;
+  overflow: visible !important;
+
+  flex: 0 0 auto !important;
+
+  font-size: 11pt !important;
+  line-height: 1.2 !important;
+}
+
+/* Heading isi */
+#output h5 {
+  font-size: 11pt !important;
+  font-weight: bold !important;
+  margin: 2mm 0 1mm 0 !important;
+  line-height: 1.15 !important;
+}
+
+/* Paragraf */
+#output p,
+#output .content-area p,
+#output .content-area div,
+#output .content-area span,
+#output .content-area li {
+  font-size: 11pt !important;
+  line-height: 1.2 !important;
+  margin: 0 0 1.5mm 0 !important;
+  text-align: justify !important;
+}
+
+/* List Quill */
+#output ul,
+#output ol {
+  margin-top: 0 !important;
+  margin-bottom: 1.5mm !important;
+  padding-left: 6mm !important;
+}
+
+/* ===== TABEL MATERIAL ===== */
+#output table,
+#output .tabel-material,
+#output .content-area table,
+#output .content-area.long table,
+#output .content-area.xlong table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  table-layout: fixed !important;
+
+  font-size: 9.5pt !important;
+  line-height: 1.15 !important;
+
+  margin: 1.5mm 0 2mm 0 !important;
+}
+
+#output table th,
+#output table td,
+#output .tabel-material th,
+#output .tabel-material td {
+  border: 1px solid #000 !important;
+  padding: 2px 4px !important;
+
+  font-size: 9.5pt !important;
+  line-height: 1.15 !important;
+
+  vertical-align: middle !important;
+  word-wrap: break-word !important;
+}
+
+#output table th {
+  text-align: center !important;
+  font-weight: bold !important;
+}
+
+#output .tabel-material td:nth-child(1),
+#output .tabel-material td:nth-child(3),
+#output .tabel-material td:nth-child(4),
+#output .tabel-material td:nth-child(5) {
+  text-align: center !important;
+}
+
+/* ===== TTD TURUN KE BAWAH JIKA ADA SPACE ===== */
+#output .ttd-container {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: flex-start !important;
+
+  text-align: center !important;
+
+  margin-top: auto !important;
+  margin-bottom: 2mm !important;
+
+  page-break-inside: avoid !important;
+}
+
+#output .ttd-box {
+  width: 31% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+}
+
+#output .ttd-header {
+  height: auto !important;
+  margin-bottom: 1mm !important;
+}
+
+#output .ttd-title {
+  font-size: 9.5pt !important;
+  font-weight: bold !important;
+  text-align: center !important;
+  margin: 0 !important;
+}
+
+#output .signature-box,
+#output .signature-placeholder {
+  height: 20mm !important;
+  width: 100% !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  margin: 0 !important;
+}
+
+#output .signature {
+  height: auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+#output .signature img {
+  max-height: 15mm !important;
+  max-width: 100% !important;
+  object-fit: contain !important;
+}
+
+#output .signed-label {
+  font-size: 7pt !important;
+  color: #2e7d32 !important;
+  margin: 0 0 1mm 0 !important;
+}
+
+#output .ttd-time {
+  font-size: 7pt !important;
+  color: #777 !important;
+  margin: 0 0 1mm 0 !important;
+  text-align: center !important;
+}
+
+#output .nama-ttd {
+  font-size: 9.5pt !important;
+  font-weight: bold !important;
+  text-decoration: underline !important;
+  text-align: center !important;
+  margin: 0 !important;
+  line-height: 1.1 !important;
+}
+
+#output .jabatan-ttd {
+  font-size: 9pt !important;
+  font-style: italic !important;
+  text-align: center !important;
+  margin: 0 !important;
+  line-height: 1.1 !important;
+}
+
+/* ===== FOOTER SURAT DIKUNCI DI BAWAH ===== */
+#output .surat-footer {
+  position: absolute !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+
+  width: 100% !important;
+  height: 18mm !important;
+
+  overflow: hidden !important;
+  z-index: 1 !important;
+}
+
+#output .surat-footer img {
+  width: 100% !important;
+  height: 18mm !important;
+  object-fit: fill !important;
+  display: block !important;
+}
+
+/* ===== FIT OTOMATIS HANYA KALAU BENAR-BENAR OVERFLOW ===== */
+#output .page.fit-tight .content-area,
+#output .page.fit-tight .content-area p,
+#output .page.fit-tight .content-area div,
+#output .page.fit-tight .content-area span,
+#output .page.fit-tight .content-area li {
+  font-size: 10.5pt !important;
+  line-height: 1.15 !important;
+}
+
+#output .page.fit-tight h5 {
+  font-size: 10.5pt !important;
+  margin: 1.5mm 0 1mm 0 !important;
+}
+
+#output .page.fit-tight table,
+#output .page.fit-tight table th,
+#output .page.fit-tight table td {
+  font-size: 9pt !important;
+  padding: 2px 3px !important;
+}
+
+#output .page.fit-tight .signature-box,
+#output .page.fit-tight .signature-placeholder {
+  height: 17mm !important;
+}
+
+#output .page.fit-tight .signature img {
+  max-height: 12mm !important;
+}
+
+#output .page.fit-very-tight .content-area,
+#output .page.fit-very-tight .content-area p,
+#output .page.fit-very-tight .content-area div,
+#output .page.fit-very-tight .content-area span,
+#output .page.fit-very-tight .content-area li {
+  font-size: 10pt !important;
+  line-height: 1.1 !important;
+}
+
+#output .page.fit-very-tight table,
+#output .page.fit-very-tight table th,
+#output .page.fit-very-tight table td {
+  font-size: 8.5pt !important;
+  padding: 1px 3px !important;
+}
+
+#output .page.fit-very-tight .signature-box,
+#output .page.fit-very-tight .signature-placeholder {
+  height: 15mm !important;
+}
+
+#output .page.fit-very-tight .signature img {
+  max-height: 10mm !important;
+}
+
+/* Matikan compact lama agar tidak mengecil ekstrem */
+#output .page.compact {
+  font-size: inherit !important;
+  line-height: inherit !important;
+}
+
+#output .page.compact table {
+  font-size: 9.5pt !important;
+}
+
+#output .page.compact td,
+#output .page.compact th {
+  padding: 2px 4px !important;
+}
+
+#output .page.compact h5 {
+  font-size: 11pt !important;
+}
+
+#output .page.compact p {
+  margin-bottom: 1.5mm !important;
+}
+
+/* ===== LAMPIRAN / EVIDENCE ===== */
+#output .page-lampiran {
+  padding: 12mm 12mm 22mm 12mm !important;
+}
+
+#output .lampiran-body {
+  flex: 1 1 auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+
+  padding-bottom: 18mm !important;
+  overflow: hidden !important;
+}
+
+#output .lampiran-grid-page {
+  flex: 1 !important;
+  display: grid !important;
+  gap: 5mm !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+#output .lampiran-grid-1 {
+  grid-template-columns: 1fr !important;
+  grid-template-rows: 1fr !important;
+}
+
+#output .lampiran-grid-2 {
+  grid-template-columns: repeat(2, 1fr) !important;
+  grid-template-rows: 1fr !important;
+}
+
+#output .lampiran-grid-3,
+#output .lampiran-grid-4 {
+  grid-template-columns: repeat(2, 1fr) !important;
+  grid-template-rows: repeat(2, 1fr) !important;
+}
+
+#output .lampiran-item {
+  border: 1px solid #bbb !important;
+  padding: 2mm !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  overflow: hidden !important;
+}
+
+#output .lampiran-item img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+}
+
+/* ===== PRINT ===== */
+@media print {
+  html,
+  body {
+    width: 210mm !important;
+    min-height: 297mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+  }
+
+  body * {
+    visibility: hidden !important;
+  }
+
+  #output,
+  #output * {
+    visibility: visible !important;
+  }
+
+  #output {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+
+    width: 210mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  #output .page {
+    margin: 0 !important;
+    box-shadow: none !important;
+    page-break-after: always !important;
+    break-after: page !important;
+  }
+
+  #output .page:last-child {
+    page-break-after: auto !important;
+    break-after: auto !important;
+  }
+
+  #output table,
+  #output .ttd-container {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  .app-footer,
+  #sidebar,
+  #draftPanel,
+  #toast,
+  #confirmBox,
+  #loadingOverlay,
+  .form-panel,
+  .select2-container {
+    display: none !important;
+  }
+}
+
+#output .identitas-ba {
+  font-size: 11pt !important;
+  line-height: 1.25 !important;
+  margin: 0 0 3mm 0 !important;
+  text-align: justify !important;
+}
+
+/* =========================================================
+   FINAL STANDARD BA SYSTEM
+   - Font resmi Times New Roman
+   - Isi surat 11pt
+   - Tabel 9.5pt
+   - Judul 14pt
+   - TTD 9–9.5pt
+   - Footer fixed
+   - Lampiran mulai halaman 2
+   - Evidence tetap 4 foto per halaman
+========================================================= */
+
+@page {
+  size: A4;
+  margin: 0;
+}
+
+/* ===== HALAMAN A4 ===== */
+#output .page {
+  width: 210mm !important;
+  height: 297mm !important;
+  min-height: 297mm !important;
+  max-height: 297mm !important;
+
+  padding: 12mm 12mm 22mm 12mm !important;
+  box-sizing: border-box !important;
+
+  background: #fff !important;
+  color: #000 !important;
+
+  font-family: "Times New Roman", Times, serif !important;
+  font-size: 11pt !important;
+  line-height: 1.25 !important;
+
+  position: relative !important;
+  display: flex !important;
+  flex-direction: column !important;
+
+  overflow: hidden !important;
+  margin: 0 auto 20px auto !important;
+}
+
+/* Semua isi output pakai Times New Roman */
+#output .page * {
+  font-family: "Times New Roman", Times, serif !important;
+}
+
+/* ===== KOP SURAT ===== */
+#output .kop {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+
+  margin: 0 0 3mm 0 !important;
+  padding: 0 !important;
+}
+
+#output .kop-left img {
+  height: 18mm !important;
+  max-height: 18mm !important;
+  width: auto !important;
+}
+
+#output .kop-right {
+  text-align: right !important;
+  font-size: 10pt !important;
+  line-height: 1.15 !important;
+}
+
+#output .kop-title {
+  font-size: 13pt !important;
+  font-weight: bold !important;
+}
+
+#output .kop-line {
+  height: 5px !important;
+  margin: 2mm 0 4mm 0 !important;
+}
+
+#output .kop-line::before {
+  border-top: 3px solid #000 !important;
+}
+
+#output .kop-line::after {
+  border-top: 1px solid #000 !important;
+}
+
+/* ===== JUDUL SURAT ===== */
+#output .title-ba,
+#output .page > h4 {
+  text-align: center !important;
+  font-size: 14pt !important;
+  font-weight: bold !important;
+  text-decoration: underline !important;
+  margin: 0 0 1mm 0 !important;
+  letter-spacing: 0.4px !important;
+}
+
+#output .nomor-ba {
+  text-align: center !important;
+  font-size: 10.5pt !important;
+  margin: 0 0 4mm 0 !important;
+  line-height: 1.15 !important;
+}
+
+/* ===== BODY SURAT ===== */
+#output .ba-body {
+  flex: 1 1 auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+
+  padding-bottom: 18mm !important; /* ruang aman footer */
+  overflow: hidden !important;
+}
+
+#output .identitas-ba {
+  font-size: 11pt !important;
+  line-height: 1.25 !important;
+  margin: 0 0 3mm 0 !important;
+  text-align: justify !important;
+}
+
+/* Isi surat */
+#output .content-flex,
+#output .content-area,
+#output .content-area.long,
+#output .content-area.xlong {
+  flex: 0 0 auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+
+  font-size: 11pt !important;
+  line-height: 1.25 !important;
+}
+
+/* Heading isi */
+#output h5 {
+  font-size: 11pt !important;
+  font-weight: bold !important;
+  margin: 2mm 0 1mm 0 !important;
+  line-height: 1.15 !important;
+}
+
+/* Paragraf */
+#output p,
+#output .content-area p,
+#output .content-area div,
+#output .content-area span,
+#output .content-area li {
+  font-size: 11pt !important;
+  line-height: 1.25 !important;
+  margin: 0 0 1.5mm 0 !important;
+  text-align: justify !important;
+}
+
+/* List */
+#output ul,
+#output ol {
+  margin-top: 0 !important;
+  margin-bottom: 1.5mm !important;
+  padding-left: 6mm !important;
+}
+
+/* ===== TABEL MATERIAL 9.5PT ===== */
+#output table,
+#output .tabel-material,
+#output .content-area table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  table-layout: fixed !important;
+
+  font-size: 9.5pt !important;
+  line-height: 1.15 !important;
+
+  margin: 1.5mm 0 2mm 0 !important;
+}
+
+#output table th,
+#output table td,
+#output .tabel-material th,
+#output .tabel-material td {
+  border: 1px solid #000 !important;
+  padding: 2px 4px !important;
+
+  font-size: 9.5pt !important;
+  line-height: 1.15 !important;
+
+  vertical-align: middle !important;
+  word-wrap: break-word !important;
+}
+
+#output table th {
+  text-align: center !important;
+  font-weight: bold !important;
+}
+
+#output .tabel-material td:nth-child(1),
+#output .tabel-material td:nth-child(3),
+#output .tabel-material td:nth-child(4),
+#output .tabel-material td:nth-child(5) {
+  text-align: center !important;
+}
+
+/* ===== TTD 9–9.5PT ===== */
+#output .ttd-container {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: flex-start !important;
+
+  text-align: center !important;
+
+  margin-top: auto !important;
+  margin-bottom: 2mm !important;
+
+  page-break-inside: avoid !important;
+}
+
+#output .ttd-box {
+  width: 31% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+}
+
+#output .ttd-header {
+  height: auto !important;
+  margin-bottom: 1mm !important;
+}
+
+#output .ttd-title {
+  font-size: 9.5pt !important;
+  font-weight: bold !important;
+  text-align: center !important;
+  margin: 0 !important;
+}
+
+#output .signature-box,
+#output .signature-placeholder {
+  height: 20mm !important;
+  width: 100% !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  margin: 0 !important;
+}
+
+#output .signature {
+  height: auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+#output .signature img {
+  max-height: 15mm !important;
+  max-width: 100% !important;
+  object-fit: contain !important;
+}
+
+#output .signed-label {
+  font-size: 7pt !important;
+  color: #2e7d32 !important;
+  margin: 0 0 1mm 0 !important;
+}
+
+#output .ttd-time {
+  font-size: 7pt !important;
+  color: #777 !important;
+  margin: 0 0 1mm 0 !important;
+  text-align: center !important;
+}
+
+#output .nama-ttd {
+  font-size: 9.5pt !important;
+  font-weight: bold !important;
+  text-decoration: underline !important;
+  text-align: center !important;
+  margin: 0 !important;
+  line-height: 1.1 !important;
+}
+
+#output .jabatan-ttd {
+  font-size: 9pt !important;
+  font-style: italic !important;
+  text-align: center !important;
+  margin: 0 !important;
+  line-height: 1.1 !important;
+}
+
+/* ===== FOOTER FIXED ===== */
+#output .surat-footer {
+  position: absolute !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+
+  width: 100% !important;
+  height: 18mm !important;
+
+  overflow: hidden !important;
+  z-index: 1 !important;
+}
+
+#output .surat-footer img {
+  width: 100% !important;
+  height: 18mm !important;
+  object-fit: fill !important;
+  display: block !important;
+}
+
+/* ===== AUTO FIT HANYA KALAU OVERFLOW ===== */
+#output .page.fit-tight .content-area,
+#output .page.fit-tight .content-area p,
+#output .page.fit-tight .content-area div,
+#output .page.fit-tight .content-area span,
+#output .page.fit-tight .content-area li {
+  font-size: 10.5pt !important;
+  line-height: 1.15 !important;
+}
+
+#output .page.fit-tight h5 {
+  font-size: 10.5pt !important;
+  margin: 1.5mm 0 1mm 0 !important;
+}
+
+#output .page.fit-tight table,
+#output .page.fit-tight table th,
+#output .page.fit-tight table td {
+  font-size: 9pt !important;
+  padding: 2px 3px !important;
+}
+
+#output .page.fit-very-tight .content-area,
+#output .page.fit-very-tight .content-area p,
+#output .page.fit-very-tight .content-area div,
+#output .page.fit-very-tight .content-area span,
+#output .page.fit-very-tight .content-area li {
+  font-size: 10pt !important;
+  line-height: 1.1 !important;
+}
+
+#output .page.fit-very-tight table,
+#output .page.fit-very-tight table th,
+#output .page.fit-very-tight table td {
+  font-size: 8.5pt !important;
+  padding: 1px 3px !important;
+}
+
+/* Matikan compact lama agar tidak kecil ekstrem */
+#output .page.compact {
+  font-size: 11pt !important;
+  line-height: 1.25 !important;
+}
+
+#output .page.compact table {
+  font-size: 9.5pt !important;
+}
+
+/* ===== LAMPIRAN MULAI HALAMAN 2 ===== */
+#output .page-lampiran {
+  padding: 12mm 12mm 22mm 12mm !important;
+}
+
+#output .lampiran-body {
+  flex: 1 1 auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+
+  padding-bottom: 18mm !important;
+  overflow: hidden !important;
+}
+
+#output .lampiran-grid-page {
+  flex: 1 !important;
+  display: grid !important;
+  gap: 5mm !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* 1 foto */
+#output .lampiran-grid-1 {
+  grid-template-columns: 1fr !important;
+  grid-template-rows: 1fr !important;
+}
+
+/* 2 foto */
+#output .lampiran-grid-2 {
+  grid-template-columns: repeat(2, 1fr) !important;
+  grid-template-rows: 1fr !important;
+}
+
+/* 3 dan 4 foto tetap 2x2 agar evidence jelas */
+#output .lampiran-grid-3,
+#output .lampiran-grid-4 {
+  grid-template-columns: repeat(2, 1fr) !important;
+  grid-template-rows: repeat(2, 1fr) !important;
+}
+
+#output .lampiran-item {
+  border: 1px solid #bbb !important;
+  padding: 2mm !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  overflow: hidden !important;
+}
+
+#output .lampiran-item img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+}
+
+/* ===== PRINT ===== */
+@media print {
+  html,
+  body {
+    width: 210mm !important;
+    min-height: 297mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+  }
+
+  body * {
+    visibility: hidden !important;
+  }
+
+  #output,
+  #output * {
+    visibility: visible !important;
+  }
+
+  #output {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+
+    width: 210mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  #output .page {
+    margin: 0 !important;
+    box-shadow: none !important;
+    page-break-after: always !important;
+    break-after: page !important;
+  }
+
+  #output .page:last-child {
+    page-break-after: auto !important;
+    break-after: auto !important;
+  }
+
+  #output table,
+  #output .ttd-container {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  .app-footer,
+  #sidebar,
+  #draftPanel,
+  #toast,
+  #confirmBox,
+  #loadingOverlay,
+  .form-panel,
+  .select2-container {
+    display: none !important;
+  }
+}
+
+/* =========================================================
+   FINAL FONT STYLE - NYAMAN DIBACA SEPERTI CONTOH
+   Formal, bersih, tidak bikin pusing
+========================================================= */
+
+/* Font utama dokumen */
+#output .page,
+#output .page * {
+  font-family: Cambria, "Times New Roman", serif !important;
+  color: #1f2937 !important;
+}
+
+/* Isi surat */
+#output .page {
+  font-size: 10pt !important;
+  line-height: 1.45 !important;
+}
+
+/* Paragraf isi */
+#output p,
+#output .content-area,
+#output .content-area p,
+#output .content-area div,
+#output .content-area span,
+#output .content-area li {
+  font-size: 10pt !important;
+  line-height: 1.45 !important;
+  text-align: justify !important;
+  margin-bottom: 3mm !important;
+}
+
+/* Kalimat pembuka */
+#output .identitas-ba {
+  font-size: 10pt !important;
+  line-height: 1.45 !important;
+  text-align: justify !important;
+  margin-bottom: 4mm !important;
+}
+
+/* Heading section */
+#output h5 {
+  font-size: 10pt !important;
+  font-weight: bold !important;
+  line-height: 1.3 !important;
+  margin-top: 3mm !important;
+  margin-bottom: 1.5mm !important;
+  color: #1f2937 !important;
+}
+
+/* Judul BERITA ACARA */
+#output .title-ba,
+#output .page > h4 {
+  font-family: Cambria, "Times New Roman", serif !important;
+  font-size: 13pt !important;
+  font-weight: bold !important;
+  text-decoration: underline !important;
+  text-align: center !important;
+  color: #1f2937 !important;
+  margin-bottom: 1mm !important;
+}
+
+/* Nomor BA */
+#output .nomor-ba {
+  font-size: 10pt !important;
+  line-height: 1.25 !important;
+  text-align: center !important;
+  color: #1f2937 !important;
+  margin-bottom: 5mm !important;
+}
+
+/* Tabel tetap kecil tapi jelas */
+#output table,
+#output .tabel-material,
+#output .content-area table {
+  font-size: 9pt !important;
+  line-height: 1.25 !important;
+  color: #1f2937 !important;
+}
+
+#output table th,
+#output table td,
+#output .tabel-material th,
+#output .tabel-material td {
+  font-size: 9pt !important;
+  line-height: 1.25 !important;
+  padding: 3px 5px !important;
+  color: #1f2937 !important;
+}
+
+/* TTD */
+#output .ttd-title {
+  font-size: 9.5pt !important;
+  font-weight: bold !important;
+  color: #1f2937 !important;
+}
+
+#output .nama-ttd {
+  font-size: 9.5pt !important;
+  font-weight: bold !important;
+  text-decoration: underline !important;
+  color: #1f2937 !important;
+}
+
+#output .jabatan-ttd {
+  font-size: 9pt !important;
+  font-style: italic !important;
+  color: #1f2937 !important;
+}
+
+/* Saat print, teks dibuat hitam agar resmi */
+@media print {
+  #output .page,
+  #output .page * {
+    color: #000 !important;
+    font-family: Cambria, "Times New Roman", serif !important;
+  }
+}
+
+/* =========================================================
+   FIX WARNA SIGNED BY & TANGGAL TTD
+   Sesuai class yang dipakai script saat ini:
+   .signed-label dan .ttd-time
+========================================================= */
+
+#output .ttd-box .signature-box .signed-label {
+  color: #00a13b !important;
+  font-weight: 700 !important;
+}
+
+#output .ttd-box .ttd-time {
+  color: #474747 !important;
+  font-weight: 600 !important;
+}
+
