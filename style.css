@@ -2569,3 +2569,164 @@ p {
 #output .ttd-box .ttd-time {
   color: #3d3d3d !important;
 }
+
+/* =========================================================
+   BA PILIHAN 4 - PENGAJUAN BIAYA
+========================================================= */
+
+#output .subjudul-ba4 {
+  text-align: center !important;
+  font-size: 11pt !important;
+  font-weight: bold !important;
+  margin: 0 0 8mm 0 !important;
+  line-height: 1.25 !important;
+}
+
+#output .ba4-content {
+  margin-top: 2mm !important;
+}
+
+#output .ba4-content p {
+  font-size: 11pt !important;
+  line-height: 1.55 !important;
+  text-align: justify !important;
+  margin: 0 0 6mm 0 !important;
+}
+
+#output .tabel-biaya-ba {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  table-layout: fixed !important;
+  margin: 5mm 0 7mm 0 !important;
+  font-size: 9.5pt !important;
+}
+
+#output .tabel-biaya-ba th,
+#output .tabel-biaya-ba td {
+  border: 1px solid #000 !important;
+  padding: 2mm 2.5mm !important;
+  font-size: 9.5pt !important;
+  line-height: 1.2 !important;
+  vertical-align: middle !important;
+}
+
+#output .tabel-biaya-ba th {
+  background: #d9e8f6 !important;
+  text-align: center !important;
+  font-weight: bold !important;
+}
+
+#output .tabel-biaya-ba .center {
+  text-align: center !important;
+}
+
+#output .tabel-biaya-ba .right {
+  text-align: right !important;
+}
+
+#output .tabel-biaya-ba .grand-total-row td {
+  background: #f8e2d2 !important;
+  font-weight: bold !important;
+}
+
+/* =========================================================
+   BA PENGAJUAN BIAYA
+   Nomor, keterangan, pembuka, penutup manual
+========================================================= */
+
+#output .subjudul-ba4 {
+  text-align: center !important;
+  font-size: 11pt !important;
+  font-weight: bold !important;
+  margin: 0 0 7mm 0 !important;
+  line-height: 1.3 !important;
+}
+
+#output .ba4-content {
+  margin-top: 2mm !important;
+}
+
+#output .ba4-content p {
+  font-size: 11pt !important;
+  line-height: 1.55 !important;
+  text-align: justify !important;
+  margin: 0 0 6mm 0 !important;
+}
+
+#output .tabel-biaya-ba {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  table-layout: fixed !important;
+  margin: 5mm 0 7mm 0 !important;
+  font-size: 9.5pt !important;
+}
+
+#output .tabel-biaya-ba th,
+#output .tabel-biaya-ba td {
+  border: 1px solid #000 !important;
+  padding: 2mm 2.5mm !important;
+  font-size: 9.5pt !important;
+  line-height: 1.2 !important;
+  vertical-align: middle !important;
+}
+
+#output .tabel-biaya-ba th {
+  background: #d9e8f6 !important;
+  text-align: center !important;
+  font-weight: bold !important;
+}
+
+#output .tabel-biaya-ba .center {
+  text-align: center !important;
+}
+
+#output .tabel-biaya-ba .right {
+  text-align: right !important;
+}
+
+#output .tabel-biaya-ba .grand-total-row td {
+  background: #f8e2d2 !important;
+  font-weight: bold !important;
+}
+
+/* =========================================================
+   EDITOR BA BIAYA - SUPPORT BOLD / ITALIC
+========================================================= */
+
+#biayaBox .biaya-editor {
+  background: #fff !important;
+  border: 1px solid #ddd !important;
+  border-radius: 10px !important;
+  min-height: 130px !important;
+  margin-bottom: 10px !important;
+}
+
+#biayaBox .biaya-editor .ql-editor {
+  min-height: 100px !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+}
+
+/* hasil output BA biaya */
+#output .ba4-paragraph,
+#output .ba4-paragraph p {
+  font-size: 11pt !important;
+  line-height: 1.55 !important;
+  text-align: justify !important;
+  margin: 0 0 6mm 0 !important;
+}
+
+/* pastikan bold dan italic tidak hilang */
+#output .ba4-content b,
+#output .ba4-content strong {
+  font-weight: bold !important;
+}
+
+#output .ba4-content i,
+#output .ba4-content em {
+  font-style: italic !important;
+}
+
+#output .ba4-content u {
+  text-decoration: underline !important;
+}

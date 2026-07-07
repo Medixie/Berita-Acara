@@ -3,7 +3,7 @@
    Dipisahkan dari file HTML awal agar struktur lebih rapi.
 ========================================================= */
 
-let qLatar, qTujuan, qPenutup, qKejadian;
+let qLatar, qTujuan, qPenutup, qKejadian, qPembukaBiaya, qPenutupBiaya;
 
 // 🔥 TARO DI SINI (GLOBAL)
 function showDraft(){
@@ -48,6 +48,18 @@ document.addEventListener("DOMContentLoaded", function(){
     placeholder: "Isi Kronologi / Kejadian...",
     modules: { toolbar }
   });
+
+  qPembukaBiaya = new Quill("#pembukaBiaya", {
+  theme: "snow",
+  placeholder: "Isi pembuka BA pengajuan biaya...",
+  modules: { toolbar }
+});
+
+qPenutupBiaya = new Quill("#penutupBiaya", {
+  theme: "snow",
+  placeholder: "Isi penutup BA pengajuan biaya...",
+  modules: { toolbar }
+});
 
 });
 
@@ -122,6 +134,22 @@ function getKalimatPembukaBA(jenis) {
 }
 
 function toggleTtd4() {
+  const jenis = document.getElementById("jenis").value;
+
+  if (jenis === "biaya") {
+    document.getElementById("roleLabel1").innerText = "DIBUAT";
+    document.getElementById("roleLabel2").innerText = "DIVERIFIKASI";
+    document.getElementById("roleLabel3").innerText = "DISETUJUI";
+
+    const pihak4Box = document.getElementById("pihak4Box");
+    const ttd4Box = document.getElementById("ttd4Box");
+
+    if (pihak4Box) pihak4Box.style.display = "none";
+    if (ttd4Box) ttd4Box.style.display = "none";
+
+    return;
+  }
+
   const useTtd4 = document.getElementById("useTtd4").checked;
 
   const pihak4Box = document.getElementById("pihak4Box");
@@ -135,7 +163,6 @@ function toggleTtd4() {
     ttd4Box.style.display = useTtd4 ? "block" : "none";
   }
 
-  // Label form berubah sesuai jumlah TTD
   document.getElementById("roleLabel1").innerText = "DIBUAT";
 
   if (useTtd4) {
@@ -404,11 +431,42 @@ function logout(){
 function toggleJenis(){
   let j = document.getElementById('jenis').value;
 
-  document.getElementById('materialBox').style.display =
-    j === 'material' ? 'block' : 'none';
+  const standardContentBox = document.getElementById('standardContentBox');
+  const materialBox = document.getElementById('materialBox');
+  const adendumBox = document.getElementById('adendumBox');
+  const biayaBox = document.getElementById('biayaBox');
 
-  document.getElementById('adendumBox').style.display =
-    j === 'adendum' ? 'block' : 'none';
+  if (standardContentBox) {
+    standardContentBox.style.display = j === 'biaya' ? 'none' : 'block';
+  }
+
+  if (materialBox) {
+    materialBox.style.display = j === 'material' ? 'block' : 'none';
+  }
+
+  if (adendumBox) {
+    adendumBox.style.display = j === 'adendum' ? 'block' : 'none';
+  }
+
+  if (biayaBox) {
+    biayaBox.style.display = j === 'biaya' ? 'block' : 'none';
+  }
+
+  if (j === 'biaya') {
+    const useTtd4 = document.getElementById("useTtd4");
+    const pihak4Box = document.getElementById("pihak4Box");
+    const ttd4Box = document.getElementById("ttd4Box");
+
+    if (useTtd4) useTtd4.checked = false;
+    if (pihak4Box) pihak4Box.style.display = "none";
+    if (ttd4Box) ttd4Box.style.display = "none";
+
+    document.getElementById("roleLabel1").innerText = "DIBUAT";
+    document.getElementById("roleLabel2").innerText = "DIVERIFIKASI";
+    document.getElementById("roleLabel3").innerText = "DISETUJUI";
+  } else {
+    toggleTtd4();
+  }
 }
 
 function addRow(){
@@ -435,6 +493,203 @@ function addRow(){
   </tr>`;
 
   tbody.insertAdjacentHTML('beforeend', row);
+}
+
+function addBiayaRow(){
+  let tbody = document.querySelector('#biayaTable tbody');
+  let rows = tbody.querySelectorAll('tr').length;
+  let count = rows + 1;
+
+  let row = `
+    <tr>
+      <td class="center">${count}</td>
+      <td><input class="form-control biaya-item"></td>
+      <td><input class="form-control biaya-qty" type="number" oninput="hitungBiayaRow(this)"></td>
+      <td><input class="form-control biaya-satuan"></td>
+      <td><input class="form-control biaya-harga" type="number" oninput="hitungBiayaRow(this)"></td>
+      <td><input class="form-control biaya-total" readonly></td>
+      <td style="text-align:center;">
+        <button onclick="hapusBiayaRow(this)" class="btn btn-sm btn-danger">✕</button>
+      </td>
+    </tr>
+  `;
+
+  tbody.insertAdjacentHTML('beforeend', row);
+}
+
+function hapusBiayaRow(btn){
+  btn.closest('tr').remove();
+
+  let rows = document.querySelectorAll('#biayaTable tbody tr');
+  rows.forEach((r, i) => {
+    r.cells[0].innerText = i + 1;
+  });
+}
+
+function hitungBiayaRow(el){
+  let row = el.closest('tr');
+
+  let qty = Number(row.querySelector('.biaya-qty').value || 0);
+  let harga = Number(row.querySelector('.biaya-harga').value || 0);
+  let total = qty * harga;
+
+  row.querySelector('.biaya-total').value = total;
+}
+
+function formatRupiah(angka){
+  angka = Number(angka || 0);
+  return "Rp. " + angka.toLocaleString("id-ID");
+}
+
+function buildBiayaTable(){
+  let rows = document.querySelectorAll('#biayaTable tbody tr');
+  let totalAll = 0;
+
+  let html = `
+    <table class="table table-bordered tabel-biaya-ba">
+      <thead>
+        <tr>
+          <th style="width:45px;">No</th>
+          <th>Item</th>
+          <th style="width:70px;">Qty</th>
+          <th style="width:90px;">Satuan</th>
+          <th style="width:130px;">Harga Satuan</th>
+          <th style="width:130px;">Harga Total</th>
+        </tr>
+      </thead>
+      <tbody>
+  `;
+
+  rows.forEach((r, i) => {
+    let item = r.querySelector('.biaya-item').value || "";
+    let qty = Number(r.querySelector('.biaya-qty').value || 0);
+    let satuan = r.querySelector('.biaya-satuan').value || "";
+    let harga = Number(r.querySelector('.biaya-harga').value || 0);
+    let total = qty * harga;
+
+    totalAll += total;
+
+    html += `
+      <tr>
+        <td class="center">${i + 1}</td>
+        <td>${item}</td>
+        <td class="center">${qty}</td>
+        <td class="center">${satuan}</td>
+        <td class="right">${formatRupiah(harga)}</td>
+        <td class="right">${formatRupiah(total)}</td>
+      </tr>
+    `;
+  });
+
+  html += `
+      <tr class="grand-total-row">
+        <td colspan="5" class="center"><b>Grand Total</b></td>
+        <td class="right"><b>${formatRupiah(totalAll)}</b></td>
+      </tr>
+    </tbody>
+  </table>
+  `;
+
+  return html;
+}
+
+function addBiayaRow(){
+  let tbody = document.querySelector('#biayaTable tbody');
+  let rows = tbody.querySelectorAll('tr').length;
+
+  let count = rows + 1;
+
+  let row = `
+    <tr>
+      <td class="center">${count}</td>
+      <td><input class="form-control biaya-item"></td>
+      <td><input class="form-control biaya-qty" type="number" oninput="hitungBiayaRow(this)"></td>
+      <td><input class="form-control biaya-satuan"></td>
+      <td><input class="form-control biaya-harga" type="number" oninput="hitungBiayaRow(this)"></td>
+      <td><input class="form-control biaya-total" readonly></td>
+      <td style="text-align:center;">
+        <button onclick="hapusBiayaRow(this)" class="btn btn-sm btn-danger">✕</button>
+      </td>
+    </tr>
+  `;
+
+  tbody.insertAdjacentHTML('beforeend', row);
+}
+
+function hapusBiayaRow(btn){
+  btn.closest('tr').remove();
+
+  let rows = document.querySelectorAll('#biayaTable tbody tr');
+  rows.forEach((r, i) => {
+    r.cells[0].innerText = i + 1;
+  });
+}
+
+function hitungBiayaRow(el){
+  let row = el.closest('tr');
+
+  let qty = Number(row.querySelector('.biaya-qty').value || 0);
+  let harga = Number(row.querySelector('.biaya-harga').value || 0);
+  let total = qty * harga;
+
+  row.querySelector('.biaya-total').value = total;
+}
+
+function formatRupiah(angka){
+  angka = Number(angka || 0);
+  return "Rp. " + angka.toLocaleString("id-ID");
+}
+
+function buildBiayaTable(){
+  let rows = document.querySelectorAll('#biayaTable tbody tr');
+  let totalAll = 0;
+
+  let html = `
+    <table class="table table-bordered tabel-biaya-ba">
+      <thead>
+        <tr>
+          <th style="width:45px;">No</th>
+          <th>Item</th>
+          <th style="width:70px;">Qty</th>
+          <th style="width:90px;">Satuan</th>
+          <th style="width:130px;">Harga Satuan</th>
+          <th style="width:130px;">Harga Total</th>
+        </tr>
+      </thead>
+      <tbody>
+  `;
+
+  rows.forEach((r, i) => {
+    let item = r.querySelector('.biaya-item').value || "";
+    let qty = Number(r.querySelector('.biaya-qty').value || 0);
+    let satuan = r.querySelector('.biaya-satuan').value || "";
+    let harga = Number(r.querySelector('.biaya-harga').value || 0);
+    let total = qty * harga;
+
+    totalAll += total;
+
+    html += `
+      <tr>
+        <td class="center">${i + 1}</td>
+        <td>${item}</td>
+        <td class="center">${qty}</td>
+        <td class="center">${satuan}</td>
+        <td class="right">${formatRupiah(harga)}</td>
+        <td class="right">${formatRupiah(total)}</td>
+      </tr>
+    `;
+  });
+
+  html += `
+      <tr class="grand-total-row">
+        <td colspan="5" class="center"><b>Grand Total</b></td>
+        <td class="right"><b>${formatRupiah(totalAll)}</b></td>
+      </tr>
+    </tbody>
+  </table>
+  `;
+
+  return html;
 }
 
 
@@ -506,10 +761,26 @@ function generateUUID() {
 function generate(){
 
 let jenis = document.getElementById('jenis').value;
+if (jenis === "biaya") {
+  if (!document.getElementById("nomorBiaya")) {
+    alert("Field nomorBiaya tidak ditemukan. Cek HTML biayaBox.");
+    return;
+  }
+
+  if (!document.getElementById("keteranganBiaya")) {
+    alert("Field keteranganBiaya tidak ditemukan. Cek HTML biayaBox.");
+    return;
+  }
+
+  if (!document.getElementById("biayaTable")) {
+    alert("Tabel biayaTable tidak ditemukan. Cek HTML biayaBox.");
+    return;
+  }
+}
 let logo = "Asset/kop.png";
 let footer = "Asset/fot.jpeg";
 
-let kalimatPembuka = getKalimatPembukaBA(jenis);
+let kalimatPembuka = jenis === "biaya" ? "" : getKalimatPembukaBA(jenis);
 
 let useTtd4 = document.getElementById("useTtd4").checked;
 
@@ -565,14 +836,28 @@ let ttd4 = useTtd4 ? img("ttd4") : "";
 
 let today=new Date();
 let waktu = getTanggalJamIndo();
-let nomorUrut=getRunningNumber();
-let nomor = `Nomor : ${nomorUrut}/BA/RSP/PROJECT/${toRoman(today.getMonth()+1)}/${today.getFullYear()}`;
+let nomor = "";
 
-let ttdContainerClass = useTtd4 ? "ttd-container ttd-4" : "ttd-container ttd-3";
+if (jenis === "biaya") {
+  nomor = `Nomor : ${document.getElementById("nomorBiaya").value || "-"}`;
+} else {
+  let nomorUrut = getRunningNumber();
+  nomor = `Nomor : ${nomorUrut}/BA/RSP/PROJECT/${toRoman(today.getMonth()+1)}/${today.getFullYear()}`;
+}
+
+let ttdContainerClass = jenis === "biaya"
+  ? "ttd-container ttd-3"
+  : (useTtd4 ? "ttd-container ttd-4" : "ttd-container ttd-3");
 
 let ttdHTML = "";
 
-if (useTtd4) {
+if (jenis === "biaya") {
+  ttdHTML = `
+    ${renderTtdBox("DIBUAT", ttd1, waktu, nama1, jabatan1)}
+    ${renderTtdBox("DIVERIFIKASI", ttd2, waktu, nama2, jabatan2)}
+    ${renderTtdBox("DISETUJUI", ttd3, waktu, nama3, jabatan3)}
+  `;
+} else if (useTtd4) {
   ttdHTML = `
     ${renderTtdBox("DIBUAT", ttd1, waktu, nama1, jabatan1)}
     ${renderTtdBox("DIPERIKSA", ttd2, waktu, nama2, jabatan2)}
@@ -603,6 +888,50 @@ let contentClass = "";
 
 /* ===== MATERIAL / ADENDUM ===== */
 let tambahan = '';
+
+if (jenis === 'biaya') {
+  let pembukaManual = qPembukaBiaya ? qPembukaBiaya.root.innerHTML.trim() : "";
+let pembukaText = qPembukaBiaya ? qPembukaBiaya.getText().trim() : "";
+
+let penutupManual = qPenutupBiaya ? qPenutupBiaya.root.innerHTML.trim() : "";
+let penutupText = qPenutupBiaya ? qPenutupBiaya.getText().trim() : "";
+
+  let pekerjaanBiaya = document.getElementById("pekerjaanBiaya").value || "";
+  let projectBiaya = document.getElementById("projectBiaya").value || "";
+  let unitBiaya = document.getElementById("unitBiaya").value || "";
+
+  let pembukaDefault = `
+    Pada hari ini, ${getHariTanggalIndo()}, berkaitan dengan adanya pelaksanaan pekerjaan
+    <b><i>${pekerjaanBiaya}</i></b> pada Project <b><i>${projectBiaya}</i></b>,
+    guna menunjang pekerjaan tersebut maka dilakukan pengajuan Rencana Anggaran Biaya pekerjaan
+    <b><i>${pekerjaanBiaya}</i></b> <b><i>${unitBiaya}</i></b> dengan rincian sebagai berikut:
+  `;
+
+  let penutupDefault = `
+    Demikian Berita Acara ini dibuat untuk dilaksanakan dan apabila di kemudian hari terdapat kesalahan
+    maka akan ditinjau kembali.
+  `;
+
+  latarHTML = "";
+  tujuanHTML = "";
+  penutupHTML = "";
+
+  tambahan = `
+  <div class="ba4-content">
+
+    <div class="ba4-paragraph">
+      ${pembukaText ? pembukaManual : `<p>${pembukaDefault}</p>`}
+    </div>
+
+    ${buildBiayaTable()}
+
+    <div class="ba4-paragraph">
+      ${penutupText ? penutupManual : `<p>${penutupDefault}</p>`}
+    </div>
+
+  </div>
+`;
+}
 
 // ===== MATERIAL =====
 if (jenis === 'material') {
@@ -728,11 +1057,19 @@ ${kop()}
 <h4 class="title-ba">BERITA ACARA</h4>
 <p class="nomor-ba">${nomor}</p>
 
+${jenis === "biaya" ? `
+  <p class="subjudul-ba4">
+    ${document.getElementById("keteranganBiaya").value || "Pengajuan Biaya"}
+  </p>
+` : ""}
+
 <div class="ba-body">
 
+  ${kalimatPembuka ? `
   <p class="identitas-ba">
-  ${kalimatPembuka}
-</p>
+    ${kalimatPembuka}
+  </p>
+` : ""}
 
   <div class="content-flex content-area ${contentClass}">
     ${latarHTML}

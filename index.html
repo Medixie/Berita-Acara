@@ -160,12 +160,20 @@
   </div>
 
   <div class="jenis-option" onclick="setJenis('adendum', this)">
-    <div class="jenis-icon">⚠️</div>
-    <div class="jenis-text">
-      <div class="jenis-title">Adendum / Kendala</div>
-      <div class="jenis-desc">Perubahan / kendala di lapangan</div>
-    </div>
+  <div class="jenis-icon">⚠️</div>
+  <div class="jenis-text">
+    <div class="jenis-title">Adendum / Kendala</div>
+    <div class="jenis-desc">Perubahan / kendala di lapangan</div>
   </div>
+</div>
+
+<div class="jenis-option" onclick="setJenis('biaya', this)">
+  <div class="jenis-icon">💰</div>
+  <div class="jenis-text">
+    <div class="jenis-title">Pengajuan Biaya</div>
+    <div class="jenis-desc">BA ringkas dengan nomor, keterangan, pembuka, dan penutup manual</div>
+  </div>
+</div>
 
 </div>
 
@@ -273,36 +281,92 @@
 </div>
 
         <div class="section-title">Isi Surat</div>
-        <div class="section-title">Latar Belakang</div>
-        <div id="latar" class="quill-editor"></div>
-        <div class="section-title mt-2">Maksud & Tujuan</div>
-        <div id="tujuan" class="quill-editor"></div>
 
-        <div id="materialBox" style="display:none;">
-          <h6>Material</h6>
-          <table class="table table-bordered" id="materialTable">
-            <thead>
-              <tr>
-                <th>No</th>
-                <th>Nama Material</th>
-                <th>Spesifikasi</th>
-                <th>Jumlah</th>
-                <th>Satuan</th>
-                <th style="width:50px;">Aksi</th> <!-- TAMBAH INI -->
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </table>
-          <button onclick="addRow()" class="btn btn-sm btn-danger">+ Tambah</button>
-        </div>
+<!-- FORM BA STANDAR -->
+<div id="standardContentBox">
+  <div class="section-title">Latar Belakang</div>
+  <div id="latar" class="quill-editor"></div>
 
-        <div id="adendumBox" style="display:none;">
-          <div class="section-title mt-2">Kronologi / Kejadian</div>
-          <div id="kejadian" class="quill-editor"></div>
-        </div>
+  <div class="section-title mt-2">Maksud & Tujuan</div>
+  <div id="tujuan" class="quill-editor"></div>
 
-        <div class="section-title mt-2">Penutup</div>
-        <div id="penutup" class="quill-editor"></div>
+  <div id="materialBox" style="display:none;">
+    <h6>Material</h6>
+    <table class="table table-bordered" id="materialTable">
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Nama Material</th>
+          <th>Spesifikasi</th>
+          <th>Jumlah</th>
+          <th>Satuan</th>
+          <th style="width:50px;">Aksi</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <button onclick="addRow()" class="btn btn-sm btn-danger">+ Tambah</button>
+  </div>
+
+  <div id="adendumBox" style="display:none;">
+    <div class="section-title mt-2">Kronologi / Kejadian</div>
+    <div id="kejadian" class="quill-editor"></div>
+  </div>
+
+  <div class="section-title mt-2">Penutup</div>
+  <div id="penutup" class="quill-editor"></div>
+</div>
+
+<!-- FORM BA PENGAJUAN BIAYA -->
+<div id="biayaBox" style="display:none;">
+
+  <div class="section-title">Nomor BA Manual</div>
+  <input id="nomorBiaya" class="form-control mb-2"
+    placeholder="Contoh: 164/BA/PRSCH-LOG/VII/2026">
+
+  <div class="section-title">Keterangan / Judul Pengajuan</div>
+  <input id="keteranganBiaya" class="form-control mb-2"
+    placeholder="Contoh: Pengajuan Biaya Plester Samping RN Sampora">
+
+  <div class="section-title">Pekerjaan</div>
+  <input id="pekerjaanBiaya" class="form-control mb-2"
+    placeholder="Contoh: Plester Samping">
+
+  <div class="section-title">Project</div>
+  <input id="projectBiaya" class="form-control mb-2"
+    placeholder="Contoh: RN Sampora">
+
+  <div class="section-title">Unit / Blok</div>
+  <input id="unitBiaya" class="form-control mb-2"
+    placeholder="Contoh: Unit J39, J40, J41, J42">
+
+  <div class="section-title">Pembuka Berita Acara</div>
+<div id="pembukaBiaya" class="quill-editor biaya-editor"></div>
+
+  <div class="section-title mt-2">Rincian Biaya</div>
+  <table class="table table-bordered" id="biayaTable">
+    <thead>
+      <tr>
+        <th style="width:45px;">No</th>
+        <th>Item</th>
+        <th style="width:70px;">Qty</th>
+        <th style="width:90px;">Satuan</th>
+        <th style="width:130px;">Harga Satuan</th>
+        <th style="width:130px;">Harga Total</th>
+        <th style="width:50px;">Aksi</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <button onclick="addBiayaRow()" class="btn btn-sm btn-danger mb-3">
+    + Tambah Rincian
+  </button>
+
+  <div class="section-title">Penutup Berita Acara</div>
+<div id="penutupBiaya" class="quill-editor biaya-editor"></div>
+
+</div>
 
         <div class="section-title">Tanda Tangan</div>
         <input type="file" id="ttd1" class="form-control mb-1">
