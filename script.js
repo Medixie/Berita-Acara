@@ -473,8 +473,8 @@ function addRow(){
   let tbody = document.querySelector('#materialTable tbody');
   let rows = tbody.querySelectorAll('tr').length;
 
-  if(rows >= 20){
-    showToast("Maksimal 20 material!", "warning");
+  if(rows >= 30){
+    showToast("Maksimal 30 material!", "warning");
     return;
   }
 
