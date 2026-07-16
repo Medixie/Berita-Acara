@@ -135,21 +135,6 @@ function getKalimatPembukaBA(jenis) {
 
 function toggleTtd4() {
   const jenis = document.getElementById("jenis").value;
-
-  if (jenis === "biaya") {
-    document.getElementById("roleLabel1").innerText = "DIBUAT";
-    document.getElementById("roleLabel2").innerText = "DIVERIFIKASI";
-    document.getElementById("roleLabel3").innerText = "DISETUJUI";
-
-    const pihak4Box = document.getElementById("pihak4Box");
-    const ttd4Box = document.getElementById("ttd4Box");
-
-    if (pihak4Box) pihak4Box.style.display = "none";
-    if (ttd4Box) ttd4Box.style.display = "none";
-
-    return;
-  }
-
   const useTtd4 = document.getElementById("useTtd4").checked;
 
   const pihak4Box = document.getElementById("pihak4Box");
@@ -164,6 +149,19 @@ function toggleTtd4() {
   }
 
   document.getElementById("roleLabel1").innerText = "DIBUAT";
+
+  if (jenis === "biaya") {
+    if (useTtd4) {
+      document.getElementById("roleLabel2").innerText = "DIVERIFIKASI";
+      document.getElementById("roleLabel3").innerText = "DIKETAHUI";
+      document.getElementById("roleLabel4").innerText = "DISETUJUI";
+    } else {
+      document.getElementById("roleLabel2").innerText = "DIVERIFIKASI";
+      document.getElementById("roleLabel3").innerText = "DISETUJUI";
+    }
+
+    return;
+  }
 
   if (useTtd4) {
     document.getElementById("roleLabel2").innerText = "DIPERIKSA";
@@ -452,21 +450,7 @@ function toggleJenis(){
     biayaBox.style.display = j === 'biaya' ? 'block' : 'none';
   }
 
-  if (j === 'biaya') {
-    const useTtd4 = document.getElementById("useTtd4");
-    const pihak4Box = document.getElementById("pihak4Box");
-    const ttd4Box = document.getElementById("ttd4Box");
-
-    if (useTtd4) useTtd4.checked = false;
-    if (pihak4Box) pihak4Box.style.display = "none";
-    if (ttd4Box) ttd4Box.style.display = "none";
-
-    document.getElementById("roleLabel1").innerText = "DIBUAT";
-    document.getElementById("roleLabel2").innerText = "DIVERIFIKASI";
-    document.getElementById("roleLabel3").innerText = "DISETUJUI";
-  } else {
-    toggleTtd4();
-  }
+  toggleTtd4();
 }
 
 function addRow(){
@@ -540,6 +524,8 @@ function formatRupiah(angka){
   angka = Number(angka || 0);
   return "Rp. " + angka.toLocaleString("id-ID");
 }
+
+
 
 function buildBiayaTable(){
   let rows = document.querySelectorAll('#biayaTable tbody tr');
@@ -845,13 +831,20 @@ if (jenis === "biaya") {
   nomor = `Nomor : ${nomorUrut}/BA/RSP/PROJECT/${toRoman(today.getMonth()+1)}/${today.getFullYear()}`;
 }
 
-let ttdContainerClass = jenis === "biaya"
-  ? "ttd-container ttd-3"
-  : (useTtd4 ? "ttd-container ttd-4" : "ttd-container ttd-3");
+let ttdContainerClass = useTtd4
+  ? "ttd-container ttd-4"
+  : "ttd-container ttd-3";
 
 let ttdHTML = "";
 
-if (jenis === "biaya") {
+if (jenis === "biaya" && useTtd4) {
+  ttdHTML = `
+    ${renderTtdBox("DIBUAT", ttd1, waktu, nama1, jabatan1)}
+    ${renderTtdBox("DIVERIFIKASI", ttd2, waktu, nama2, jabatan2)}
+    ${renderTtdBox("DIKETAHUI", ttd3, waktu, nama3, jabatan3)}
+    ${renderTtdBox("DISETUJUI", ttd4, waktu, nama4, jabatan4)}
+  `;
+} else if (jenis === "biaya") {
   ttdHTML = `
     ${renderTtdBox("DIBUAT", ttd1, waktu, nama1, jabatan1)}
     ${renderTtdBox("DIVERIFIKASI", ttd2, waktu, nama2, jabatan2)}
