@@ -2731,3 +2731,364 @@ p {
   text-decoration: underline !important;
 }
 
+/* =========================================================
+   MATERIAL PINDAH HALAMAN JIKA LEBIH DARI 10 ITEM
+========================================================= */
+
+#output .material-info-box {
+  border: 1px solid #000 !important;
+  padding: 4mm !important;
+  margin: 4mm 0 !important;
+  background: #f9fafb !important;
+}
+
+#output .material-info-box p {
+  font-size: 10.5pt !important;
+  line-height: 1.5 !important;
+  text-align: justify !important;
+  margin: 0 !important;
+}
+
+#output .page-material-rincian .material-page-title {
+  font-size: 11pt !important;
+  font-weight: bold !important;
+  margin: 0 0 3mm 0 !important;
+  text-align: left !important;
+}
+
+#output .page-material-rincian .tabel-material {
+  margin-top: 2mm !important;
+}
+
+/* =========================================================
+   BA URUGAN
+========================================================= */
+
+#uruganBox .urugan-rit-card {
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 12px;
+  background: #fff;
+}
+
+#uruganBox .urugan-rit-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+#uruganBox .urugan-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+#uruganBox .urugan-preview-item {
+  position: relative;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  height: 80px;
+  background: #f5f5f5;
+}
+
+#uruganBox .urugan-preview-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#uruganBox .urugan-preview-item span {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  font-size: 10px;
+  color: #fff;
+  background: rgba(0,0,0,0.6);
+  padding: 2px 4px;
+}
+
+#uruganBox .urugan-preview-empty {
+  grid-column: 1 / -1;
+  font-size: 12px;
+  color: #777;
+  background: #f5f5f5;
+  border: 1px dashed #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+}
+
+/* ===== OUTPUT BA URUGAN ===== */
+
+#output .page-urugan {
+  padding: 12mm 10mm 22mm 10mm !important;
+}
+
+#output .page-urugan .kop {
+  margin-bottom: 3mm !important;
+}
+
+#output .urugan-header {
+  text-align: center !important;
+  margin: 4mm 0 6mm 0 !important;
+}
+
+#output .urugan-title {
+  font-size: 13pt !important;
+  font-weight: bold !important;
+  text-decoration: none !important;
+  text-align: center !important;
+  margin: 0 0 1mm 0 !important;
+  line-height: 1.15 !important;
+  text-transform: uppercase !important;
+}
+
+#output .urugan-nomor {
+  font-size: 9pt !important;
+  font-weight: normal !important;
+  margin-bottom: 1mm !important;
+}
+
+#output .urugan-date {
+  font-size: 12pt !important;
+  font-weight: bold !important;
+  line-height: 1.15 !important;
+  text-transform: uppercase !important;
+}
+
+#output .urugan-price {
+  font-size: 12pt !important;
+  font-weight: bold !important;
+  line-height: 1.15 !important;
+}
+
+#output .urugan-rekening {
+  font-size: 12pt !important;
+  font-weight: bold !important;
+  line-height: 1.15 !important;
+  text-transform: uppercase !important;
+}
+
+#output .urugan-rit-title {
+  font-size: 10pt !important;
+  font-weight: bold !important;
+  margin-top: 4mm !important;
+  padding-top: 2mm !important;
+  border-top: 1px solid #000 !important;
+}
+
+#output .urugan-body {
+  width: 100% !important;
+}
+
+#output .urugan-photo-grid {
+  width: 100% !important;
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  grid-auto-rows: 69mm !important;
+  gap: 1mm !important;
+  border: 1px solid #000 !important;
+  padding: 1mm !important;
+  box-sizing: border-box !important;
+}
+
+#output .urugan-photo-item {
+  position: relative !important;
+  overflow: hidden !important;
+  border: 1px solid #000 !important;
+  background: #f5f5f5 !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+#output .urugan-photo-item img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+#output .urugan-photo-caption {
+  position: absolute !important;
+  left: 0 !important;
+  bottom: 0 !important;
+  right: 0 !important;
+
+  background: rgba(0,0,0,0.65) !important;
+  color: #fff !important;
+
+  font-size: 7.5pt !important;
+  line-height: 1.1 !important;
+  padding: 1mm 1.5mm !important;
+  text-align: left !important;
+
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
+}
+
+#output .urugan-empty-photo {
+  border: 1px dashed #999 !important;
+  height: 150mm !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  font-size: 11pt !important;
+  color: #777 !important;
+}
+
+
+/* =========================================================
+   DRAG & DROP DOKUMENTASI RIT URUGAN
+========================================================= */
+
+#uruganBox .urugan-drop-area {
+  border: 2px dashed #c90000;
+  background: #fff7f7;
+  border-radius: 12px;
+  padding: 14px;
+  text-align: center;
+  cursor: pointer;
+  margin-bottom: 10px;
+  transition: 0.25s ease;
+}
+
+#uruganBox .urugan-drop-area:hover {
+  background: #ffecec;
+  border-color: #a30000;
+}
+
+#uruganBox .urugan-drop-area.dragover {
+  background: #ffe0e0;
+  border-color: #ff0000;
+  transform: scale(1.01);
+}
+
+#uruganBox .urugan-drop-icon {
+  font-size: 24px;
+  margin-bottom: 4px;
+}
+
+#uruganBox .urugan-drop-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #7a0000;
+}
+
+#uruganBox .urugan-drop-desc {
+  font-size: 12px;
+  color: #555;
+  margin-top: 2px;
+}
+
+#uruganBox .urugan-drop-note {
+  font-size: 11px;
+  color: #888;
+  margin-top: 3px;
+}
+
+#uruganBox .urugan-preview-item {
+  position: relative;
+}
+
+#uruganBox .urugan-remove-photo {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+
+  width: 22px;
+  height: 22px;
+  border: none;
+  border-radius: 50%;
+
+  background: rgba(201, 0, 0, 0.9);
+  color: #fff;
+
+  font-size: 14px;
+  line-height: 20px;
+  cursor: pointer;
+}
+
+/* =========================================================
+   FOTO NOTA URUGAN
+========================================================= */
+
+#uruganBox .nota-urugan-drop {
+  border-color: #6b7280 !important;
+  background: #f9fafb !important;
+}
+
+#uruganBox .nota-urugan-drop:hover {
+  background: #f3f4f6 !important;
+  border-color: #374151 !important;
+}
+
+#uruganBox .nota-urugan-status {
+  grid-column: 1 / -1;
+  font-size: 12px;
+  font-weight: 600;
+  color: #374151;
+  background: #f3f4f6;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 7px 10px;
+}
+
+#output .page-urugan-nota .urugan-rit-title {
+  border-top: 1px solid #000 !important;
+  color: #000 !important;
+}
+
+#output .urugan-nota-grid .urugan-photo-caption {
+  background: rgba(0,0,0,0.72) !important;
+  color: #fff !important;
+  font-weight: bold !important;
+}
+
+/* =========================================================
+   JENIS BA DROPDOWN
+========================================================= */
+
+.jenis-card {
+  border-radius: 18px;
+  background: linear-gradient(145deg, #ffffff, #f8f9fc);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+}
+
+.jenis-header {
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.jenis-select {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  border-radius: 12px !important;
+  padding: 10px 12px !important;
+  border: 1px solid #ddd !important;
+  background: #fff !important;
+}
+
+.jenis-select:focus {
+  border-color: #c90000 !important;
+  box-shadow: 0 0 0 3px rgba(201,0,0,0.12) !important;
+}
+
+.jenis-dropdown-desc {
+  margin-top: 8px;
+  padding: 8px 10px;
+  background: #f3f4f6;
+  border-left: 3px solid #c90000;
+  border-radius: 8px;
+  font-size: 12px;
+  color: #555;
+  line-height: 1.4;
+}

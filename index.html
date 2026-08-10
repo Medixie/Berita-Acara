@@ -139,48 +139,32 @@
     <div class="form-panel">
       <div class="card p-3">
 
-    <div class="card p-3 mb-3 jenis-card">
+<div class="card p-3 mb-3 jenis-card">
 
-  <div class="jenis-header">📄 Jenis Berita Acara</div>
+  <label class="jenis-header" for="jenisSelect">📄 Jenis Berita Acara</label>
 
-  <div class="jenis-option" onclick="setJenis('material', this)">
-    <div class="jenis-icon">📦</div>
-    <div class="jenis-text">
-      <div class="jenis-title">Pengajuan Material</div>
-      <div class="jenis-desc">Untuk permintaan barang/material project</div>
-    </div>
+  <select id="jenisSelect" class="form-control jenis-select" onchange="setJenisDropdown(this.value)">
+    <option value="material">Pengajuan Material</option>
+    <option value="keterangan">Keterangan Pekerjaan</option>
+    <option value="adendum">Adendum / Kendala</option>
+    <option value="biaya">Pengajuan Biaya</option>
+    <option value="urugan">BA Urugan</option>
+  </select>
+
+  <div id="jenisDesc" class="jenis-dropdown-desc">
+    Untuk permintaan barang/material project.
   </div>
 
-  <div class="jenis-option" onclick="setJenis('keterangan', this)">
-    <div class="jenis-icon">📝</div>
-    <div class="jenis-text">
-      <div class="jenis-title">Keterangan Pekerjaan</div>
-      <div class="jenis-desc">Penjelasan kondisi pekerjaan</div>
-    </div>
-  </div>
-
-  <div class="jenis-option" onclick="setJenis('adendum', this)">
-  <div class="jenis-icon">⚠️</div>
-  <div class="jenis-text">
-    <div class="jenis-title">Adendum / Kendala</div>
-    <div class="jenis-desc">Perubahan / kendala di lapangan</div>
-  </div>
 </div>
 
-<div class="jenis-option" onclick="setJenis('biaya', this)">
-  <div class="jenis-icon">💰</div>
-  <div class="jenis-text">
-    <div class="jenis-title">Pengajuan Biaya</div>
-    <div class="jenis-desc">BA ringkas dengan nomor, keterangan, pembuka, dan penutup manual</div>
-  </div>
-</div>
+<input type="hidden" id="jenis" value="material">
 
 </div>
 
 <!-- hidden input biar logic tetap jalan -->
 <input type="hidden" id="jenis" value="material">
 
-<div class="card pihak-card p-3 mb-3">
+<div class="card pihak-card p-3 mb-3" id="pihakCard">
 
   <div class="pihak-header">
     <span class="pihak-title">👥 Pihak Penandatangan</span>
@@ -368,21 +352,113 @@
 
 </div>
 
-        <div class="section-title">Tanda Tangan</div>
-        <input type="file" id="ttd1" class="form-control mb-1">
-        <input type="file" id="ttd2" class="form-control mb-1">
-        <input type="file" id="ttd3" class="form-control mb-1">
+<!-- FORM BA URUGAN -->
+<div id="uruganBox" style="display:none;">
 
-        <div id="ttd4Box" style="display:none;">
-          <input type="file" id="ttd4" class="form-control mb-2">
-        </div>
+  <div class="section-title">Nomor BA Urugan</div>
+  <input id="nomorUrugan" class="form-control mb-2"
+    placeholder="Contoh: 001/BA-URG/RSP/PROJECT/VIII/2026">
 
-        <div id="dropArea" class="drop-area">
-  <p>Drag & Drop gambar di sini<br>atau klik untuk upload</p>
-  <input type="file" id="lampiran" multiple hidden>
+  <div class="section-title">Project</div>
+  <input id="projectUrugan" class="form-control mb-2"
+    placeholder="Contoh: TRUSMILAND AWN KOMERSIL">
+
+  <div class="section-title">Blok / Unit</div>
+  <table class="table table-bordered" id="blokUruganTable">
+    <thead>
+      <tr>
+        <th style="width:45px;">No</th>
+        <th>Blok / Unit</th>
+        <th style="width:50px;">Aksi</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <button type="button" onclick="addBlokUrugan()" class="btn btn-sm btn-danger mb-3">
+    + Tambah Blok
+  </button>
+
+  <div class="row">
+    <div class="col-md-4">
+      <div class="section-title">Jumlah Rit</div>
+      <input id="jumlahRitUrugan" type="number" class="form-control mb-2"
+        placeholder="Contoh: 3" oninput="hitungTotalUrugan()">
+    </div>
+
+    <div class="col-md-4">
+      <div class="section-title">Harga per Rit</div>
+      <input id="hargaRitUrugan" type="number" class="form-control mb-2"
+        placeholder="Contoh: 560000" oninput="hitungTotalUrugan()">
+    </div>
+
+    <div class="col-md-4">
+      <div class="section-title">Total</div>
+      <input id="totalUrugan" class="form-control mb-2" readonly>
+    </div>
+  </div>
+
+  <div class="section-title">Atas Nama</div>
+  <input id="atasNamaUrugan" class="form-control mb-2"
+    placeholder="Contoh: ANGGUN MEILANI SAFITRI">
+
+  <div class="section-title">Bank</div>
+  <input id="bankUrugan" class="form-control mb-2"
+    placeholder="Contoh: BCA">
+
+  <div class="section-title">No. Rekening</div>
+  <input id="rekeningUrugan" class="form-control mb-3"
+    placeholder="Contoh: 8180220021">
+
+<div class="section-title">Foto Nota Urugan</div>
+<p class="small text-muted mb-2">
+  Jumlah foto nota mengikuti jumlah rit. Contoh: 3 rit = 3 foto nota.
+</p>
+
+<div class="urugan-drop-area nota-urugan-drop"
+  onclick="document.getElementById('notaUruganInput').click()"
+  ondragover="dragUruganOver(event, this)"
+  ondragleave="dragUruganLeave(this)"
+  ondrop="dropNotaUruganFiles(event, this)">
+
+  <div class="urugan-drop-icon">🧾</div>
+  <div class="urugan-drop-title">Drag & Drop Foto Nota</div>
+  <div class="urugan-drop-desc">atau klik untuk upload nota urugan</div>
+  <div class="urugan-drop-note">Jumlah nota maksimal mengikuti jumlah rit</div>
+
+  <input type="file" id="notaUruganInput" hidden multiple accept="image/*"
+    onchange="handleNotaUruganFiles(event)">
 </div>
 
-<div id="previewLampiran" class="lampiran-preview"></div>
+<div id="previewNotaUrugan" class="urugan-preview-grid mb-3"></div>
+
+  <button type="button" onclick="addRitUrugan()" class="btn btn-sm btn-danger mb-3">
+    + Tambah Dokumentasi Rit
+  </button>
+
+  <div id="ritUruganContainer"></div>
+
+</div>
+
+<div id="standardTtdLampiranBox">
+
+  <div class="section-title">Tanda Tangan</div>
+  <input type="file" id="ttd1" class="form-control mb-1">
+  <input type="file" id="ttd2" class="form-control mb-1">
+  <input type="file" id="ttd3" class="form-control mb-1">
+
+  <div id="ttd4Box" style="display:none;">
+    <input type="file" id="ttd4" class="form-control mb-2">
+  </div>
+
+  <div id="dropArea" class="drop-area">
+    <p>Drag & Drop gambar di sini<br>atau klik untuk upload</p>
+    <input type="file" id="lampiran" multiple hidden>
+  </div>
+
+  <div id="previewLampiran" class="lampiran-preview"></div>
+
+</div>
 
         <button onclick="generate()" class="btn btn-danger w-100">Generate Dokumen</button>
         <button onclick="simpanPDF()" class="btn btn-success w-100 mt-2">

@@ -275,6 +275,16 @@ function loadDraft(){
   document.getElementById('jenis').value = draft.jenis;
   toggleJenis();
 
+  document.getElementById('jenis').value = draft.jenis;
+
+const jenisSelect = document.getElementById("jenisSelect");
+if (jenisSelect) {
+  jenisSelect.value = draft.jenis;
+  setJenisDropdown(draft.jenis);
+} else {
+  toggleJenis();
+}
+
   document.getElementById("useTtd4").checked = !!draft.useTtd4;
 toggleTtd4();
 
@@ -311,18 +321,23 @@ function toggleSidebar(){
   main.classList.toggle("full");
 }
 
-function setJenis(value, el){
+function setJenisDropdown(value){
   document.getElementById("jenis").value = value;
 
-  // reset semua
-  document.querySelectorAll(".jenis-option").forEach(o=>{
-    o.classList.remove("active");
-  });
+  const desc = document.getElementById("jenisDesc");
 
-  // aktifkan yg diklik
-  el.classList.add("active");
+  const deskripsi = {
+    material: "Untuk permintaan barang/material project.",
+    keterangan: "Untuk membuat keterangan kondisi pekerjaan di lapangan.",
+    adendum: "Untuk perubahan, kendala, atau penyesuaian pekerjaan.",
+    biaya: "BA pengajuan biaya dengan nomor, pembuka, penutup, dan tabel biaya manual.",
+    urugan: "BA urugan dengan rincian rit, nota, rekening, dan dokumentasi foto per rit."
+  };
 
-  // panggil fungsi lama
+  if (desc) {
+    desc.innerText = deskripsi[value] || "";
+  }
+
   toggleJenis();
 }
 
@@ -401,6 +416,11 @@ if(user === "admin" && pass === "admin123"){
 }
   });
 
+const jenisSelect = document.getElementById("jenisSelect");
+if (jenisSelect) {
+  setJenisDropdown(jenisSelect.value);
+}
+
 });
 
 function logout(){
@@ -433,9 +453,14 @@ function toggleJenis(){
   const materialBox = document.getElementById('materialBox');
   const adendumBox = document.getElementById('adendumBox');
   const biayaBox = document.getElementById('biayaBox');
+  const uruganBox = document.getElementById('uruganBox');
 
+  const pihakCard = document.getElementById('pihakCard');
+  const standardTtdLampiranBox = document.getElementById('standardTtdLampiranBox');
+
+  // Form isi surat standar disembunyikan untuk BA Biaya dan BA Urugan
   if (standardContentBox) {
-    standardContentBox.style.display = j === 'biaya' ? 'none' : 'block';
+    standardContentBox.style.display = (j === 'biaya' || j === 'urugan') ? 'none' : 'block';
   }
 
   if (materialBox) {
@@ -450,7 +475,23 @@ function toggleJenis(){
     biayaBox.style.display = j === 'biaya' ? 'block' : 'none';
   }
 
-  toggleTtd4();
+  if (uruganBox) {
+    uruganBox.style.display = j === 'urugan' ? 'block' : 'none';
+  }
+
+  // Khusus BA Urugan: hide pihak, TTD, dan lampiran umum
+  if (pihakCard) {
+    pihakCard.style.display = j === 'urugan' ? 'none' : 'block';
+  }
+
+  if (standardTtdLampiranBox) {
+    standardTtdLampiranBox.style.display = j === 'urugan' ? 'none' : 'block';
+  }
+
+  // TTD hanya diproses untuk BA selain Urugan
+  if (j !== 'urugan') {
+    toggleTtd4();
+  }
 }
 
 function addRow(){
@@ -575,6 +616,425 @@ function buildBiayaTable(){
     </tbody>
   </table>
   `;
+
+  return html;
+}
+
+let uruganRitFiles = [];
+let uruganNotaFiles = [];
+
+function addBlokUrugan(){
+  const tbody = document.querySelector("#blokUruganTable tbody");
+  const count = tbody.querySelectorAll("tr").length + 1;
+
+  const row = `
+    <tr>
+      <td class="center">${count}</td>
+      <td>
+        <input class="form-control blok-urugan-input" placeholder="Contoh: D21">
+      </td>
+      <td style="text-align:center;">
+        <button type="button" onclick="hapusBlokUrugan(this)" class="btn btn-sm btn-danger">✕</button>
+      </td>
+    </tr>
+  `;
+
+  tbody.insertAdjacentHTML("beforeend", row);
+}
+
+function hapusBlokUrugan(btn){
+  btn.closest("tr").remove();
+
+  document.querySelectorAll("#blokUruganTable tbody tr").forEach((row, i) => {
+    row.cells[0].innerText = i + 1;
+  });
+}
+
+function getBlokUruganText(){
+  const inputs = document.querySelectorAll(".blok-urugan-input");
+  const list = [];
+
+  inputs.forEach(input => {
+    if (input.value.trim()) {
+      list.push(input.value.trim());
+    }
+  });
+
+  return list.join(", ");
+}
+
+function hitungTotalUrugan(){
+  const jumlah = Number(document.getElementById("jumlahRitUrugan").value || 0);
+  const harga = Number(document.getElementById("hargaRitUrugan").value || 0);
+  const total = jumlah * harga;
+
+  document.getElementById("totalUrugan").value = formatRupiah(total);
+
+  renderNotaUruganPreview();
+}
+
+function formatAngkaUrugan(angka){
+  angka = Number(angka || 0);
+  return angka.toLocaleString("id-ID");
+}
+
+function addRitUrugan(){
+  uruganRitFiles.push([]);
+
+  renderRitUruganForm();
+
+  const jumlahRit = document.getElementById("jumlahRitUrugan");
+
+  if (!jumlahRit.value || Number(jumlahRit.value) < uruganRitFiles.length) {
+    jumlahRit.value = uruganRitFiles.length;
+  }
+
+  hitungTotalUrugan();
+  renderNotaUruganPreview();
+
+  showToast("Dokumentasi rit berhasil ditambahkan!", "success");
+}
+
+function hapusRitUrugan(index){
+  uruganRitFiles.splice(index, 1);
+
+  renderRitUruganForm();
+
+  const jumlahRit = document.getElementById("jumlahRitUrugan");
+
+  if (Number(jumlahRit.value) > uruganRitFiles.length) {
+    jumlahRit.value = uruganRitFiles.length;
+  }
+
+  hitungTotalUrugan();
+  renderNotaUruganPreview();
+
+  showToast("Dokumentasi rit berhasil dihapus!", "warning");
+}
+
+function renderRitUruganForm(){
+  const container = document.getElementById("ritUruganContainer");
+  container.innerHTML = "";
+
+  uruganRitFiles.forEach((files, index) => {
+    const no = index + 1;
+
+    let previewHTML = "";
+
+    files.forEach((file, i) => {
+      const url = URL.createObjectURL(file);
+
+      previewHTML += `
+        <div class="urugan-preview-item">
+          <img src="${url}">
+          <span>Foto ${i + 1}</span>
+          <button type="button" onclick="hapusFotoUrugan(${index}, ${i})" class="urugan-remove-photo">×</button>
+        </div>
+      `;
+    });
+
+    container.innerHTML += `
+      <div class="urugan-rit-card">
+        <div class="urugan-rit-head">
+          <strong>Dokumentasi Rit ${no}</strong>
+          <button type="button" onclick="hapusRitUrugan(${index})" class="btn btn-sm btn-danger">Hapus Rit</button>
+        </div>
+
+        <div class="urugan-drop-area"
+          onclick="document.getElementById('inputRitUrugan${index}').click()"
+          ondragover="dragUruganOver(event, this)"
+          ondragleave="dragUruganLeave(this)"
+          ondrop="dropUruganFiles(event, ${index}, this)">
+
+          <div class="urugan-drop-icon">📷</div>
+          <div class="urugan-drop-title">Drag & Drop Foto Rit ${no}</div>
+          <div class="urugan-drop-desc">atau klik untuk upload dokumentasi</div>
+          <div class="urugan-drop-note">Maksimal 6 foto per rit</div>
+
+          <input type="file" id="inputRitUrugan${index}" hidden multiple accept="image/*"
+            onchange="handleUruganRitFiles(event, ${index})">
+        </div>
+
+        <div class="urugan-preview-grid">
+          ${previewHTML || `<div class="urugan-preview-empty">Belum ada foto untuk Rit ${no}</div>`}
+        </div>
+      </div>
+    `;
+  });
+}
+
+function handleUruganRitFiles(event, index){
+  const files = Array.from(event.target.files);
+  tambahFotoUrugan(index, files);
+
+  // reset input supaya file yang sama bisa dipilih ulang
+  event.target.value = "";
+}
+
+function tambahFotoUrugan(index, files){
+  let imageFiles = files.filter(file => file.type.startsWith("image/"));
+
+  if (!uruganRitFiles[index]) {
+    uruganRitFiles[index] = [];
+  }
+
+  let currentFiles = uruganRitFiles[index];
+  let availableSlot = 6 - currentFiles.length;
+
+  if (availableSlot <= 0) {
+    showToast("Foto Rit ini sudah maksimal 6 foto!", "warning");
+    return;
+  }
+
+  if (imageFiles.length > availableSlot) {
+    showToast(`Maksimal 6 foto per rit. Hanya ${availableSlot} foto yang ditambahkan.`, "warning");
+    imageFiles = imageFiles.slice(0, availableSlot);
+  }
+
+  uruganRitFiles[index] = currentFiles.concat(imageFiles);
+  renderRitUruganForm();
+}
+
+function dragUruganOver(event, el){
+  event.preventDefault();
+  el.classList.add("dragover");
+}
+
+function dragUruganLeave(el){
+  el.classList.remove("dragover");
+}
+
+function dropUruganFiles(event, index, el){
+  event.preventDefault();
+  el.classList.remove("dragover");
+
+  const files = Array.from(event.dataTransfer.files);
+  tambahFotoUrugan(index, files);
+}
+
+function hapusFotoUrugan(ritIndex, fotoIndex){
+  if (!uruganRitFiles[ritIndex]) return;
+
+  uruganRitFiles[ritIndex].splice(fotoIndex, 1);
+  renderRitUruganForm();
+}
+
+function formatTanggalUrugan(){
+  const hari = ["MINGGU", "SENIN", "SELASA", "RABU", "KAMIS", "JUMAT", "SABTU"];
+  const bulan = [
+    "JANUARI", "FEBRUARI", "MARET", "APRIL", "MEI", "JUNI",
+    "JULI", "AGUSTUS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DESEMBER"
+  ];
+
+  const d = new Date();
+
+  return `${hari[d.getDay()]}, ${d.getDate()} ${bulan[d.getMonth()]} ${d.getFullYear()}`;
+}
+
+function buildUruganPhotoGrid(files, ritNumber){
+  if (!files || files.length === 0) {
+    return `
+      <div class="urugan-empty-photo">
+        Belum ada dokumentasi untuk Rit ${ritNumber}
+      </div>
+    `;
+  }
+
+  let html = `<div class="urugan-photo-grid">`;
+
+  files.slice(0, 6).forEach((file, i) => {
+    const url = URL.createObjectURL(file);
+
+    html += `
+      <div class="urugan-photo-item">
+        <img src="${url}">
+        <div class="urugan-photo-caption">Rit ${ritNumber} - Foto ${i + 1}</div>
+      </div>
+    `;
+  });
+
+  html += `</div>`;
+
+  return html;
+}
+
+function buildUruganNotaGrid(files, startIndex = 0){
+  if (!files || files.length === 0) {
+    return `
+      <div class="urugan-empty-photo">
+        Belum ada dokumentasi nota urugan
+      </div>
+    `;
+  }
+
+  let html = `<div class="urugan-photo-grid urugan-nota-grid">`;
+
+  files.slice(0, 6).forEach((file, i) => {
+    const url = URL.createObjectURL(file);
+    const nomorNota = startIndex + i + 1;
+
+    html += `
+      <div class="urugan-photo-item">
+        <img src="${url}">
+        <div class="urugan-photo-caption">Nota Rit ${nomorNota}</div>
+      </div>
+    `;
+  });
+
+  html += `</div>`;
+
+  return html;
+}
+
+function buildUruganPages(kop, foot){
+  const nomor = document.getElementById("nomorUrugan").value || "";
+  const project = document.getElementById("projectUrugan").value || "";
+  const blok = getBlokUruganText();
+
+  const jumlahRit = Number(document.getElementById("jumlahRitUrugan").value || 0);
+  const hargaRit = Number(document.getElementById("hargaRitUrugan").value || 0);
+  const total = jumlahRit * hargaRit;
+
+  const atasNama = document.getElementById("atasNamaUrugan").value || "";
+  const bank = document.getElementById("bankUrugan").value || "";
+  const rekening = document.getElementById("rekeningUrugan").value || "";
+
+  const title = `URUGAN ${project} ${blok}`.trim();
+
+  function headerUrugan(sectionTitle){
+    return `
+      ${kop()}
+
+      <div class="urugan-header">
+        <h4 class="urugan-title">${title || "URUGAN"}</h4>
+
+        ${nomor ? `<div class="urugan-nomor">Nomor : ${nomor}</div>` : ""}
+
+        <div class="urugan-date">${formatTanggalUrugan()}</div>
+
+        <div class="urugan-price">
+          ${jumlahRit || 0} RIT
+          ${formatAngkaUrugan(hargaRit)} x ${jumlahRit || 0}
+          = ${formatAngkaUrugan(total)}
+        </div>
+
+        <div class="urugan-rekening">
+          ${atasNama || "-"} ${bank ? `- ${bank}` : ""} ${rekening ? `- ${rekening}` : ""}
+        </div>
+
+        <div class="urugan-rit-title">
+          ${sectionTitle}
+        </div>
+      </div>
+    `;
+  }
+
+  let html = "";
+
+  // ===== HALAMAN NOTA DI ATAS SEBELUM FOTO RIT =====
+  if (uruganNotaFiles.length > 0) {
+    for (let start = 0; start < uruganNotaFiles.length; start += 6) {
+      const chunkNota = uruganNotaFiles.slice(start, start + 6);
+
+      html += `
+        <div class="page page-urugan page-urugan-nota">
+          ${headerUrugan("DOKUMENTASI NOTA URUGAN")}
+
+          <div class="urugan-body">
+            ${buildUruganNotaGrid(chunkNota, start)}
+          </div>
+
+          ${foot()}
+        </div>
+      `;
+    }
+  }
+
+  // ===== HALAMAN FOTO RIT SETELAH NOTA =====
+  let ritList = uruganRitFiles.length > 0 ? uruganRitFiles : [[]];
+
+  ritList.forEach((files, index) => {
+    const ritNumber = index + 1;
+
+    html += `
+      <div class="page page-urugan">
+        ${headerUrugan(`DOKUMENTASI RIT ${ritNumber}`)}
+
+        <div class="urugan-body">
+          ${buildUruganPhotoGrid(files, ritNumber)}
+        </div>
+
+        ${foot()}
+      </div>
+    `;
+  });
+
+  return html;
+}
+
+function buildMaterialTable(rowsData) {
+  if (!rowsData || rowsData.length === 0) return "";
+
+  let table = `
+    <table class='table table-bordered tabel-material'>
+      <thead>
+        <tr>
+          <th style="width:40px;">No</th>
+          <th>Nama Material/Barang</th>
+          <th style="width:170px;">Spesifikasi / Ukuran</th>
+          <th style="width:80px;">Qty</th>
+          <th style="width:80px;">Satuan</th>
+        </tr>
+      </thead>
+      <tbody>
+  `;
+
+  rowsData.forEach((item) => {
+    table += `
+      <tr>
+        <td class="center">${item.no}</td>
+        <td>${item.nama}</td>
+        <td class="center">${item.spesifikasi}</td>
+        <td class="center">${item.qty}</td>
+        <td class="center">${item.satuan}</td>
+      </tr>
+    `;
+  });
+
+  table += `
+      </tbody>
+    </table>
+  `;
+
+  return table;
+}
+
+function buildMaterialSeparatePages(rowsData, kop, foot, nomor) {
+  if (!rowsData || rowsData.length === 0) return "";
+
+  let html = "";
+
+  for (let start = 0; start < rowsData.length; start += MATERIAL_PAGE_LIMIT) {
+    const chunk = rowsData.slice(start, start + MATERIAL_PAGE_LIMIT);
+
+    html += `
+      <div class="page page-material-rincian">
+        ${kop()}
+
+        <h4 class="title-ba">BERITA ACARA</h4>
+        <p class="nomor-ba">${nomor}</p>
+
+        <div class="ba-body">
+          <div class="content-flex content-area">
+            <h5 class="material-page-title">Rincian Kebutuhan Material / Barang</h5>
+            ${buildMaterialTable(chunk)}
+          </div>
+        </div>
+
+        ${foot()}
+      </div>
+    `;
+  }
 
   return html;
 }
@@ -826,6 +1286,10 @@ let nomor = "";
 
 if (jenis === "biaya") {
   nomor = `Nomor : ${document.getElementById("nomorBiaya").value || "-"}`;
+} else if (jenis === "urugan") {
+  nomor = document.getElementById("nomorUrugan").value
+    ? `Nomor : ${document.getElementById("nomorUrugan").value}`
+    : "";
 } else {
   let nomorUrut = getRunningNumber();
   nomor = `Nomor : ${nomorUrut}/BA/RSP/PROJECT/${toRoman(today.getMonth()+1)}/${today.getFullYear()}`;
@@ -881,6 +1345,7 @@ let contentClass = "";
 
 /* ===== MATERIAL / ADENDUM ===== */
 let tambahan = '';
+let materialSeparatePages = "";
 
 if (jenis === 'biaya') {
   let pembukaManual = qPembukaBiaya ? qPembukaBiaya.root.innerHTML.trim() : "";
@@ -927,37 +1392,36 @@ let penutupText = qPenutupBiaya ? qPenutupBiaya.getText().trim() : "";
 }
 
 // ===== MATERIAL =====
+// ===== MATERIAL DENGAN LOGIKA HALAMAN =====
 if (jenis === 'material') {
-  let rows = document.querySelectorAll('#materialTable tbody tr');
+  const materialRowsData = getMaterialRowsData();
 
-  if (rows.length > 0) {
+  if (materialRowsData.length > 0) {
 
-    let table = `
-    <table class='table table-bordered tabel-material'>
-      <tr>
-        <th style="width:40px;">No</th>
-        <th>Nama Material/Barang</th>
-        <th style="width:170px;">Spesifikasi / Ukuran</th>
-        <th style="width:80px;">Qty</th>
-        <th style="width:80px;">Satuan</th>
-      </tr>
-    `;
+    // Jika material maksimal 10, tabel tetap tampil di halaman 1
+    if (materialRowsData.length <= MATERIAL_MAX_PAGE1) {
+      tambahan = buildMaterialTable(materialRowsData);
+    }
 
-    rows.forEach((r) => {
-      let c = r.querySelectorAll('input');
+    // Jika material lebih dari 10, tabel pindah ke halaman berikutnya
+    else {
+      tambahan = `
+        <div class="material-info-box">
+          <p>
+            Rincian kebutuhan material/barang tidak ditampilkan pada halaman ini karena jumlah item
+            lebih dari 13. Seluruh rincian material/barang tercantum pada halaman berikutnya sebagai
+            bagian yang tidak terpisahkan dari Berita Acara ini.
+          </p>
+        </div>
+      `;
 
-      table += `
-      <tr>
-        <td class="center">${r.cells[0].innerText}</td>
-        <td>${c[0].value}</td>
-        <td class="center">${c[1].value}</td>
-        <td class="center">${c[2].value}</td>
-        <td class="center">${c[3].value}</td>
-      </tr>`;
-    });
-
-    table += `</table>`;
-    tambahan = table;
+      materialSeparatePages = buildMaterialSeparatePages(
+        materialRowsData,
+        kop,
+        foot,
+        nomor
+      );
+    }
   }
 }
 
@@ -1042,6 +1506,20 @@ return `
 `;
 }
 
+if (jenis === "urugan") {
+  const pageUrugan = buildUruganPages(kop, foot);
+
+  document.getElementById("output").innerHTML = pageUrugan;
+
+  requestAnimationFrame(() => {
+    fitFirstPage();
+    setTimeout(fitFirstPage, 250);
+  });
+
+  scrollToPreview();
+  return;
+}
+
 /* ===== PAGE 1 ===== */
 let page1 = `
 <div class="page ${compactClass}" id="pageSurat">
@@ -1084,7 +1562,7 @@ ${foot()}
 /* ===== PAGE 2 DST KHUSUS LAMPIRAN ===== */
 let page2 = buildLampiranPages(lampiranFiles, kop, foot);
 
-document.getElementById("output").innerHTML = page1 + page2;
+document.getElementById("output").innerHTML = page1 + materialSeparatePages + page2;
 
 /* Cek tinggi aktual halaman.
    Font hanya dipadatkan jika benar-benar overflow.
@@ -1222,6 +1700,97 @@ function renderPreview(){
       </div>
     `;
   });
+}
+
+function getJumlahRitTargetUrugan(){
+  const jumlahInput = Number(document.getElementById("jumlahRitUrugan").value || 0);
+  const jumlahRitCard = uruganRitFiles.length || 0;
+
+  return Math.max(jumlahInput, jumlahRitCard);
+}
+
+function handleNotaUruganFiles(event){
+  const files = Array.from(event.target.files);
+  tambahNotaUrugan(files);
+
+  event.target.value = "";
+}
+
+function dropNotaUruganFiles(event, el){
+  event.preventDefault();
+  el.classList.remove("dragover");
+
+  const files = Array.from(event.dataTransfer.files);
+  tambahNotaUrugan(files);
+}
+
+function tambahNotaUrugan(files){
+  let imageFiles = files.filter(file => file.type.startsWith("image/"));
+  const maxNota = getJumlahRitTargetUrugan();
+
+  if (maxNota <= 0) {
+    showToast("Isi jumlah rit atau tambahkan dokumentasi rit terlebih dahulu.", "warning");
+    return;
+  }
+
+  let slotTersedia = maxNota - uruganNotaFiles.length;
+
+  if (slotTersedia <= 0) {
+    showToast(`Foto nota sudah maksimal ${maxNota} sesuai jumlah rit.`, "warning");
+    return;
+  }
+
+  if (imageFiles.length > slotTersedia) {
+    showToast(`Maksimal ${maxNota} foto nota. Hanya ${slotTersedia} foto yang ditambahkan.`, "warning");
+    imageFiles = imageFiles.slice(0, slotTersedia);
+  }
+
+  uruganNotaFiles = uruganNotaFiles.concat(imageFiles);
+  renderNotaUruganPreview();
+}
+
+function renderNotaUruganPreview(){
+  const container = document.getElementById("previewNotaUrugan");
+  if (!container) return;
+
+  const maxNota = getJumlahRitTargetUrugan();
+
+  if (maxNota > 0 && uruganNotaFiles.length > maxNota) {
+    uruganNotaFiles = uruganNotaFiles.slice(0, maxNota);
+  }
+
+  let html = `
+    <div class="nota-urugan-status">
+      Foto nota: ${uruganNotaFiles.length}/${maxNota || 0}
+    </div>
+  `;
+
+  if (uruganNotaFiles.length === 0) {
+    html += `
+      <div class="urugan-preview-empty">
+        Belum ada foto nota
+      </div>
+    `;
+  } else {
+    uruganNotaFiles.forEach((file, index) => {
+      const url = URL.createObjectURL(file);
+
+      html += `
+        <div class="urugan-preview-item">
+          <img src="${url}">
+          <span>Nota Rit ${index + 1}</span>
+          <button type="button" onclick="hapusNotaUrugan(${index})" class="urugan-remove-photo">×</button>
+        </div>
+      `;
+    });
+  }
+
+  container.innerHTML = html;
+}
+
+function hapusNotaUrugan(index){
+  uruganNotaFiles.splice(index, 1);
+  renderNotaUruganPreview();
 }
 
 // hapus file
