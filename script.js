@@ -199,6 +199,333 @@ function renderTtdBox(title, ttdSrc, waktu, nama, jabatan) {
   `;
 }
 
+let opnameFiles = [];
+
+function getValue(id, fallback = ""){
+  const el = document.getElementById(id);
+  return el && el.value.trim() ? el.value.trim() : fallback;
+}
+
+function getTanggalOpname(){
+  const input = document.getElementById("tanggalOpname");
+
+  let d = input && input.value ? new Date(input.value + "T00:00:00") : new Date();
+
+  const hari = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+  const bulan = [
+    "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+    "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+  ];
+
+  const dd = String(d.getDate()).padStart(2, "0");
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const yyyy = d.getFullYear();
+
+  return {
+    display: `${hari[d.getDay()]}, ${d.getDate()} ${bulan[d.getMonth()]} ${yyyy}`,
+    angka: `${dd}-${mm}-${yyyy}`
+  };
+}
+
+function getRunningNumberOpname(){
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth() + 1;
+
+  const key = `ba_opname_${year}_${month}`;
+
+  let num = localStorage.getItem(key);
+  num = num ? parseInt(num) + 1 : 1;
+
+  localStorage.setItem(key, num);
+
+  return String(num).padStart(3, "0");
+}
+
+function getNomorOpname(){
+  const nomorInput = document.getElementById("nomorOpname");
+
+  if (nomorInput && nomorInput.value.trim()) {
+    return nomorInput.value.trim();
+  }
+
+  const now = new Date();
+  const kode = getValue("kodeOpname", "BAO/TL/RSP/CRB");
+  const nomorUrut = getRunningNumberOpname();
+
+  const nomor = `${nomorUrut}/${kode}/${toRoman(now.getMonth() + 1)}/${now.getFullYear()}`;
+
+  if (nomorInput) {
+    nomorInput.value = nomor;
+  }
+
+  return nomor;
+}
+
+function resetNomorOpnameBulanIni(){
+  const now = new Date();
+  const key = `ba_opname_${now.getFullYear()}_${now.getMonth() + 1}`;
+
+  localStorage.removeItem(key);
+
+  const nomorInput = document.getElementById("nomorOpname");
+  if (nomorInput) nomorInput.value = "";
+
+  showToast("Nomor BA Opname bulan ini berhasil direset.", "warning");
+}
+
+function getOpnameImg(id){
+  const el = document.getElementById(id);
+  if (!el || !el.files || !el.files[0]) return "";
+  return URL.createObjectURL(el.files[0]);
+}
+
+function renderOpnameTtdBox(title, ttdSrc, nama, jabatan){
+  return `
+    <div class="opname-ttd-box">
+      <div class="opname-ttd-title">${title}</div>
+
+      <div class="opname-signature-area">
+        ${ttdSrc ? `<img src="${ttdSrc}">` : ""}
+      </div>
+
+      <div class="opname-ttd-name">${nama || "-"}</div>
+      <div class="opname-ttd-jabatan">${jabatan || "-"}</div>
+    </div>
+  `;
+}
+
+function dragOpnameOver(event, el){
+  event.preventDefault();
+  el.classList.add("dragover");
+}
+
+function dragOpnameLeave(el){
+  el.classList.remove("dragover");
+}
+
+function dropOpnameFiles(event, el){
+  event.preventDefault();
+  el.classList.remove("dragover");
+
+  const files = Array.from(event.dataTransfer.files);
+  tambahOpnameFiles(files);
+}
+
+function handleOpnameInputFiles(event){
+  const files = Array.from(event.target.files);
+  tambahOpnameFiles(files);
+
+  event.target.value = "";
+}
+
+function tambahOpnameFiles(files){
+  const imageFiles = files.filter(file => file.type.startsWith("image/"));
+
+  opnameFiles = opnameFiles.concat(imageFiles);
+
+  renderOpnamePreview();
+}
+
+function renderOpnamePreview(){
+  const preview = document.getElementById("previewOpnameLampiran");
+  if (!preview) return;
+
+  preview.innerHTML = "";
+
+  if (opnameFiles.length === 0) {
+    preview.innerHTML = `
+      <div class="opname-preview-empty">
+        Belum ada foto lampiran opname
+      </div>
+    `;
+    return;
+  }
+
+  opnameFiles.forEach((file, index) => {
+    const url = URL.createObjectURL(file);
+
+    preview.innerHTML += `
+      <div class="opname-preview-item">
+        <img src="${url}">
+        <span>Foto ${index + 1}</span>
+        <button type="button" onclick="hapusOpnameFile(${index})">×</button>
+      </div>
+    `;
+  });
+}
+
+function hapusOpnameFile(index){
+  opnameFiles.splice(index, 1);
+  renderOpnamePreview();
+}
+
+function buildOpnameLampiranPages(kop, foot){
+  if (!opnameFiles || opnameFiles.length === 0) return "";
+
+  const perPage = 6;
+  let html = "";
+
+  for (let start = 0; start < opnameFiles.length; start += perPage) {
+    const chunk = opnameFiles.slice(start, start + perPage);
+
+    let fotoHTML = "";
+
+    chunk.forEach((file, index) => {
+      const url = URL.createObjectURL(file);
+      const no = start + index + 1;
+
+      fotoHTML += `
+        <div class="opname-lampiran-item">
+          <img src="${url}">
+          <div class="opname-lampiran-caption">Foto ${no}</div>
+        </div>
+      `;
+    });
+
+    html += `
+      <div class="page page-opname-lampiran">
+        ${kop()}
+
+        <h4 class="opname-lampiran-title">LAMPIRAN BERITA ACARA OPNAME LAPANGAN</h4>
+        <div class="opname-lampiran-subtitle">
+          Evidence Foto ${start + 1} - ${start + chunk.length}
+        </div>
+
+        <div class="opname-lampiran-grid">
+          ${fotoHTML}
+        </div>
+
+        ${foot()}
+      </div>
+    `;
+  }
+
+  return html;
+}
+
+function getNamaFromDropdown(selectId, fallback = "-"){
+  const select = document.getElementById(selectId);
+
+  if (!select || select.value === "") {
+    return fallback;
+  }
+
+  const index = select.value;
+
+  if (!dataOrang[index]) {
+    return fallback;
+  }
+
+  return dataOrang[index].nama || fallback;
+}
+
+function buildOpnamePages(kop, foot){
+  const nomor = getNomorOpname();
+  const tanggal = getTanggalOpname();
+
+const namaPihak1 = getNamaFromDropdown("namaPihak1OpnameSelect", "-");
+const jabatanPihak1 = getValue("jabatanPihak1Opname", "-");
+
+const namaPihak2 = getNamaFromDropdown("namaPihak2OpnameSelect", "-");
+const jabatanPihak2 = getValue("jabatanPihak2Opname", "-");
+const perusahaanPihak2 = getValue("perusahaanPihak2Opname", "Raja Sukses Propertindo");
+
+const pekerjaan = getValue("pekerjaanOpname", "-");
+const blok = getValue("blokOpname", "-");
+const waktuPelaksanaan = getValue("waktuPelaksanaanOpname", tanggal.display);
+const jumlah = getValue("jumlahOpname", "-");
+const progress = getValue("progressOpname", "100%");
+
+const namaDiperiksa = getNamaFromDropdown("namaDiperiksaOpnameSelect", "-");
+const jabatanDiperiksa = getValue("jabatanDiperiksaOpname", "-");
+
+const namaDiketahui = getNamaFromDropdown("namaDiketahuiOpnameSelect", "-");
+const jabatanDiketahui = getValue("jabatanDiketahuiOpname", "-");
+
+  const ttd1 = getOpnameImg("ttdOpname1");
+  const ttd2 = getOpnameImg("ttdOpname2");
+  const ttd3 = getOpnameImg("ttdOpname3");
+  const ttd4 = getOpnameImg("ttdOpname4");
+
+  const page1 = `
+    <div class="page page-opname">
+      ${kop()}
+
+      <h4 class="opname-title">BERITA ACARA OPNAME LAPANGAN</h4>
+      <div class="opname-nomor">No. ${nomor}</div>
+
+      <div class="opname-body">
+
+        <p>
+          Pada hari ini ${tanggal.display} (${tanggal.angka}), kami yang bertanda tangan di bawah ini:
+        </p>
+
+        <div class="opname-party">
+          <div>Nama</div><div>:</div><div>${namaPihak1}</div>
+          <div>Jabatan</div><div>:</div><div>${jabatanPihak1}</div>
+        </div>
+
+        <p>
+          Dalam hal ini bertindak melaksanakan jabatan tersebut untuk dan atas nama ${jabatanPihak1},
+          selanjutnya disebut sebagai <b>PIHAK PERTAMA</b>.
+        </p>
+
+        <div class="opname-party">
+          <div>Nama</div><div>:</div><div>${namaPihak2}</div>
+          <div>Jabatan</div><div>:</div><div>${jabatanPihak2}</div>
+          <div>Perusahaan</div><div>:</div><div>${perusahaanPihak2}</div>
+        </div>
+
+        <p>
+          Dalam hal ini bertindak melaksanakan jabatan tersebut untuk dan atas nama ${perusahaanPihak2},
+          selanjutnya disebut sebagai <b>PIHAK KEDUA</b>.
+        </p>
+
+        <p>
+          Dengan ini <b>PIHAK PERTAMA</b> dan <b>PIHAK KEDUA</b> menyatakan sebagai berikut:
+        </p>
+
+        <ol class="opname-list">
+          <li>
+            <p><b>PIHAK PERTAMA</b> telah melaksanakan pekerjaan:</p>
+
+            <div class="opname-detail">
+              <div>Nama Pekerjaan</div><div>:</div><div>${pekerjaan}</div>
+              <div>Blok</div><div>:</div><div>${blok}</div>
+              <div>Waktu Pelaksanaan</div><div>:</div><div>${waktuPelaksanaan}</div>
+              <div>Jumlah</div><div>:</div><div>${jumlah}</div>
+            </div>
+          </li>
+
+          <li>
+            <p>
+              <b>PIHAK KEDUA</b> menyatakan menyetujui semua pekerjaan tersebut telah mencapai
+              <b>Progress ${progress}</b> sesuai yang disyaratkan.
+            </p>
+          </li>
+        </ol>
+
+        <p>
+          Demikian Berita Acara Serah Terima ini dibuat untuk dapat dipergunakan sebagaimana mestinya.
+        </p>
+
+        <div class="opname-ttd-container">
+          ${renderOpnameTtdBox("PIHAK PERTAMA", ttd1, namaPihak1, jabatanPihak1)}
+          ${renderOpnameTtdBox("PIHAK KEDUA", ttd2, namaPihak2, jabatanPihak2)}
+          ${renderOpnameTtdBox("DIPERIKSA", ttd3, namaDiperiksa, jabatanDiperiksa)}
+          ${renderOpnameTtdBox("DIKETAHUI", ttd4, namaDiketahui, jabatanDiketahui)}
+        </div>
+
+      </div>
+
+      ${foot()}
+    </div>
+  `;
+
+  return page1 + buildOpnameLampiranPages(kop, foot);
+}
+
   function generate(){
   let loading = document.getElementById("loadingOverlay");
   loading.style.display = "flex";
@@ -331,7 +658,8 @@ function setJenisDropdown(value){
     keterangan: "Untuk membuat keterangan kondisi pekerjaan di lapangan.",
     adendum: "Untuk perubahan, kendala, atau penyesuaian pekerjaan.",
     biaya: "BA pengajuan biaya dengan nomor, pembuka, penutup, dan tabel biaya manual.",
-    urugan: "BA urugan dengan rincian rit, nota, rekening, dan dokumentasi foto per rit."
+    urugan: "BA urugan dengan rincian rit, nota, rekening, dan dokumentasi foto per rit.",
+    opname: "BA opname lapangan dengan data pihak, pekerjaan, progress, tanda tangan, dan lampiran foto maksimal 6 per halaman."
   };
 
   if (desc) {
@@ -454,13 +782,13 @@ function toggleJenis(){
   const adendumBox = document.getElementById('adendumBox');
   const biayaBox = document.getElementById('biayaBox');
   const uruganBox = document.getElementById('uruganBox');
+  const opnameBox = document.getElementById('opnameBox');
 
   const pihakCard = document.getElementById('pihakCard');
   const standardTtdLampiranBox = document.getElementById('standardTtdLampiranBox');
 
-  // Form isi surat standar disembunyikan untuk BA Biaya dan BA Urugan
   if (standardContentBox) {
-    standardContentBox.style.display = (j === 'biaya' || j === 'urugan') ? 'none' : 'block';
+    standardContentBox.style.display = (j === 'biaya' || j === 'urugan' || j === 'opname') ? 'none' : 'block';
   }
 
   if (materialBox) {
@@ -479,17 +807,21 @@ function toggleJenis(){
     uruganBox.style.display = j === 'urugan' ? 'block' : 'none';
   }
 
-  // Khusus BA Urugan: hide pihak, TTD, dan lampiran umum
+  if (opnameBox) {
+    opnameBox.style.display = j === 'opname' ? 'block' : 'none';
+  }
+
+  // BA Urugan dan BA Opname punya form sendiri, jadi pihak standar disembunyikan
   if (pihakCard) {
-    pihakCard.style.display = j === 'urugan' ? 'none' : 'block';
+    pihakCard.style.display = (j === 'urugan' || j === 'opname') ? 'none' : 'block';
   }
 
+  // BA Urugan dan BA Opname punya upload sendiri
   if (standardTtdLampiranBox) {
-    standardTtdLampiranBox.style.display = j === 'urugan' ? 'none' : 'block';
+    standardTtdLampiranBox.style.display = (j === 'urugan' || j === 'opname') ? 'none' : 'block';
   }
 
-  // TTD hanya diproses untuk BA selain Urugan
-  if (j !== 'urugan') {
+  if (j !== 'urugan' && j !== 'opname') {
     toggleTtd4();
   }
 }
@@ -867,7 +1199,9 @@ function buildUruganNotaGrid(files, startIndex = 0){
     `;
   }
 
-  let html = `<div class="urugan-photo-grid urugan-nota-grid">`;
+  const count = Math.min(files.length, 6);
+
+  let html = `<div class="urugan-photo-grid urugan-nota-grid nota-count-${count}">`;
 
   files.slice(0, 6).forEach((file, i) => {
     const url = URL.createObjectURL(file);
@@ -1226,7 +1560,9 @@ if (jenis === "biaya") {
 let logo = "Asset/kop.png";
 let footer = "Asset/fot.jpeg";
 
-let kalimatPembuka = jenis === "biaya" ? "" : getKalimatPembukaBA(jenis);
+let kalimatPembuka = (jenis === "biaya" || jenis === "urugan" || jenis === "opname")
+  ? ""
+  : getKalimatPembukaBA(jenis);
 
 let useTtd4 = document.getElementById("useTtd4").checked;
 
@@ -1510,6 +1846,20 @@ if (jenis === "urugan") {
   const pageUrugan = buildUruganPages(kop, foot);
 
   document.getElementById("output").innerHTML = pageUrugan;
+
+  requestAnimationFrame(() => {
+    fitFirstPage();
+    setTimeout(fitFirstPage, 250);
+  });
+
+  scrollToPreview();
+  return;
+}
+
+if (jenis === "opname") {
+  const pageOpname = buildOpnamePages(kop, foot);
+
+  document.getElementById("output").innerHTML = pageOpname;
 
   requestAnimationFrame(() => {
     fitFirstPage();
@@ -1808,13 +2158,34 @@ let dataOrang = JSON.parse(localStorage.getItem("dataOrang")) || [
 
 // 🔥 LOAD DROPDOWN
 function loadDropdown(){
-  ["nama1","nama2","nama3","nama4"].forEach(id=>{
+  const dropdownIds = [
+    "nama1",
+    "nama2",
+    "nama3",
+    "nama4",
+
+    // BA OPNAME
+    "namaPihak1OpnameSelect",
+    "namaPihak2OpnameSelect",
+    "namaDiperiksaOpnameSelect",
+    "namaDiketahuiOpnameSelect"
+  ];
+
+  dropdownIds.forEach(id => {
     let select = document.getElementById(id);
+    if (!select) return;
+
+    const selectedValue = select.value;
+
     select.innerHTML = `<option value="">-- Pilih Nama --</option>`;
 
-    dataOrang.forEach((d,i)=>{
+    dataOrang.forEach((d, i) => {
       select.innerHTML += `<option value="${i}">${d.nama}</option>`;
     });
+
+    if (selectedValue !== "" && dataOrang[selectedValue]) {
+      select.value = selectedValue;
+    }
   });
 }
 
@@ -1891,7 +2262,7 @@ function hapusOrang(){
 }
 
 $(document).ready(function() {
-  $("#nama1, #nama2, #nama3, #nama4").select2({
+  $("#nama1, #nama2, #nama3, #nama4, #namaPihak1OpnameSelect, #namaPihak2OpnameSelect, #namaDiperiksaOpnameSelect, #namaDiketahuiOpnameSelect").select2({
     placeholder: "Cari nama...",
     width: "100%"
   });

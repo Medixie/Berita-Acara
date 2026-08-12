@@ -149,6 +149,7 @@
     <option value="adendum">Adendum / Kendala</option>
     <option value="biaya">Pengajuan Biaya</option>
     <option value="urugan">BA Urugan</option>
+    <option value="opname">BA Opname Lapangan</option>
   </select>
 
   <div id="jenisDesc" class="jenis-dropdown-desc">
@@ -156,8 +157,6 @@
   </div>
 
 </div>
-
-<input type="hidden" id="jenis" value="material">
 
 </div>
 
@@ -437,6 +436,146 @@
   </button>
 
   <div id="ritUruganContainer"></div>
+
+</div>
+
+<!-- FORM BA OPNAME LAPANGAN -->
+<div id="opnameBox" style="display:none;">
+
+  <div class="section-title">Nomor BA Opname</div>
+  <div class="row">
+    <div class="col-md-8">
+      <input id="nomorOpname" class="form-control mb-2" readonly
+        placeholder="Otomatis saat generate">
+    </div>
+    <div class="col-md-4">
+      <button type="button" onclick="resetNomorOpnameBulanIni()" class="btn btn-sm btn-secondary w-100">
+        Reset Nomor
+      </button>
+    </div>
+  </div>
+
+  <div class="section-title">Kode Nomor BA</div>
+  <input id="kodeOpname" class="form-control mb-2"
+    value="BAO/TL/RSP/CRB"
+    placeholder="Contoh: BAO/TL/RSP/CRB">
+
+  <div class="section-title">Tanggal BA</div>
+  <input id="tanggalOpname" type="date" class="form-control mb-2">
+
+<div class="section-title">Pihak Pertama</div>
+<select id="namaPihak1OpnameSelect" class="form-control select-modern mb-2"
+  onchange="setJabatan(this,'jabatanPihak1Opname')"></select>
+
+<input id="jabatanPihak1Opname" class="form-control mb-2" readonly
+  placeholder="Jabatan Pihak Pertama">
+
+
+<div class="section-title">Pihak Kedua</div>
+<select id="namaPihak2OpnameSelect" class="form-control select-modern mb-2"
+  onchange="setJabatan(this,'jabatanPihak2Opname')"></select>
+
+<input id="jabatanPihak2Opname" class="form-control mb-2" readonly
+  placeholder="Jabatan Pihak Kedua">
+
+<input id="perusahaanPihak2Opname" class="form-control mb-3"
+  value="Raja Sukses Propertindo"
+  placeholder="Perusahaan Pihak Kedua">
+
+<div class="section-title">Detail Pekerjaan</div>
+
+<input id="pekerjaanOpname" class="form-control mb-2"
+  placeholder="Nama Pekerjaan, contoh: Pekerjaan Footplate Trusmiland Pamengkang">
+
+<input id="blokOpname" class="form-control mb-2"
+  placeholder="Blok, contoh: I79, I80">
+
+<input id="waktuPelaksanaanOpname" class="form-control mb-2"
+  placeholder="Waktu Pelaksanaan, contoh: 10 Agustus 2026">
+
+<input id="jumlahOpname" class="form-control mb-2"
+  placeholder="Jumlah, contoh: 2 Unit (6 Titik / Unit)">
+
+<input id="progressOpname" class="form-control mb-3"
+  value="100%"
+  placeholder="Progress, contoh: 100%">
+
+
+<div class="section-title">Data Pemeriksa / Mengetahui</div>
+
+<div class="opname-ttd-form">
+
+  <div class="opname-ttd-input">
+    <strong>PIHAK PERTAMA</strong>
+    <input id="ttdOpname1" type="file" class="form-control mt-2" accept="image/*">
+  </div>
+
+  <div class="opname-ttd-input">
+    <strong>PIHAK KEDUA</strong>
+    <input id="ttdOpname2" type="file" class="form-control mt-2" accept="image/*">
+  </div>
+
+  <div class="opname-ttd-input">
+    <strong>DIPERIKSA</strong>
+
+    <select id="namaDiperiksaOpnameSelect" class="form-control select-modern mt-2 mb-2"
+      onchange="setJabatan(this,'jabatanDiperiksaOpname')"></select>
+
+    <input id="jabatanDiperiksaOpname" class="form-control mb-2" readonly
+      placeholder="Jabatan Pemeriksa">
+
+    <input id="ttdOpname3" type="file" class="form-control" accept="image/*">
+  </div>
+
+  <div class="opname-ttd-input">
+    <strong>DIKETAHUI</strong>
+
+    <select id="namaDiketahuiOpnameSelect" class="form-control select-modern mt-2 mb-2"
+      onchange="setJabatan(this,'jabatanDiketahuiOpname')"></select>
+
+    <input id="jabatanDiketahuiOpname" class="form-control mb-2" readonly
+      placeholder="Jabatan Mengetahui">
+
+    <input id="ttdOpname4" type="file" class="form-control" accept="image/*">
+  </div>
+
+</div>
+
+<div class="pihak-actions mt-3">
+  <button onclick="tambahOrang()" type="button" class="btn btn-success mt-2 w-100">
+    + Tambah Pihak
+  </button>
+
+  <button onclick="editOrang()" type="button" class="btn btn-warning mt-2 w-100">
+    Edit Data Pihak
+  </button>
+
+  <button onclick="hapusOrang()" type="button" class="btn btn-danger mt-2 w-100">
+    Hapus Data Pihak
+  </button>
+</div>
+
+  <div class="section-title mt-3">Lampiran Foto Opname</div>
+  <p class="small text-muted mb-2">
+    Maksimal 6 foto per halaman lampiran.
+  </p>
+
+  <div id="opnameDropArea" class="opname-drop-area"
+    onclick="document.getElementById('lampiranOpname').click()"
+    ondragover="dragOpnameOver(event, this)"
+    ondragleave="dragOpnameLeave(this)"
+    ondrop="dropOpnameFiles(event, this)">
+
+    <div class="opname-drop-icon">📷</div>
+    <div class="opname-drop-title">Drag & Drop Foto Lampiran Opname</div>
+    <div class="opname-drop-desc">atau klik untuk upload foto</div>
+    <div class="opname-drop-note">Setiap halaman maksimal 6 foto</div>
+
+    <input type="file" id="lampiranOpname" hidden multiple accept="image/*"
+      onchange="handleOpnameInputFiles(event)">
+  </div>
+
+  <div id="previewOpnameLampiran" class="opname-preview-grid"></div>
 
 </div>
 
