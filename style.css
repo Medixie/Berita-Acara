@@ -3476,3 +3476,45 @@ p {
   object-position: center center !important;
   background: #fff !important;
 }
+
+/* =========================================================
+   BA OPNAME - LAMPIRAN FOTO LANDSCAPE FRIENDLY
+   Maksimal 6 foto per halaman, ukuran mengikuti foto landscape
+========================================================= */
+
+#output .opname-lampiran-grid {
+  display: grid !important;
+
+  /* dari 3 kolom x 2 baris menjadi 2 kolom x 3 baris */
+  grid-template-columns: repeat(2, 1fr) !important;
+  grid-template-rows: repeat(3, 1fr) !important;
+
+  gap: 2.5mm !important;
+  width: 100% !important;
+  height: 215mm !important;
+
+  padding-bottom: 18mm !important;
+  box-sizing: border-box !important;
+}
+
+#output .opname-lampiran-item {
+  position: relative !important;
+  border: 1px solid #000 !important;
+  overflow: hidden !important;
+  background: #fff !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* foto tampil utuh, tidak dipaksa portrait */
+#output .opname-lampiran-item img {
+  width: 100% !important;
+  height: 100% !important;
+
+  object-fit: contain !important;
+  object-position: center center !important;
+
+  background: #fff !important;
+}

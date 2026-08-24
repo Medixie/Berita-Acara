@@ -649,7 +649,11 @@ function toggleSidebar(){
 }
 
 function setJenisDropdown(value){
-  document.getElementById("jenis").value = value;
+  const jenisHidden = document.getElementById("jenis");
+
+  if (jenisHidden) {
+    jenisHidden.value = value;
+  }
 
   const desc = document.getElementById("jenisDesc");
 
@@ -775,7 +779,12 @@ function logout(){
 }
 
 function toggleJenis(){
-  let j = document.getElementById('jenis').value;
+  const jenisHidden = document.getElementById("jenis");
+const jenisSelect = document.getElementById("jenisSelect");
+
+let j = jenisHidden
+  ? jenisHidden.value
+  : (jenisSelect ? jenisSelect.value : "material");
 
   const standardContentBox = document.getElementById('standardContentBox');
   const materialBox = document.getElementById('materialBox');
@@ -1306,6 +1315,28 @@ function buildUruganPages(kop, foot){
   return html;
 }
 
+const MATERIAL_MAX_PAGE1 = 13;
+const MATERIAL_PAGE_LIMIT = 30;
+
+function getMaterialRowsData() {
+  const rows = document.querySelectorAll('#materialTable tbody tr');
+  const data = [];
+
+  rows.forEach((row) => {
+    const inputs = row.querySelectorAll('input');
+
+    data.push({
+      no: row.cells[0] ? row.cells[0].innerText : "",
+      nama: inputs[0] ? inputs[0].value : "",
+      spesifikasi: inputs[1] ? inputs[1].value : "",
+      qty: inputs[2] ? inputs[2].value : "",
+      satuan: inputs[3] ? inputs[3].value : ""
+    });
+  });
+
+  return data;
+}
+
 function buildMaterialTable(rowsData) {
   if (!rowsData || rowsData.length === 0) return "";
 
@@ -1540,7 +1571,12 @@ function generateUUID() {
 
 function generate(){
 
-let jenis = document.getElementById('jenis').value;
+const jenisHidden = document.getElementById("jenis");
+const jenisSelect = document.getElementById("jenisSelect");
+
+let jenis = jenisHidden
+  ? jenisHidden.value
+  : (jenisSelect ? jenisSelect.value : "material");
 if (jenis === "biaya") {
   if (!document.getElementById("nomorBiaya")) {
     alert("Field nomorBiaya tidak ditemukan. Cek HTML biayaBox.");
