@@ -1104,17 +1104,26 @@ function getNamaJenisBA(jenis) {
 
   const nama = {
 
-    material: "BA Material",
+    material:
+      "BA Material",
 
-    keterangan: "BA Keterangan",
+    keterangan:
+      "BA Keterangan",
 
-    adendum: "BA Adendum",
+    adendum:
+      "BA Adendum",
 
-    biaya: "BA Pengajuan Biaya",
+    biaya:
+      "BA Pengajuan Biaya",
 
-    urugan: "BA Urugan",
+    urugan:
+      "BA Urugan",
 
-    opname: "BA Opname"
+    opname:
+      "BA Opname Lapangan",
+
+    form_opname:
+      "Form Opname"
 
   };
 
@@ -2804,12 +2813,28 @@ function setJenisDropdown(value){
   const desc = document.getElementById("jenisDesc");
 
   const deskripsi = {
-    material: "Untuk permintaan barang/material project.",
-    keterangan: "Untuk membuat keterangan kondisi pekerjaan di lapangan.",
-    adendum: "Untuk perubahan, kendala, atau penyesuaian pekerjaan.",
-    biaya: "BA pengajuan biaya dengan nomor, pembuka, penutup, dan tabel biaya manual.",
-    urugan: "BA urugan dengan rincian rit, nota, rekening, dan dokumentasi foto per rit.",
-    opname: "BA opname lapangan dengan data pihak, pekerjaan, progress, tanda tangan, dan lampiran foto maksimal 6 per halaman."
+
+    material:
+      "Untuk permintaan barang/material project.",
+
+    keterangan:
+      "Untuk membuat keterangan kondisi pekerjaan di lapangan.",
+
+    adendum:
+      "Untuk perubahan, kendala, atau penyesuaian pekerjaan.",
+
+    biaya:
+      "BA pengajuan biaya dengan nomor, pembuka, penutup, dan tabel biaya manual.",
+
+    urugan:
+      "BA urugan dengan rincian rit, nota, rekening, dan dokumentasi foto per rit.",
+
+    opname:
+      "BA opname lapangan dengan data pekerjaan, progress, tanda tangan, dan lampiran foto.",
+
+    form_opname:
+      "Form pencairan opname dengan perhitungan nominal, retensi 5%, progress 95%, dan EAF."
+
   };
 
   if (desc) {
@@ -3101,61 +3126,348 @@ function logout(){
   document.getElementById("password").value = "";
 }
 
-function toggleJenis(){
-  const jenisHidden = document.getElementById("jenis");
-const jenisSelect = document.getElementById("jenisSelect");
+function toggleJenis() {
 
-let j = jenisHidden
-  ? jenisHidden.value
-  : (jenisSelect ? jenisSelect.value : "material");
+  const jenisHidden =
+    document.getElementById("jenis");
 
-  const standardContentBox = document.getElementById('standardContentBox');
-  const materialBox = document.getElementById('materialBox');
-  const adendumBox = document.getElementById('adendumBox');
-  const biayaBox = document.getElementById('biayaBox');
-  const uruganBox = document.getElementById('uruganBox');
-  const opnameBox = document.getElementById('opnameBox');
+  const jenisSelect =
+    document.getElementById("jenisSelect");
 
-  const pihakCard = document.getElementById('pihakCard');
-  const standardTtdLampiranBox = document.getElementById('standardTtdLampiranBox');
+
+  const j =
+    jenisHidden && jenisHidden.value
+      ? jenisHidden.value
+      : (
+          jenisSelect
+            ? jenisSelect.value
+            : "material"
+        );
+
+
+  /* =====================================================
+     AMBIL SEMUA BOX
+  ===================================================== */
+
+  const standardContentBox =
+    document.getElementById(
+      "standardContentBox"
+    );
+
+  const materialBox =
+    document.getElementById(
+      "materialBox"
+    );
+
+  const adendumBox =
+    document.getElementById(
+      "adendumBox"
+    );
+
+  const biayaBox =
+    document.getElementById(
+      "biayaBox"
+    );
+
+  const uruganBox =
+    document.getElementById(
+      "uruganBox"
+    );
+
+  const opnameBox =
+    document.getElementById(
+      "opnameBox"
+    );
+
+  const formOpnameBox =
+    document.getElementById(
+      "formOpnameBox"
+    );
+
+  const pihakCard =
+    document.getElementById(
+      "pihakCard"
+    );
+
+  const standardTtdLampiranBox =
+    document.getElementById(
+      "standardTtdLampiranBox"
+    );
+
+  const opnameLampiranStep =
+    document.getElementById(
+      "opnameLampiranStep"
+    );
+
+
+  /* =====================================================
+     IDENTIFIKASI JENIS
+  ===================================================== */
+
+  const isFormOpname =
+    j === "form_opname";
+
+  const isUrugan =
+    j === "urugan";
+
+  const isOpname =
+    j === "opname";
+
+  const isBiaya =
+    j === "biaya";
+
+  const isMaterial =
+    j === "material";
+
+  const isAdendum =
+    j === "adendum";
+
+  const isKeterangan =
+    j === "keterangan";
+
+  const isStandard =
+    isMaterial ||
+    isKeterangan ||
+    isAdendum ||
+    isBiaya;
+
+
+  /* =====================================================
+     ISI BERITA ACARA STANDARD
+
+     material
+     keterangan
+     adendum
+
+     biaya punya box sendiri
+     urugan punya box sendiri
+     opname punya box sendiri
+     form opname punya box sendiri
+  ===================================================== */
 
   if (standardContentBox) {
-    standardContentBox.style.display = (j === 'biaya' || j === 'urugan' || j === 'opname') ? 'none' : 'block';
+
+    standardContentBox.style.display =
+      (
+        isBiaya ||
+        isUrugan ||
+        isOpname ||
+        isFormOpname
+      )
+        ? "none"
+        : "block";
+
   }
+
+
+  /* =====================================================
+     MATERIAL
+  ===================================================== */
 
   if (materialBox) {
-    materialBox.style.display = j === 'material' ? 'block' : 'none';
+
+    materialBox.style.display =
+      isMaterial
+        ? "block"
+        : "none";
+
   }
+
+
+  /* =====================================================
+     ADENDUM
+  ===================================================== */
 
   if (adendumBox) {
-    adendumBox.style.display = j === 'adendum' ? 'block' : 'none';
+
+    adendumBox.style.display =
+      isAdendum
+        ? "block"
+        : "none";
+
   }
+
+
+  /* =====================================================
+     PENGAJUAN BIAYA
+  ===================================================== */
 
   if (biayaBox) {
-    biayaBox.style.display = j === 'biaya' ? 'block' : 'none';
+
+    biayaBox.style.display =
+      isBiaya
+        ? "block"
+        : "none";
+
   }
 
-  if (uruganBox) {
-    uruganBox.style.display = j === 'urugan' ? 'block' : 'none';
-  }
+
+    /* =====================================================
+      BA URUGAN
+
+      Step 2 tetap menampilkan form Urugan.
+      Yang dihilangkan hanya:
+      - Pihak Terkait
+      - Lampiran step terpisah
+    ===================================================== */
+
+    if (uruganBox) {
+
+      uruganBox.style.display =
+        isUrugan
+          ? "block"
+          : "none";
+
+    }
+
+
+    if (isUrugan) {
+
+      if (pihakCard) {
+        pihakCard.style.display = "none";
+      }
+
+      if (standardTtdLampiranBox) {
+        standardTtdLampiranBox.style.display = "none";
+      }
+
+      if (opnameLampiranStep) {
+        opnameLampiranStep.style.display = "none";
+      }
+
+    }
+
+
+  /* =====================================================
+     BA OPNAME LAPANGAN
+     JANGAN DIGABUNG DENGAN FORM OPNAME
+  ===================================================== */
 
   if (opnameBox) {
-    opnameBox.style.display = j === 'opname' ? 'block' : 'none';
+
+    opnameBox.style.display =
+      isOpname
+        ? "block"
+        : "none";
+
   }
 
-  // BA Urugan dan BA Opname punya form sendiri, jadi pihak standar disembunyikan
+
+  /* =====================================================
+     FORM OPNAME BARU
+  ===================================================== */
+
+  if (formOpnameBox) {
+
+    formOpnameBox.style.display =
+      isFormOpname
+        ? "block"
+        : "none";
+
+  }
+
+
+  /* =====================================================
+     PIHAK TERKAIT
+
+     ADA:
+     - Material
+     - Keterangan
+     - Adendum
+     - Pengajuan Biaya
+
+     TIDAK ADA:
+     - Urugan
+     - Opname Lapangan
+     - Form Opname
+  ===================================================== */
+
   if (pihakCard) {
-    pihakCard.style.display = (j === 'urugan' || j === 'opname') ? 'none' : 'block';
+
+    pihakCard.style.display =
+      isStandard
+        ? "block"
+        : "none";
+
   }
 
-  // BA Urugan dan BA Opname punya upload sendiri
+
+  /* =====================================================
+     LAMPIRAN STANDARD
+
+     Hanya BA standard yang menggunakan
+     standardTtdLampiranBox.
+
+     Urugan = upload sendiri
+     Opname = opnameLampiranStep
+     Form Opname = tidak ada lampiran
+  ===================================================== */
+
   if (standardTtdLampiranBox) {
-    standardTtdLampiranBox.style.display = (j === 'urugan' || j === 'opname') ? 'none' : 'block';
+
+    standardTtdLampiranBox.style.display =
+      isStandard
+        ? "block"
+        : "none";
+
   }
 
-  if (j !== 'urugan' && j !== 'opname') {
-    toggleTtd4();
+
+  /* =====================================================
+     LAMPIRAN KHUSUS BA OPNAME LAPANGAN
+  ===================================================== */
+
+  if (opnameLampiranStep) {
+
+    opnameLampiranStep.style.display =
+      isOpname
+        ? "block"
+        : "none";
+
   }
+
+
+  /* =====================================================
+     TTD STANDARD
+
+     Jangan jalankan untuk:
+     - Urugan
+     - Opname Lapangan
+     - Form Opname
+  ===================================================== */
+
+  if (isStandard) {
+
+    if (
+      typeof toggleTtd4 ===
+      "function"
+    ) {
+
+      toggleTtd4();
+
+    }
+
+  }
+
+
+  /* =====================================================
+     FORM OPNAME
+     REALTIME PREVIEW
+  ===================================================== */
+
+  if (isFormOpname) {
+
+    if (
+      typeof syncFormOpnameFinal ===
+      "function"
+    ) {
+
+      syncFormOpnameFinal();
+
+    }
+
+  }
+
 }
 
 function addRow(){
@@ -6460,28 +6772,148 @@ function restoreSidebarState() {
 
 
 /* =========================================================
-   05. STEP NAVIGATION
+   05. HELPER FLOW STEP BA
+========================================================= */
+
+function getBAJenisStepper() {
+
+  const jenisSelect =
+    document.getElementById("jenisSelect");
+
+  const jenisHidden =
+    document.getElementById("jenis");
+
+  return (
+    jenisSelect?.value ||
+    jenisHidden?.value ||
+    "material"
+  );
+
+}
+
+
+function getBAStepsAktif() {
+
+  const jenis = getBAJenisStepper();
+
+  /*
+    STANDARD
+    1 Informasi
+    2 Isi BA
+    3 Pihak Terkait
+    4 Lampiran
+  */
+  if (
+    jenis === "material" ||
+    jenis === "keterangan" ||
+    jenis === "adendum" ||
+    jenis === "biaya"
+  ) {
+    return [1, 2, 3, 4];
+  }
+
+
+  /*
+    BA URUGAN
+    Hanya:
+    1 Informasi
+    2 Isi BA
+
+    Tidak ada:
+    - Pihak Terkait
+    - Lampiran
+  */
+  if (jenis === "urugan") {
+    return [1, 2];
+  }
+
+
+  /*
+    BA OPNAME LAPANGAN
+    1 Informasi
+    2 Isi BA
+    4 Lampiran khusus opname
+
+    Step 3 dilewati.
+  */
+  if (jenis === "opname") {
+    return [1, 2, 4];
+  }
+
+
+  /*
+    FORM OPNAME
+    Standalone
+  */
+  if (jenis === "form_opname") {
+    return [1];
+  }
+
+
+  return [1, 2, 3, 4];
+
+}
+
+
+/* =========================================================
+   06. STEP NAVIGATION
 ========================================================= */
 
 function showBAStep(stepNumber) {
 
-  const maxStep = 4;
+  const jenis =
+    getBAJenisStepper();
+
+  const activeSteps =
+    getBAStepsAktif();
 
 
-  /* -----------------------------------------
-     Batasi step 1 - 4
-  ----------------------------------------- */
+  /*
+    FORM OPNAME tidak menggunakan
+    stepper BA normal.
+  */
+  if (jenis === "form_opname") {
 
-  if (stepNumber < 1) {
+    currentBAStep = 1;
 
-    stepNumber = 1;
+    document
+      .querySelectorAll(".ba-step")
+      .forEach(step => {
+
+        step.style.display = "none";
+
+      });
+
+
+    if (
+      typeof setupFormOpnameSingleProcess === "function"
+    ) {
+
+      setupFormOpnameSingleProcess();
+
+    }
+
+
+    if (
+      typeof syncFormOpnameFinal === "function"
+    ) {
+
+      syncFormOpnameFinal();
+
+    }
+
+    return;
 
   }
 
 
-  if (stepNumber > maxStep) {
+  /*
+    Jika step yang diminta tidak termasuk
+    flow BA aktif, jangan masuk ke step itu.
+  */
+  if (!activeSteps.includes(stepNumber)) {
 
-    stepNumber = maxStep;
+    return;
 
   }
 
@@ -6489,19 +6921,15 @@ function showBAStep(stepNumber) {
   currentBAStep = stepNumber;
 
 
-  /* -----------------------------------------
-     Step Content
-  ----------------------------------------- */
+  /* =========================================
+     CONTENT STEP
+  ========================================= */
 
   document
-    .querySelectorAll(
-      ".ba-step-content"
-    )
+    .querySelectorAll(".ba-step-content")
     .forEach(content => {
 
-      content.classList.remove(
-        "active"
-      );
+      content.classList.remove("active");
 
     });
 
@@ -6514,27 +6942,45 @@ function showBAStep(stepNumber) {
 
   if (activeContent) {
 
-    activeContent.classList.add(
-      "active"
-    );
+    activeContent.classList.add("active");
 
   }
 
 
-  /* -----------------------------------------
-     Step Indicator
-  ----------------------------------------- */
+  /* =========================================
+     STEPPER INDICATOR
+  ========================================= */
 
   document
-    .querySelectorAll(
-      ".ba-step"
-    )
+    .querySelectorAll(".ba-step")
     .forEach(step => {
 
       const number =
-        Number(
-          step.dataset.step
+        Number(step.dataset.step);
+
+
+      /*
+        Step yang tidak dipakai
+        benar-benar disembunyikan.
+      */
+      if (!activeSteps.includes(number)) {
+
+        step.style.display = "none";
+
+        step.classList.remove(
+          "active",
+          "completed"
         );
+
+        return;
+
+      }
+
+
+      /*
+        Step yang dipakai ditampilkan kembali.
+      */
+      step.style.display = "";
 
 
       step.classList.remove(
@@ -6543,7 +6989,21 @@ function showBAStep(stepNumber) {
       );
 
 
-      if (number < currentBAStep) {
+      const currentIndex =
+        activeSteps.indexOf(
+          currentBAStep
+        );
+
+      const stepIndex =
+        activeSteps.indexOf(
+          number
+        );
+
+
+      if (
+        stepIndex !== -1 &&
+        stepIndex < currentIndex
+      ) {
 
         step.classList.add(
           "completed"
@@ -6552,7 +7012,9 @@ function showBAStep(stepNumber) {
       }
 
 
-      if (number === currentBAStep) {
+      if (
+        number === currentBAStep
+      ) {
 
         step.classList.add(
           "active"
@@ -6563,9 +7025,9 @@ function showBAStep(stepNumber) {
     });
 
 
-  /* -----------------------------------------
-     Previous Button
-  ----------------------------------------- */
+  /* =========================================
+     PREVIOUS BUTTON
+  ========================================= */
 
   const previousButton =
     document.getElementById(
@@ -6575,29 +7037,34 @@ function showBAStep(stepNumber) {
 
   if (previousButton) {
 
+    const currentIndex =
+      activeSteps.indexOf(
+        currentBAStep
+      );
+
     previousButton.disabled =
-      currentBAStep === 1;
+      currentIndex <= 0;
 
   }
 
 
-  /* -----------------------------------------
-     Next Button
-  ----------------------------------------- */
-
-  updateNextButton();
-
-
-  /* -----------------------------------------
-     Refresh field berdasarkan jenis BA
-  ----------------------------------------- */
+  /* =========================================
+     SYNC FIELD
+  ========================================= */
 
   syncStepByJenis();
 
 
-  /* -----------------------------------------
-     Scroll workspace ke atas
-  ----------------------------------------- */
+  /* =========================================
+     NEXT BUTTON
+  ========================================= */
+
+  updateNextButton();
+
+
+  /* =========================================
+     SCROLL
+  ========================================= */
 
   const page =
     document.getElementById(
@@ -6637,7 +7104,7 @@ function showBAStep(stepNumber) {
 
 
 /* =========================================================
-   06. UPDATE NEXT BUTTON
+   07. UPDATE NEXT BUTTON
 ========================================================= */
 
 function updateNextButton() {
@@ -6655,7 +7122,39 @@ function updateNextButton() {
   }
 
 
-  if (currentBAStep === 4) {
+  const jenis =
+    getBAJenisStepper();
+
+
+  if (jenis === "form_opname") {
+
+    button.style.display = "none";
+
+    return;
+
+  }
+
+
+  button.style.display = "";
+
+
+  const activeSteps =
+    getBAStepsAktif();
+
+
+  const lastStep =
+    activeSteps[
+      activeSteps.length - 1
+    ];
+
+
+  /*
+    Jika sudah berada di step terakhir,
+    tombol berubah menjadi Generate.
+  */
+  if (
+    currentBAStep === lastStep
+  ) {
 
     button.innerHTML =
       "Generate Dokumen";
@@ -6671,16 +7170,77 @@ function updateNextButton() {
 
 
 /* =========================================================
-   07. NEXT STEP
+   08. NEXT STEP
 ========================================================= */
 
 function nextBAStep() {
 
-  /* -----------------------------------------
-     Step terakhir = Generate
-  ----------------------------------------- */
+  const jenis =
+    getBAJenisStepper();
 
-  if (currentBAStep === 4) {
+
+  /*
+    FORM OPNAME
+    Tidak menggunakan tombol lanjut normal.
+  */
+  if (jenis === "form_opname") {
+
+    if (
+      typeof syncFormOpnameFinal === "function"
+    ) {
+
+      syncFormOpnameFinal();
+
+    }
+
+    return;
+
+  }
+
+
+  /*
+    Validasi step aktif.
+  */
+  if (!validateCurrentStep()) {
+
+    return;
+
+  }
+
+
+  const activeSteps =
+    getBAStepsAktif();
+
+
+  const currentIndex =
+    activeSteps.indexOf(
+      currentBAStep
+    );
+
+
+  /*
+    Safety apabila currentBAStep
+    tidak ditemukan.
+  */
+  if (currentIndex === -1) {
+
+    showBAStep(
+      activeSteps[0]
+    );
+
+    return;
+
+  }
+
+
+  /*
+    Jika sekarang sudah berada
+    di step terakhir = GENERATE.
+  */
+  if (
+    currentIndex ===
+    activeSteps.length - 1
+  ) {
 
     if (
       typeof generate === "function"
@@ -6688,9 +7248,16 @@ function nextBAStep() {
 
       generate();
 
+
       setTimeout(() => {
 
-        scrollPreviewIntoView();
+        if (
+          typeof scrollPreviewIntoView === "function"
+        ) {
+
+          scrollPreviewIntoView();
+
+        }
 
       }, 650);
 
@@ -6707,78 +7274,79 @@ function nextBAStep() {
 
   }
 
-    /* FORM OPNAME = LANGSUNG GENERATE */
 
-  if (
-    getJenisBAAktif() ===
-    "form_opname"
-  ) {
-
-    syncFormOpnameFinal();
-
-    setTimeout(() => {
-
-      if (
-        typeof scrollPreviewIntoView ===
-        "function"
-      ) {
-        scrollPreviewIntoView();
-      }
-
-    }, 100);
-
-    return;
-  }
-
-
-  /* -----------------------------------------
-     Validasi sederhana
-  ----------------------------------------- */
-
-  if (!validateCurrentStep()) {
-
-    return;
-
-  }
+  /*
+    Masuk ke step berikutnya
+    berdasarkan flow BA aktif.
+  */
+  const nextStep =
+    activeSteps[
+      currentIndex + 1
+    ];
 
 
   showBAStep(
-    currentBAStep + 1
+    nextStep
   );
 
 }
 
 
 /* =========================================================
-   08. PREVIOUS STEP
+   09. PREVIOUS STEP
 ========================================================= */
 
 function previousBAStep() {
 
-  if (currentBAStep <= 1) {
+  const jenis =
+    getBAJenisStepper();
+
+
+  if (jenis === "form_opname") {
 
     return;
 
   }
 
 
+  const activeSteps =
+    getBAStepsAktif();
+
+
+  const currentIndex =
+    activeSteps.indexOf(
+      currentBAStep
+    );
+
+
+  if (currentIndex <= 0) {
+
+    return;
+
+  }
+
+
+  const previousStep =
+    activeSteps[
+      currentIndex - 1
+    ];
+
+
   showBAStep(
-    currentBAStep - 1
+    previousStep
   );
 
 }
 
 
 /* =========================================================
-   09. STEPPER CLICKABLE
+   10. STEPPER CLICKABLE
 ========================================================= */
 
 function initStepperClick() {
 
   document
-    .querySelectorAll(
-      ".ba-step"
-    )
+    .querySelectorAll(".ba-step")
     .forEach(step => {
 
       step.style.cursor =
@@ -6795,7 +7363,26 @@ function initStepperClick() {
             );
 
 
-          showBAStep(number);
+          const activeSteps =
+            getBAStepsAktif();
+
+
+          /*
+            Hanya step yang memang
+            digunakan yang boleh diklik.
+          */
+          if (
+            !activeSteps.includes(number)
+          ) {
+
+            return;
+
+          }
+
+
+          showBAStep(
+            number
+          );
 
         }
       );
@@ -6806,21 +7393,14 @@ function initStepperClick() {
 
 
 /* =========================================================
-   10. VALIDATION
+   11. VALIDATION
 ========================================================= */
 
 function validateCurrentStep() {
 
-  /*
-    Kita belum membuat validasi ketat.
-
-    Tujuannya agar fungsi lama tidak terganggu.
-    Nanti validation rules kita tambah setelah
-    seluruh jenis BA selesai diuji.
-  */
-
-
-  if (currentBAStep === 1) {
+  if (
+    currentBAStep === 1
+  ) {
 
     const jenis =
       document.getElementById(
@@ -6828,7 +7408,10 @@ function validateCurrentStep() {
       );
 
 
-    if (!jenis || !jenis.value) {
+    if (
+      !jenis ||
+      !jenis.value
+    ) {
 
       showToast(
         "Pilih jenis Berita Acara terlebih dahulu.",
@@ -6848,31 +7431,13 @@ function validateCurrentStep() {
 
 
 /* =========================================================
-   11. SYNC STEP BERDASARKAN JENIS BA
+   12. SYNC STEP BERDASARKAN JENIS BA
 ========================================================= */
 
 function syncStepByJenis() {
 
-  const jenisElement =
-    document.getElementById(
-      "jenis"
-    );
-
-
-  const jenisSelect =
-    document.getElementById(
-      "jenisSelect"
-    );
-
-
   const jenis =
-    jenisElement
-      ? jenisElement.value
-      : (
-          jenisSelect
-            ? jenisSelect.value
-            : "material"
-        );
+    getBAJenisStepper();
 
 
   const pihakCard =
@@ -6893,109 +7458,85 @@ function syncStepByJenis() {
     );
 
 
-  /*
-    ==========================================
-    BA OPNAME
-    ==========================================
-  */
-
-  if (jenis === "opname") {
-
-    if (pihakCard) {
-
-      pihakCard.style.display =
-        "none";
-
-    }
+  const isStandard = [
+    "material",
+    "keterangan",
+    "adendum",
+    "biaya"
+  ].includes(jenis);
 
 
-    if (standardTtd) {
-
-      standardTtd.style.display =
-        "none";
-
-    }
+  const isUrugan =
+    jenis === "urugan";
 
 
-    if (opnameLampiran) {
+  const isOpname =
+    jenis === "opname";
 
-      opnameLampiran.style.display =
-        "block";
 
-    }
+  const isFormOpname =
+    jenis === "form_opname";
+
+
+  /* =========================================
+     PIHAK TERKAIT
+
+     Hanya BA standard.
+  ========================================= */
+
+  if (pihakCard) {
+
+    pihakCard.style.display =
+      isStandard
+        ? "block"
+        : "none";
+
+  }
+
+
+  /* =========================================
+     LAMPIRAN STANDARD
+
+     Hanya BA standard.
+
+     URUGAN TIDAK PAKAI LAMPIRAN.
+  ========================================= */
+
+  if (standardTtd) {
+
+    standardTtd.style.display =
+      isStandard
+        ? "block"
+        : "none";
+
+  }
+
+
+  /* =========================================
+     LAMPIRAN KHUSUS OPNAME LAPANGAN
+  ========================================= */
+
+  if (opnameLampiran) {
+
+    opnameLampiran.style.display =
+      isOpname
+        ? "block"
+        : "none";
 
   }
 
 
   /*
-    ==========================================
-    BA URUGAN
-    ==========================================
+    FORM OPNAME tetap ditangani
+    sistem Form Opname yang sudah ada.
   */
 
-  else if (jenis === "urugan") {
+  if (
+    isFormOpname &&
+    typeof setupFormOpnameSingleProcess === "function"
+  ) {
 
-    if (pihakCard) {
-
-      pihakCard.style.display =
-        "none";
-
-    }
-
-
-    if (standardTtd) {
-
-      standardTtd.style.display =
-        "none";
-
-    }
-
-
-    /*
-      Urugan punya upload sendiri
-      di Step 2.
-    */
-
-    if (opnameLampiran) {
-
-      opnameLampiran.style.display =
-        "none";
-
-    }
-
-  }
-
-
-  /*
-    ==========================================
-    BA STANDARD
-    ==========================================
-  */
-
-  else {
-
-    if (pihakCard) {
-
-      pihakCard.style.display =
-        "block";
-
-    }
-
-
-    if (standardTtd) {
-
-      standardTtd.style.display =
-        "block";
-
-    }
-
-
-    if (opnameLampiran) {
-
-      opnameLampiran.style.display =
-        "none";
-
-    }
+    setupFormOpnameSingleProcess();
 
   }
 
@@ -7003,7 +7544,7 @@ function syncStepByJenis() {
 
 
 /* =========================================================
-   12. WATCH JENIS BA
+   13. WATCH JENIS BA
 ========================================================= */
 
 function initJenisWatcher() {
@@ -7025,19 +7566,42 @@ function initJenisWatcher() {
     "change",
     function () {
 
-      /*
-        setJenisDropdown() sebenarnya sudah
-        dipanggil dari onchange HTML.
-
-        Timeout agar toggleJenis lama
-        selesai lebih dulu.
-      */
-
       setTimeout(() => {
 
-        syncStepByJenis();
+        const jenis =
+          getBAJenisStepper();
 
-      }, 10);
+
+        /*
+          FORM OPNAME
+        */
+        if (
+          jenis === "form_opname"
+        ) {
+
+          syncStepByJenis();
+
+          if (
+            typeof setupFormOpnameSingleProcess ===
+            "function"
+          ) {
+
+            setupFormOpnameSingleProcess();
+
+          }
+
+          return;
+
+        }
+
+
+        /*
+          Setiap ganti jenis BA,
+          kembali ke Step 1.
+        */
+        showBAStep(1);
+
+      }, 20);
 
     }
   );
