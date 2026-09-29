@@ -1,629 +1,4821 @@
 <!DOCTYPE html>
 <html lang="id">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Generator Berita Acara</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-<script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 
-<link rel="stylesheet" href="style.css">
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>BA Generator | Admin Project</title>
+
+
+  <!-- BOOTSTRAP -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  >
+
+
+  <!-- SELECT2 -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+    rel="stylesheet"
+  >
+
+
+  <!-- QUILL -->
+  <link
+    href="https://cdn.quilljs.com/1.3.6/quill.snow.css"
+    rel="stylesheet"
+  >
+
+  <script
+    src="https://cdn.quilljs.com/1.3.6/quill.min.js">
+  </script>
+
+
+  <!-- FONT -->
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+
+  <!-- CSS -->
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
+
 </head>
+
+
 <body>
 
-<!-- PANEL DRAFT -->
-<div id="draftPanel" class="hidden">
-  <button onclick="saveDraft()">💾 Simpan Draft</button>
-  <button onclick="loadDraft()">♻️ Load Draft</button>
-  <button onclick="clearDraft()">🗑️ Hapus Draft</button>
-  <button onclick="exportToWord()" class="btn btn-primary w-100 mt-2">
-  Export ke Word
-</button>
-</div>
 
-<div id="topLoader"></div>
+<!-- ======================================================
+     TOAST
+======================================================= -->
 
-<div id="sidebar">
-  <div class="sidebar-header">
-    
-  </div>
-
-  <ul class="sidebar-menu">
-    <li onclick="toggleSidebar()" data-title="Toggle">
-      ☰ <span>Menu</span>
-    </li>
-<li onclick="scrollToForm()" data-title="Form Input">
-    <i>🧾</i><span>Form Input</span>
-  </li>
-
-  <li onclick="generate()" data-title="Generate">
-    <i>⚙️</i><span>Generate</span>
-  </li>
-
-  <li onclick="window.print()" data-title="Print PDF">
-    <i>🖨️</i><span>Print</span>
-  </li>
-    <!-- 🔥 INI LOGOUT -->
-  <li onclick="logout()" data-title="Logout">
-    <i>⏻</i><span>Logout</span>
-  </li>
-  </ul>
-</div>
-
-<div id="toast" style="
-  position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #c90000;
-  color: white;
-  padding: 14px 22px;
-  border-radius: 10px;
-  display: none;
-  z-index: 9999;
-  font-size: 15px;
-  text-align: center;
-  min-width: 220px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
-">
+<div id="toast">
   Notifikasi
 </div>
 
-<div id="confirmBox" style="
-  position: fixed;
-  top:0; left:0;
-  width:100%; height:100%;
-  background: rgba(0,0,0,0.5);
-  display:none;
-  justify-content:center;
-  align-items:center;
-  z-index:9999;
-">
-  <div style="
-    background:#fff;
-    padding:25px;
-    border-radius:12px;
-    text-align:center;
-    width:300px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.3);
-  ">
-    <p style="margin-bottom:20px;">Hapus baris ini?</p>
-    
-    <button onclick="confirmYes()" class="btn btn-danger">Ya</button>
-    <button onclick="confirmNo()" class="btn btn-secondary">Batal</button>
-  </div>
-</div>
 
-<!-- Footer: letakkan setelah semua div utama -->
-<footer class="app-footer">
-  <p class="mb-0 small">
-    &copy; 2026 <strong>Admin Project</strong>. All rights reserved.
-  </p>
-</footer>
 
-  <!-- Loading Spinner -->
-<div id="loadingOverlay" style="display:none;">
-  <div class="spinner"></div>
-</div>
+<!-- ======================================================
+     GLOBAL CONFIRM — SLIM ERP
+======================================================= -->
+<div id="globalConfirm" class="global-confirm-overlay" aria-hidden="true">
 
-  <!-- Halaman Login -->
-  <div id="loginPage">
-    <div class="card">
-      <div class="text-center">
-        <img src="Asset/kop.png" alt="Logo Rumah Ningrat">
-      </div>
-      <h3>Login User</h3>
-      <form id="loginForm">
-        <div class="mb-3 text-start">
-          <label class="form-label">Username</label>
-          <input type="text" id="username" class="form-control" required>
-        </div>
-        <div class="mb-3 text-start">
-          <label class="form-label">Password</label>
-          <input type="password" id="password" class="form-control" required>
-        </div>
-        <button type="submit" class="btn btn-login">Login</button>
-      </form>
-    </div>
-  </div>
+  <div class="global-confirm-card" role="dialog" aria-modal="true">
 
+    <div class="global-confirm-header">
+      <span id="globalConfirmTitle">Konfirmasi</span>
 
-<!-- HEADER -->
-<div id="mainPage" style="display:none;">
-
-  <div class="wrapper-flex">
-
-    <!-- FORM -->
-    <div class="form-panel">
-      <div class="card p-3">
-
-<div class="card p-3 mb-3 jenis-card">
-
-  <label class="jenis-header" for="jenisSelect">📄 Jenis Berita Acara</label>
-
-  <select id="jenisSelect" class="form-control jenis-select" onchange="setJenisDropdown(this.value)">
-    <option value="material">Pengajuan Material</option>
-    <option value="keterangan">Keterangan Pekerjaan</option>
-    <option value="adendum">Adendum / Kendala</option>
-    <option value="biaya">Pengajuan Biaya</option>
-    <option value="urugan">BA Urugan</option>
-    <option value="opname">BA Opname Lapangan</option>
-  </select>
-
-<div id="jenisDesc" class="jenis-dropdown-desc">
-  Untuk permintaan barang/material project.
-</div>
-
-</div>
-
-<input type="hidden" id="jenis" value="material">
-
-</div>
-
-
-
-<div class="card pihak-card p-3 mb-3" id="pihakCard">
-
-  <div class="pihak-header">
-    <span class="pihak-title">👥 Pihak Penandatangan</span>
-  </div>
-
-  <div class="form-check form-switch mb-3">
-  <input class="form-check-input" type="checkbox" id="useTtd4" onchange="toggleTtd4()">
-  <label class="form-check-label" for="useTtd4">
-    Gunakan 4 Tanda Tangan
-  </label>
-</div>
-
-  <!-- ITEM -->
-  <div class="pihak-item">
-    <div class="pihak-left">
-      <div class="pihak-number">01</div>
-      <div>
-        <div class="pihak-role" id="roleLabel1">DIBUAT</div>
-      </div>
-    </div>
-
-    <div class="pihak-form">
-      <select id="nama1" class="form-control select-modern mb-1"
-        onchange="setJabatan(this,'jabatan1')"></select>
-      <input id="jabatan1" class="form-control input-modern" readonly>
-    </div>
-  </div>
-
-  <div class="pihak-item">
-    <div class="pihak-left">
-      <div class="pihak-number">02</div>
-      <div class="pihak-role" id="roleLabel2">DIKETAHUI</div>
-    </div>
-
-    <div class="pihak-form">
-      <select id="nama2" class="form-control select-modern mb-1"
-        onchange="setJabatan(this,'jabatan2')"></select>
-      <input id="jabatan2" class="form-control input-modern" readonly>
-    </div>
-  </div>
-
-  <div class="pihak-item">
-    <div class="pihak-left">
-      <div class="pihak-number">03</div>
-      <div class="pihak-role" id="roleLabel3">DISETUJUI</div>
-    </div>
-
-    <div class="pihak-form">
-      <select id="nama3" class="form-control select-modern mb-1"
-        onchange="setJabatan(this,'jabatan3')"></select>
-      <input id="jabatan3" class="form-control input-modern" readonly>
-    </div>
-  </div>
-
-  <div class="pihak-item" id="pihak4Box" style="display:none;">
-  <div class="pihak-left">
-    <div class="pihak-number">04</div>
-    <div class="pihak-role" id="roleLabel4">DISETUJUI</div>
-  </div>
-
-  <div class="pihak-form">
-    <select id="nama4" class="form-control select-modern mb-1"
-      onchange="setJabatan(this,'jabatan4')"></select>
-    <input id="jabatan4" class="form-control input-modern" readonly>
-  </div>
-</div>
-
-  <!-- ACTION -->
-  <div class="pihak-actions mt-3">
-    <button onclick="tambahOrang()" class="btn btn-success mt-2 w-100 d-flex align-items-center justify-content-center gap-2">
-  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-    <circle cx="8.5" cy="7" r="4"/>
-    <line x1="20" y1="8" x2="20" y2="14"/>
-    <line x1="23" y1="11" x2="17" y2="11"/>
-  </svg>
-  Tambah Pihak
-</button>
-    <button onclick="editOrang()" class="btn btn-warning mt-2 w-100 d-flex align-items-center justify-content-center gap-2">
-  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M12 20h9"/>
-    <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/>
-  </svg>
-  Edit Data
-</button>
-    <button onclick="hapusOrang()" class="btn btn-danger mt-2 w-100 d-flex align-items-center justify-content-center gap-2">
-  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <polyline points="3 6 5 6 21 6"/>
-    <path d="M19 6l-1 14H6L5 6"/>
-    <path d="M10 11v6"/>
-    <path d="M14 11v6"/>
-    <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
-  </svg>
-  Hapus Data
-</button>
-  </div>
-
-</div>
-
-        <div class="section-title">Isi Surat</div>
-
-<!-- FORM BA STANDAR -->
-<div id="standardContentBox">
-  <div class="section-title">Latar Belakang</div>
-  <div id="latar" class="quill-editor"></div>
-
-  <div class="section-title mt-2">Maksud & Tujuan</div>
-  <div id="tujuan" class="quill-editor"></div>
-
-  <div id="materialBox" style="display:none;">
-    <h6>Material</h6>
-    <table class="table table-bordered" id="materialTable">
-      <thead>
-        <tr>
-          <th>No</th>
-          <th>Nama Material</th>
-          <th>Spesifikasi</th>
-          <th>Jumlah</th>
-          <th>Satuan</th>
-          <th style="width:50px;">Aksi</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-    <button onclick="addRow()" class="btn btn-sm btn-danger">+ Tambah</button>
-  </div>
-
-  <div id="adendumBox" style="display:none;">
-    <div class="section-title mt-2">Kronologi / Kejadian</div>
-    <div id="kejadian" class="quill-editor"></div>
-  </div>
-
-  <div class="section-title mt-2">Penutup</div>
-  <div id="penutup" class="quill-editor"></div>
-</div>
-
-<!-- FORM BA PENGAJUAN BIAYA -->
-<div id="biayaBox" style="display:none;">
-
-  <div class="section-title">Nomor BA Manual</div>
-  <input id="nomorBiaya" class="form-control mb-2"
-    placeholder="Contoh: 164/BA/PRSCH-LOG/VII/2026">
-
-  <div class="section-title">Keterangan / Judul Pengajuan</div>
-  <input id="keteranganBiaya" class="form-control mb-2"
-    placeholder="Contoh: Pengajuan Biaya Plester Samping RN Sampora">
-
-  <div class="section-title">Pekerjaan</div>
-  <input id="pekerjaanBiaya" class="form-control mb-2"
-    placeholder="Contoh: Plester Samping">
-
-  <div class="section-title">Project</div>
-  <input id="projectBiaya" class="form-control mb-2"
-    placeholder="Contoh: RN Sampora">
-
-  <div class="section-title">Unit / Blok</div>
-  <input id="unitBiaya" class="form-control mb-2"
-    placeholder="Contoh: Unit J39, J40, J41, J42">
-
-  <div class="section-title">Pembuka Berita Acara</div>
-<div id="pembukaBiaya" class="quill-editor biaya-editor"></div>
-
-  <div class="section-title mt-2">Rincian Biaya</div>
-  <table class="table table-bordered" id="biayaTable">
-    <thead>
-      <tr>
-        <th style="width:45px;">No</th>
-        <th>Item</th>
-        <th style="width:70px;">Qty</th>
-        <th style="width:90px;">Satuan</th>
-        <th style="width:130px;">Harga Satuan</th>
-        <th style="width:130px;">Harga Total</th>
-        <th style="width:50px;">Aksi</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-
-  <button onclick="addBiayaRow()" class="btn btn-sm btn-danger mb-3">
-    + Tambah Rincian
-  </button>
-
-  <div class="section-title">Penutup Berita Acara</div>
-<div id="penutupBiaya" class="quill-editor biaya-editor"></div>
-
-</div>
-
-<!-- FORM BA URUGAN -->
-<div id="uruganBox" style="display:none;">
-
-  <div class="section-title">Nomor BA Urugan</div>
-  <input id="nomorUrugan" class="form-control mb-2"
-    placeholder="Contoh: 001/BA-URG/RSP/PROJECT/VIII/2026">
-
-  <div class="section-title">Project</div>
-  <input id="projectUrugan" class="form-control mb-2"
-    placeholder="Contoh: TRUSMILAND AWN KOMERSIL">
-
-  <div class="section-title">Blok / Unit</div>
-  <table class="table table-bordered" id="blokUruganTable">
-    <thead>
-      <tr>
-        <th style="width:45px;">No</th>
-        <th>Blok / Unit</th>
-        <th style="width:50px;">Aksi</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-
-  <button type="button" onclick="addBlokUrugan()" class="btn btn-sm btn-danger mb-3">
-    + Tambah Blok
-  </button>
-
-  <div class="row">
-    <div class="col-md-4">
-      <div class="section-title">Jumlah Rit</div>
-      <input id="jumlahRitUrugan" type="number" class="form-control mb-2"
-        placeholder="Contoh: 3" oninput="hitungTotalUrugan()">
-    </div>
-
-    <div class="col-md-4">
-      <div class="section-title">Harga per Rit</div>
-      <input id="hargaRitUrugan" type="number" class="form-control mb-2"
-        placeholder="Contoh: 560000" oninput="hitungTotalUrugan()">
-    </div>
-
-    <div class="col-md-4">
-      <div class="section-title">Total</div>
-      <input id="totalUrugan" class="form-control mb-2" readonly>
-    </div>
-  </div>
-
-  <div class="section-title">Atas Nama</div>
-  <input id="atasNamaUrugan" class="form-control mb-2"
-    placeholder="Contoh: ANGGUN MEILANI SAFITRI">
-
-  <div class="section-title">Bank</div>
-  <input id="bankUrugan" class="form-control mb-2"
-    placeholder="Contoh: BCA">
-
-  <div class="section-title">No. Rekening</div>
-  <input id="rekeningUrugan" class="form-control mb-3"
-    placeholder="Contoh: 8180220021">
-
-<div class="section-title">Foto Nota Urugan</div>
-<p class="small text-muted mb-2">
-  Jumlah foto nota mengikuti jumlah rit. Contoh: 3 rit = 3 foto nota.
-</p>
-
-<div class="urugan-drop-area nota-urugan-drop"
-  onclick="document.getElementById('notaUruganInput').click()"
-  ondragover="dragUruganOver(event, this)"
-  ondragleave="dragUruganLeave(this)"
-  ondrop="dropNotaUruganFiles(event, this)">
-
-  <div class="urugan-drop-icon">🧾</div>
-  <div class="urugan-drop-title">Drag & Drop Foto Nota</div>
-  <div class="urugan-drop-desc">atau klik untuk upload nota urugan</div>
-  <div class="urugan-drop-note">Jumlah nota maksimal mengikuti jumlah rit</div>
-
-  <input type="file" id="notaUruganInput" hidden multiple accept="image/*"
-    onchange="handleNotaUruganFiles(event)">
-</div>
-
-<div id="previewNotaUrugan" class="urugan-preview-grid mb-3"></div>
-
-  <button type="button" onclick="addRitUrugan()" class="btn btn-sm btn-danger mb-3">
-    + Tambah Dokumentasi Rit
-  </button>
-
-  <div id="ritUruganContainer"></div>
-
-</div>
-
-<!-- FORM BA OPNAME LAPANGAN -->
-<div id="opnameBox" style="display:none;">
-
-  <div class="section-title">Nomor BA Opname</div>
-  <div class="row">
-    <div class="col-md-8">
-      <input id="nomorOpname" class="form-control mb-2" readonly
-        placeholder="Otomatis saat generate">
-    </div>
-    <div class="col-md-4">
-      <button type="button" onclick="resetNomorOpnameBulanIni()" class="btn btn-sm btn-secondary w-100">
-        Reset Nomor
+      <button
+        type="button"
+        class="global-confirm-close"
+        onclick="closeGlobalConfirm(false)"
+        aria-label="Tutup"
+      >
+        ×
       </button>
     </div>
-  </div>
 
-  <div class="section-title">Kode Nomor BA</div>
-  <input id="kodeOpname" class="form-control mb-2"
-    value="BAO/TL/RSP/CRB"
-    placeholder="Contoh: BAO/TL/RSP/CRB">
+    <div class="global-confirm-body">
 
-  <div class="section-title">Tanggal BA</div>
-  <input id="tanggalOpname" type="date" class="form-control mb-2">
+      <div class="global-confirm-icon">!</div>
 
-<div class="section-title">Pihak Pertama</div>
-<select id="namaPihak1OpnameSelect" class="form-control select-modern mb-2"
-  onchange="setJabatan(this,'jabatanPihak1Opname')"></select>
+      <div class="global-confirm-content">
+        <div id="globalConfirmMessage" class="global-confirm-message">
+          Apakah Anda yakin?
+        </div>
 
-<input id="jabatanPihak1Opname" class="form-control mb-2" readonly
-  placeholder="Jabatan Pihak Pertama">
+        <div id="globalConfirmDescription" class="global-confirm-description">
+        </div>
+      </div>
 
+    </div>
 
-<div class="section-title">Pihak Kedua</div>
-<select id="namaPihak2OpnameSelect" class="form-control select-modern mb-2"
-  onchange="setJabatan(this,'jabatanPihak2Opname')"></select>
+    <div class="global-confirm-footer">
 
-<input id="jabatanPihak2Opname" class="form-control mb-2" readonly
-  placeholder="Jabatan Pihak Kedua">
+      <button
+        type="button"
+        class="global-confirm-btn global-confirm-cancel"
+        onclick="closeGlobalConfirm(false)"
+      >
+        Batal
+      </button>
 
-<input id="perusahaanPihak2Opname" class="form-control mb-3"
-  value="Raja Sukses Propertindo"
-  placeholder="Perusahaan Pihak Kedua">
+      <button
+        type="button"
+        id="globalConfirmButton"
+        class="global-confirm-btn global-confirm-danger"
+        onclick="closeGlobalConfirm(true)"
+      >
+        Hapus
+      </button>
 
-<div class="section-title">Detail Pekerjaan</div>
+    </div>
 
-<input id="pekerjaanOpname" class="form-control mb-2"
-  placeholder="Nama Pekerjaan, contoh: Pekerjaan Footplate Trusmiland Pamengkang">
-
-<input id="blokOpname" class="form-control mb-2"
-  placeholder="Blok, contoh: I79, I80">
-
-<input id="waktuPelaksanaanOpname" class="form-control mb-2"
-  placeholder="Waktu Pelaksanaan, contoh: 10 Agustus 2026">
-
-<input id="jumlahOpname" class="form-control mb-2"
-  placeholder="Jumlah, contoh: 2 Unit (6 Titik / Unit)">
-
-<input id="progressOpname" class="form-control mb-3"
-  value="100%"
-  placeholder="Progress, contoh: 100%">
-
-
-<div class="section-title">Data Pemeriksa / Mengetahui</div>
-
-<div class="opname-ttd-form">
-
-  <div class="opname-ttd-input">
-    <strong>PIHAK PERTAMA</strong>
-    <input id="ttdOpname1" type="file" class="form-control mt-2" accept="image/*">
-  </div>
-
-  <div class="opname-ttd-input">
-    <strong>PIHAK KEDUA</strong>
-    <input id="ttdOpname2" type="file" class="form-control mt-2" accept="image/*">
-  </div>
-
-  <div class="opname-ttd-input">
-    <strong>DIPERIKSA</strong>
-
-    <select id="namaDiperiksaOpnameSelect" class="form-control select-modern mt-2 mb-2"
-      onchange="setJabatan(this,'jabatanDiperiksaOpname')"></select>
-
-    <input id="jabatanDiperiksaOpname" class="form-control mb-2" readonly
-      placeholder="Jabatan Pemeriksa">
-
-    <input id="ttdOpname3" type="file" class="form-control" accept="image/*">
-  </div>
-
-  <div class="opname-ttd-input">
-    <strong>DIKETAHUI</strong>
-
-    <select id="namaDiketahuiOpnameSelect" class="form-control select-modern mt-2 mb-2"
-      onchange="setJabatan(this,'jabatanDiketahuiOpname')"></select>
-
-    <input id="jabatanDiketahuiOpname" class="form-control mb-2" readonly
-      placeholder="Jabatan Mengetahui">
-
-    <input id="ttdOpname4" type="file" class="form-control" accept="image/*">
   </div>
 
 </div>
 
-<div class="pihak-actions mt-3">
-  <button onclick="tambahOrang()" type="button" class="btn btn-success mt-2 w-100">
-    + Tambah Pihak
-  </button>
 
-  <button onclick="editOrang()" type="button" class="btn btn-warning mt-2 w-100">
-    Edit Data Pihak
-  </button>
 
-  <button onclick="hapusOrang()" type="button" class="btn btn-danger mt-2 w-100">
-    Hapus Data Pihak
-  </button>
+<!-- ======================================================
+     LOADING
+======================================================= -->
+
+<div
+  id="loadingOverlay"
+  style="display:none;"
+>
+
+  <div class="spinner"></div>
+
 </div>
 
-  <div class="section-title mt-3">Lampiran Foto Opname</div>
-  <p class="small text-muted mb-2">
-    Maksimal 6 foto per halaman lampiran.
+
+
+<!-- ======================================================
+     LOGIN PAGE
+======================================================= -->
+
+<div id="loginPage">
+
+    <div class="login-modern-card">
+
+          <!-- LOGO -->
+          <div class="login-brand-center">
+              <img
+                  src="Asset/kop.png"
+                  alt="Rumah Ningrat"
+              >
+          </div>
+
+
+        <!-- FORM -->
+        <form
+                id="loginForm"
+                class="login-modern-form"
+            >
+
+            <!-- USERNAME -->
+            <div class="login-field">
+
+                <label for="username">
+                    Username
+                </label>
+
+                <div class="login-input-wrap">
+
+                    <span class="login-input-icon">
+                        ♙
+                    </span>
+
+                    <input
+                        type="text"
+                        id="username"
+                        placeholder="Masukkan username"
+                        autocomplete="username"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- PASSWORD -->
+            <div class="login-field">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <div class="login-input-wrap">
+
+                    <span class="login-input-icon">
+                        ♙
+                    </span>
+
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Masukkan password"
+                        autocomplete="current-password"
+                    >
+
+                    <button
+                        type="button"
+                        class="login-password-toggle"
+                        onclick="toggleLoginPassword()"
+                        aria-label="Tampilkan password"
+                    >
+                        ◉
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- OPTIONS -->
+            <div class="login-options">
+
+                <label class="login-remember">
+
+                    <input
+                        type="checkbox"
+                        id="rememberLogin"
+                    >
+
+                    <span>Ingat saya</span>
+
+                </label>
+
+
+                <button
+                    type="button"
+                    class="login-forgot"
+                >
+                    Lupa password?
+                </button>
+
+            </div>
+
+
+            <!-- LOGIN BUTTON -->
+            <button
+                type="submit"
+                class="login-submit"
+            >
+
+                <span>Masuk</span>
+
+                <span class="login-submit-arrow">
+                    →
+                </span>
+
+            </button>
+
+
+            <!-- DIVIDER -->
+            <div class="login-divider">
+
+                <span></span>
+
+                <small>atau</small>
+
+                <span></span>
+
+            </div>
+
+
+            <!-- SSO -->
+            <button
+                type="button"
+                class="login-sso"
+            >
+
+                <span class="login-sso-icon">
+                    ◇
+                </span>
+
+                <span>
+                    Masuk dengan Single Sign-On (SSO)
+                </span>
+
+            </button>
+
+
+            <!-- SECURITY -->
+            <div class="login-security">
+
+                <div class="login-security-icon">
+                    ✓
+                </div>
+
+                <div>
+                    <strong>Sistem aman</strong>
+
+                    <span>
+                        Akses hanya untuk pengguna berwenang.
+                    </span>
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+
+<!-- ======================================================
+     MAIN APPLICATION
+======================================================= -->
+
+<div
+  id="mainPage"
+  style="display:none;"
+>
+
+
+  <!-- ====================================================
+       SIDEBAR
+  ===================================================== -->
+
+  <aside id="sidebar">
+
+
+    <!-- BRAND -->
+
+    <div class="sidebar-header">
+
+      <div class="sidebar-brand">
+
+        <div class="sidebar-logo">
+          BA
+        </div>
+
+
+        <div class="sidebar-brand-text">
+
+          <strong>
+            BA Generator
+          </strong>
+
+          <small>
+            Admin Project
+          </small>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- NAVIGATION -->
+
+    <nav class="sidebar-navigation">
+
+
+      <div class="sidebar-section-title">
+        MENU UTAMA
+      </div>
+
+
+      <ul class="sidebar-menu">
+
+
+        <!-- DASHBOARD -->
+
+        <li
+          class="sidebar-item"
+          data-page="dashboard"
+          onclick="openPage('dashboard')"
+        >
+
+          <i>⌂</i>
+
+          <span>
+            Dashboard
+          </span>
+
+        </li>
+
+
+
+        <!-- BUAT BA -->
+
+        <li
+          class="sidebar-item active"
+          data-page="buatBA"
+          onclick="createNewBADraft()"
+        >
+
+          <i>▣</i>
+
+          <span>
+            Buat Berita Acara
+          </span>
+
+        </li>
+
+
+
+        <!-- DRAFT -->
+
+        <li
+          class="sidebar-item"
+          data-page="draft"
+          onclick="openPage('draft')"
+        >
+
+          <i>▤</i>
+
+          <span>
+            Draft Saya
+          </span>
+
+        </li>
+
+
+
+        <!-- RIWAYAT -->
+
+        <li
+          class="sidebar-item"
+          data-page="riwayat"
+          onclick="openPage('riwayat')"
+        >
+
+          <i>◷</i>
+
+          <span>
+            Riwayat
+          </span>
+
+        </li>
+
+
+
+        <!-- LAPORAN -->
+
+        <li
+          class="sidebar-item"
+          data-page="laporan"
+          onclick="openPage('laporan')"
+        >
+
+          <i>▥</i>
+
+          <span>
+            Laporan
+          </span>
+
+        </li>
+
+      </ul>
+
+
+
+      <!-- MASTER DATA -->
+
+      <div class="sidebar-section-title sidebar-master-title">
+        MASTER DATA
+      </div>
+
+
+      <ul class="sidebar-menu">
+
+
+        <li
+          class="sidebar-item"
+          data-page="project"
+          onclick="openPage('project')"
+        >
+
+          <i>▦</i>
+
+          <span>
+            Project
+          </span>
+
+        </li>
+
+
+        <li
+          class="sidebar-item"
+          data-page="user"
+          onclick="openPage('user')"
+        >
+
+          <i>♙</i>
+
+          <span>
+            User
+          </span>
+
+        </li>
+
+        <li
+          class="sidebar-item"
+          data-page="pihak"
+          onclick="openPage('pihak')"
+        >
+
+          <i>♟</i>
+
+          <span>
+            Pihak
+          </span>
+
+        </li>
+
+
+        <li
+          class="sidebar-item"
+          data-page="pengaturan"
+          onclick="openPage('pengaturan')"
+        >
+
+          <i>⚙</i>
+
+          <span>
+            Pengaturan
+          </span>
+
+        </li>
+
+      </ul>
+
+    </nav>
+
+
+
+    <!-- SIDEBAR BOTTOM -->
+
+    <div class="sidebar-bottom">
+
+
+      <div class="sidebar-user">
+
+        <div class="sidebar-avatar">
+          A
+        </div>
+
+
+        <div class="sidebar-user-info">
+
+          <strong>
+            Admin Project
+          </strong>
+
+          <span>
+            Administrator
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="sidebar-logout"
+        onclick="logout()"
+      >
+
+        <span>
+          ⇥
+        </span>
+
+        <span>
+          Keluar
+        </span>
+
+      </button>
+
+    </div>
+
+  </aside>
+
+
+
+  <!-- ====================================================
+       MAIN
+  ===================================================== -->
+
+  <main class="app-main">
+
+
+    <!-- ==================================================
+         TOPBAR
+    =================================================== -->
+
+    <header class="topbar">
+
+
+      <div class="topbar-left">
+
+
+        <button
+          type="button"
+          class="topbar-menu-btn"
+          onclick="toggleSidebar()"
+        >
+          ☰
+        </button>
+
+
+        <div class="topbar-search">
+
+          <span class="topbar-search-icon">
+            ⌕
+          </span>
+
+          <input
+            type="text"
+            id="globalSearch"
+            placeholder="Cari dokumen, project, atau menu..."
+          >
+
+        </div>
+
+      </div>
+
+        <!-- =====================================================
+            RUMAH NINGRAT - BORDER DRAW ANIMATION
+        ===================================================== -->
+        <div class="rn-motion-wrap">
+
+            <div class="rn-motion-box">
+
+                <!-- BORDER 4 SISI -->
+                <span class="rn-border rn-border-top"></span>
+                <span class="rn-border rn-border-right"></span>
+                <span class="rn-border rn-border-bottom"></span>
+                <span class="rn-border rn-border-left"></span>
+
+                <!-- TEKS -->
+                <div class="rn-motion-content">
+                    <span class="rn-motion-brand">
+                        RUMAH NINGRAT
+                    </span>
+
+                    <span class="rn-motion-slogan">
+                        UNTUK HIDUP LEBIH BAIK
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+      <div class="topbar-right">
+
+        <!-- BA ACTIONS -->
+          <div class="topbar-ba-actions">
+
+            <div
+              id="draftStatus"
+              class="draft-status topbar-draft-status"
+            >
+              <span class="draft-status-icon">✓</span>
+
+              <span>Siap digunakan</span>
+            </div>
+
+
+            <button
+              type="button"
+              class="btn topbar-draft-btn"
+              onclick="saveDraft()"
+            >
+              Simpan Draft
+            </button>
+
+
+            <button
+              type="button"
+              class="btn topbar-generate-btn"
+              onclick="generate()"
+            >
+              Generate
+            </button>
+            <button
+              type="button"
+              class="btn-final-ba"
+              onclick="finalizeBA()"
+            >
+              <span>✓</span>
+              Finalisasi BA
+            </button>
+
+          </div>
+
+
+        <button
+          type="button"
+          class="topbar-icon-button"
+          title="Notifikasi"
+        >
+
+          ♢
+
+          <span
+            id="notificationBadge"
+            class="notification-dot"
+          ></span>
+
+        </button>
+
+
+        <div class="topbar-divider"></div>
+
+
+        <div class="topbar-user">
+
+
+          <div class="topbar-avatar">
+            A
+          </div>
+
+
+          <div class="topbar-user-text">
+
+            <strong>
+              Admin Project
+            </strong>
+
+            <span>
+              Administrator
+            </span>
+
+          </div>
+
+
+          <span class="topbar-user-arrow">
+            ▾
+          </span>
+
+        </div>
+
+      </div>
+
+    </header>
+
+
+
+    <!-- ==================================================
+         APP CONTENT
+    =================================================== -->
+
+    <div class="app-content">
+
+
+
+      <!-- =================================================
+           DASHBOARD
+      ================================================== -->
+
+      
+
+      <section
+        id="page-dashboard"
+        class="app-page"
+      >
+
+        <div class="dashboard-welcome">
+
+
+          <!-- =============================================
+              HERO
+          ============================================== -->
+
+          <div class="dashboard-hero">
+
+            <div class="dashboard-hero-content">
+
+              <span class="dashboard-hero-label">
+                DASHBOARD BERITA ACARA
+              </span>
+
+              <h1>
+                Selamat Datang,
+                <span id="dashboardUserName">
+                  Admin Project
+                </span>!
+              </h1>
+
+              <p>
+                Kelola seluruh Berita Acara anda dengan
+                lebih mudah dan terorganisir.
+              </p>
+
+            </div>
+
+
+            <div class="dashboard-hero-visual">
+
+              <div class="hero-paper">
+
+                <div class="hero-paper-head"></div>
+
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+
+              </div>
+
+              <div class="hero-pen"></div>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- =============================================
+              KPI
+          ============================================== -->
+
+          <div class="dashboard-kpi-grid">
+
+
+            <!-- TOTAL BA -->
+
+            <div class="dashboard-kpi-card">
+
+              <div class="dashboard-kpi-icon kpi-blue">
+                ▣
+              </div>
+
+              <div class="dashboard-kpi-text">
+
+                <span>
+                  Total BA
+                </span>
+
+                <strong id="statTotalDokumen">
+                  0
+                </strong>
+
+              </div>
+
+            </div>
+
+
+
+            <!-- DRAFT -->
+
+            <div class="dashboard-kpi-card">
+
+              <div class="dashboard-kpi-icon kpi-orange">
+                ▤
+              </div>
+
+              <div class="dashboard-kpi-text">
+
+                <span>
+                  Draft
+                </span>
+
+                <strong id="statDraft">
+                  0
+                </strong>
+
+              </div>
+
+            </div>
+
+
+
+            <!-- APPROVAL -->
+
+            <div class="dashboard-kpi-card">
+
+              <div class="dashboard-kpi-icon kpi-yellow">
+                ◷
+              </div>
+
+              <div class="dashboard-kpi-text">
+
+                <span>
+                  BA Bulan Ini
+                </span>
+
+                <strong id="statBulanIni">
+                  0
+                </strong>
+
+              </div>
+
+            </div>
+
+
+
+            <!-- SELESAI -->
+
+            <div class="dashboard-kpi-card">
+
+              <div class="dashboard-kpi-icon kpi-green">
+                ✓
+              </div>
+
+              <div class="dashboard-kpi-text">
+
+                <span>
+                  BA Selesai
+                </span>
+
+                <strong id="statSelesai">
+                  0
+                </strong>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- =============================================
+              QUICK ACTION
+          ============================================== -->
+
+          <div class="dashboard-section-title">
+
+            <div>
+
+              <h2>
+                Quick Action
+              </h2>
+
+              <p>
+                Akses cepat pengelolaan Berita Acara.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="dashboard-quick-grid">
+
+
+            <!-- BUAT BA -->
+
+            <button
+              type="button"
+              class="dashboard-quick-card quick-red"
+              onclick="openPage('buatBA')"
+            >
+
+              <div class="dashboard-quick-icon">
+                ▣
+              </div>
+
+              <div>
+
+                <strong>
+                  Buat Berita Acara
+                </strong>
+
+                <span>
+                  Mulai buat BA baru
+                </span>
+
+              </div>
+
+            </button>
+
+
+
+            <!-- DRAFT -->
+
+            <button
+              type="button"
+              class="dashboard-quick-card quick-orange"
+              onclick="openPage('draft')"
+            >
+
+              <div class="dashboard-quick-icon">
+                ▤
+              </div>
+
+              <div>
+
+                <strong>
+                  Lihat Draft Saya
+                </strong>
+
+                <span>
+                  Lanjutkan draft tersimpan
+                </span>
+
+              </div>
+
+            </button>
+
+
+            <!-- RIWAYAT -->
+
+              <button
+                type="button"
+                class="dashboard-quick-card quick-yellow"
+                onclick="openPage('riwayat')"
+              >
+
+                <div class="dashboard-quick-icon">
+                  ◷
+                </div>
+
+                <div>
+
+                  <strong>
+                    Lihat Riwayat
+                  </strong>
+
+                  <span>
+                    Lihat BA yang telah selesai
+                  </span>
+
+                </div>
+
+              </button>
+
+            <!-- LAPORAN -->
+
+            <button
+              type="button"
+              class="dashboard-quick-card quick-blue"
+              onclick="openPage('laporan')"
+            >
+
+              <div class="dashboard-quick-icon">
+                ▥
+              </div>
+
+              <div>
+
+                <strong>
+                  Lihat Laporan
+                </strong>
+
+                <span>
+                  Rekap & statistik BA
+                </span>
+
+              </div>
+
+            </button>
+
+          </div>
+
+
+
+          <!-- =============================================
+              BAGIAN BAWAH
+          ============================================== -->
+
+          <div class="dashboard-bottom-grid">
+
+
+            <!-- BA TERBARU -->
+
+            <div class="dashboard-panel">
+
+              <div class="dashboard-panel-header">
+
+                <div>
+
+                  <h3>
+                    BA Terbaru
+                  </h3>
+
+                  <p>
+                    Berita Acara yang terakhir dibuat.
+                  </p>
+
+                </div>
+
+
+                <button
+                  type="button"
+                  onclick="openPage('riwayat')"
+                >
+                  Lihat Semua →
+                </button>
+
+              </div>
+
+
+              <div class="dashboard-table-wrapper">
+
+                <table class="dashboard-table">
+
+                  <thead>
+
+                    <tr>
+
+                      <th>
+                        No. BA
+                      </th>
+
+                      <th>
+                        Tanggal
+                      </th>
+
+                      <th>
+                        Jenis
+                      </th>
+
+                      <th>
+                        Project
+                      </th>
+
+                      <th>
+                        Status
+                      </th>
+
+                    </tr>
+
+                  </thead>
+
+
+                  <tbody id="dashboardRecentBA">
+
+                    <tr class="dashboard-empty">
+
+                      <td colspan="5">
+                        Belum ada Berita Acara.
+                      </td>
+
+                    </tr>
+
+                  </tbody>
+
+                </table>
+
+              </div>
+
+            </div>
+
+
+
+            <!-- STATISTIK -->
+
+            <div class="dashboard-panel">
+
+              <div class="dashboard-panel-header">
+
+                <div>
+
+                  <h3>
+                    Statistik Jenis BA
+                  </h3>
+
+                  <p>
+                    Distribusi dokumen berdasarkan jenis.
+                  </p>
+
+                </div>
+
+              </div>
+
+
+              <div class="dashboard-stat-content">
+
+
+                <!-- DONUT -->
+
+                <div class="dashboard-donut">
+
+                  <div class="dashboard-donut-inner">
+
+                    <strong id="dashboardDonutTotal">
+                      0
+                    </strong>
+
+                    <span>
+                      Total BA
+                    </span>
+
+                  </div>
+
+                </div>
+
+
+
+                <!-- LEGEND -->
+
+                <div class="dashboard-stat-list">
+
+
+                  <div class="dashboard-stat-row">
+
+                    <span class="stat-dot material"></span>
+
+                    <span>
+                      Material
+                    </span>
+
+                    <strong id="statMaterial">
+                      0
+                    </strong>
+
+                    <small id="statMaterialPercent">
+                      0%
+                    </small>
+
+                  </div>
+
+
+
+                  <div class="dashboard-stat-row">
+
+                    <span class="stat-dot biaya"></span>
+
+                    <span>
+                      Biaya
+                    </span>
+
+                    <strong id="statBiaya">
+                      0
+                    </strong>
+
+                    <small id="statBiayaPercent">
+                      0%
+                    </small>
+
+                  </div>
+
+
+
+                  <div class="dashboard-stat-row">
+
+                    <span class="stat-dot urugan"></span>
+
+                    <span>
+                      Urugan
+                    </span>
+
+                    <strong id="statUrugan">
+                      0
+                    </strong>
+
+                    <small id="statUruganPercent">
+                      0%
+                    </small>
+
+                  </div>
+
+
+
+                  <div class="dashboard-stat-row">
+
+                    <span class="stat-dot opname"></span>
+
+                    <span>
+                      Opname
+                    </span>
+
+                    <strong id="statOpname">
+                      0
+                    </strong>
+
+                    <small id="statOpnamePercent">
+                      0%
+                    </small>
+
+                  </div>
+
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+          </div>
+
+
+        </div>
+
+      </section>
+
+
+      <!-- =================================================
+           BUAT BERITA ACARA
+      ================================================== -->
+
+      <section
+        id="page-buatBA"
+        class="app-page active"
+      >
+
+
+        <!-- PAGE HEADER -->
+
+
+
+        <!-- =================================================
+             STEPPER
+        ================================================== -->
+
+        <div class="ba-stepper">
+
+
+          <div
+            class="ba-step active"
+            data-step="1"
+          >
+
+            <div class="ba-step-number">
+              1
+            </div>
+
+            <span>
+              Informasi
+            </span>
+
+          </div>
+
+
+
+          <div
+            class="ba-step"
+            data-step="2"
+          >
+
+            <div class="ba-step-number">
+              2
+            </div>
+
+            <span>
+              Isi Berita Acara
+            </span>
+
+          </div>
+
+
+
+          <div
+            class="ba-step"
+            data-step="3"
+          >
+
+            <div class="ba-step-number">
+              3
+            </div>
+
+            <span>
+              Pihak Terkait
+            </span>
+
+          </div>
+
+
+
+          <div
+            class="ba-step"
+            data-step="4"
+          >
+
+            <div class="ba-step-number">
+              4
+            </div>
+
+            <span>
+              Lampiran
+            </span>
+
+          </div>
+
+
+        </div>
+
+
+
+        <!-- =================================================
+             WORKSPACE
+        ================================================== -->
+
+        <div class="workspace-grid">
+
+
+          <!-- ===============================================
+               LEFT FORM
+          ================================================ -->
+
+          <div class="workspace-form">
+
+
+            <!-- =============================================
+                 STEP 1
+            ============================================== -->
+
+            <div
+              class="ba-step-content active"
+              data-step-content="1"
+            >
+
+
+              <div class="workspace-card">
+
+
+                <div class="workspace-card-header">
+
+                  <div>
+
+                    <h2>
+                      Informasi Dokumen
+                    </h2>
+
+                    <p>
+                      Tentukan jenis Berita Acara yang akan dibuat.
+                    </p>
+
+                  </div>
+
+                </div>
+
+
+
+                <div class="workspace-card-body">
+
+
+                  <!-- JENIS BA -->
+
+                  <div class="jenis-card">
+
+
+                    <label
+                      class="jenis-header"
+                      for="jenisSelect"
+                    >
+                      Jenis Berita Acara
+                    </label>
+
+
+                    <select
+                      id="jenisSelect"
+                      class="form-control jenis-select"
+                      onchange="setJenisDropdown(this.value)"
+                    >
+
+                      <option value="material">
+                        Pengajuan Material
+                      </option>
+
+                      <option value="keterangan">
+                        Keterangan Pekerjaan
+                      </option>
+
+                      <option value="adendum">
+                        Adendum / Kendala
+                      </option>
+
+                      <option value="biaya">
+                        Pengajuan Biaya
+                      </option>
+
+                      <option value="urugan">
+                        BA Urugan
+                      </option>
+
+                      <option value="opname">
+                        BA Opname Lapangan
+                      </option>
+
+                      <option value="form_opname">Form Opname</option>
+
+                    </select>
+
+
+                    <div
+                      id="jenisDesc"
+                      class="jenis-dropdown-desc"
+                    >
+                      Untuk permintaan barang/material project.
+                    </div>
+
+
+                  </div>
+
+
+                  <input
+                    type="hidden"
+                    id="jenis"
+                    value="material"
+                  >
+
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+
+            <!-- =============================================
+                 STEP 2
+                 ISI SURAT
+            ============================================== -->
+
+            <div
+              class="ba-step-content"
+              data-step-content="2"
+            >
+
+
+              <div class="workspace-card">
+
+
+                <div class="workspace-card-header">
+
+                  <div>
+
+                    <h2>
+                      Isi Berita Acara
+                    </h2>
+
+                    <p>
+                      Lengkapi informasi sesuai jenis BA yang dipilih.
+                    </p>
+
+                  </div>
+
+                </div>
+
+
+
+                <div class="workspace-card-body">
+
+
+                  <!-- =======================================
+                       FORM BA STANDARD
+                  ======================================== -->
+
+                  <div id="standardContentBox">
+
+
+                    <div class="section-title">
+                      Latar Belakang
+                    </div>
+
+                    <div
+                      id="latar"
+                      class="quill-editor"
+                    ></div>
+
+
+
+                    <div class="section-title mt-3">
+                      Maksud & Tujuan
+                    </div>
+
+                    <div
+                      id="tujuan"
+                      class="quill-editor"
+                    ></div>
+
+
+
+                    <!-- MATERIAL -->
+
+                    <div
+                      id="materialBox"
+                      style="display:none;"
+                      class="mt-3"
+                    >
+
+                      <div class="section-title">
+                        Material
+                      </div>
+
+
+                      <div class="table-responsive">
+
+                        <table
+                          class="table table-bordered"
+                          id="materialTable"
+                        >
+
+                          <thead>
+
+                            <tr>
+
+                              <th>No</th>
+
+                              <th>
+                                Nama Material
+                              </th>
+
+                              <th>
+                                Spesifikasi
+                              </th>
+
+                              <th>
+                                Jumlah
+                              </th>
+
+                              <th>
+                                Satuan
+                              </th>
+
+                              <th style="width:50px;">
+                                Aksi
+                              </th>
+
+                            </tr>
+
+                          </thead>
+
+
+                          <tbody></tbody>
+
+                        </table>
+
+                      </div>
+
+
+                      <button
+                        type="button"
+                        onclick="addRow()"
+                        class="btn btn-sm btn-danger"
+                      >
+                        + Tambah Material
+                      </button>
+
+                    </div>
+
+
+
+                    <!-- ADENDUM -->
+
+                    <div
+                      id="adendumBox"
+                      style="display:none;"
+                    >
+
+                      <div class="section-title mt-3">
+                        Kronologi / Kejadian
+                      </div>
+
+                      <div
+                        id="kejadian"
+                        class="quill-editor"
+                      ></div>
+
+                    </div>
+
+
+
+                    <div class="section-title mt-3">
+                      Penutup
+                    </div>
+
+                    <div
+                      id="penutup"
+                      class="quill-editor"
+                    ></div>
+
+
+                  </div>
+
+
+
+                  <!-- =======================================
+                       PENGAJUAN BIAYA
+                  ======================================== -->
+
+                  <div
+                    id="biayaBox"
+                    style="display:none;"
+                  >
+
+
+                    <div class="section-title">
+                      Nomor BA Manual
+                    </div>
+
+                    <input
+                      id="nomorBiaya"
+                      class="form-control mb-3"
+                      placeholder="Contoh: 164/BA/PRSCH-LOG/VII/2026"
+                    >
+
+
+
+                    <div class="section-title">
+                      Keterangan / Judul Pengajuan
+                    </div>
+
+                    <input
+                      id="keteranganBiaya"
+                      class="form-control mb-3"
+                      placeholder="Contoh: Pengajuan Biaya Plester Samping RN Sampora"
+                    >
+
+
+
+                    <div class="section-title">
+                      Pekerjaan
+                    </div>
+
+                    <input
+                      id="pekerjaanBiaya"
+                      class="form-control mb-3"
+                      placeholder="Contoh: Plester Samping"
+                    >
+
+
+
+                    <div class="section-title">
+                      Project
+                    </div>
+
+                    <select
+                      id="projectBiaya"
+                      class="form-control mb-3 master-project-select"
+                    >
+                      <option value="">
+                        Pilih Project
+                      </option>
+                    </select>
+
+
+
+                    <div class="section-title">
+                      Unit / Blok
+                    </div>
+
+                    <input
+                      id="unitBiaya"
+                      class="form-control mb-3"
+                      placeholder="Contoh: Unit J39, J40, J41, J42"
+                    >
+
+
+
+                    <div class="section-title">
+                      Pembuka Berita Acara
+                    </div>
+
+                    <div
+                      id="pembukaBiaya"
+                      class="quill-editor biaya-editor"
+                    ></div>
+
+
+
+                    <div class="section-title mt-3">
+                      Rincian Biaya
+                    </div>
+
+
+                    <div class="table-responsive">
+
+                      <table
+                        class="table table-bordered"
+                        id="biayaTable"
+                      >
+
+                        <thead>
+
+                          <tr>
+
+                            <th style="width:45px;">
+                              No
+                            </th>
+
+                            <th>
+                              Item
+                            </th>
+
+                            <th style="width:70px;">
+                              Qty
+                            </th>
+
+                            <th style="width:90px;">
+                              Satuan
+                            </th>
+
+                            <th style="width:130px;">
+                              Harga Satuan
+                            </th>
+
+                            <th style="width:130px;">
+                              Harga Total
+                            </th>
+
+                            <th style="width:50px;">
+                              Aksi
+                            </th>
+
+                          </tr>
+
+                        </thead>
+
+
+                        <tbody></tbody>
+
+                      </table>
+
+                    </div>
+
+
+                    <button
+                      type="button"
+                      onclick="addBiayaRow()"
+                      class="btn btn-sm btn-danger mb-3"
+                    >
+                      + Tambah Rincian
+                    </button>
+
+
+
+                    <div class="section-title">
+                      Penutup Berita Acara
+                    </div>
+
+                    <div
+                      id="penutupBiaya"
+                      class="quill-editor biaya-editor"
+                    ></div>
+
+
+                  </div>
+
+
+
+                  <!-- =======================================
+                       BA URUGAN
+                  ======================================== -->
+
+                  <div
+                    id="uruganBox"
+                    style="display:none;"
+                  >
+
+
+                    <div class="section-title">
+                      Nomor BA Urugan
+                    </div>
+
+                    <input
+                      id="nomorUrugan"
+                      class="form-control mb-3"
+                      placeholder="Contoh: 001/BA-URG/RSP/PROJECT/VIII/2026"
+                    >
+
+
+
+                    <div class="section-title">
+                      Project
+                    </div>
+
+                    <select
+                      id="projectUrugan"
+                      class="form-control mb-3 master-project-select"
+                    >
+                      <option value="">
+                        Pilih Project
+                      </option>
+                    </select>
+
+
+
+                    <div class="section-title">
+                      Blok / Unit
+                    </div>
+
+
+                    <div class="table-responsive">
+
+                      <table
+                        class="table table-bordered"
+                        id="blokUruganTable"
+                      >
+
+                        <thead>
+
+                          <tr>
+
+                            <th style="width:45px;">
+                              No
+                            </th>
+
+                            <th>
+                              Blok / Unit
+                            </th>
+
+                            <th style="width:50px;">
+                              Aksi
+                            </th>
+
+                          </tr>
+
+                        </thead>
+
+
+                        <tbody></tbody>
+
+                      </table>
+
+                    </div>
+
+
+                    <button
+                      type="button"
+                      onclick="addBlokUrugan()"
+                      class="btn btn-sm btn-danger mb-3"
+                    >
+                      + Tambah Blok
+                    </button>
+
+
+
+                    <div class="row">
+
+
+                      <div class="col-md-4">
+
+                        <div class="section-title">
+                          Jumlah Rit
+                        </div>
+
+                        <input
+                          id="jumlahRitUrugan"
+                          type="number"
+                          class="form-control mb-3"
+                          placeholder="Contoh: 3"
+                          oninput="hitungTotalUrugan()"
+                        >
+
+                      </div>
+
+
+
+                      <div class="col-md-4">
+
+                        <div class="section-title">
+                          Harga per Rit
+                        </div>
+
+                        <input
+                          id="hargaRitUrugan"
+                          type="number"
+                          class="form-control mb-3"
+                          placeholder="Contoh: 560000"
+                          oninput="hitungTotalUrugan()"
+                        >
+
+                      </div>
+
+
+
+                      <div class="col-md-4">
+
+                        <div class="section-title">
+                          Total
+                        </div>
+
+                        <input
+                          id="totalUrugan"
+                          class="form-control mb-3"
+                          readonly
+                        >
+
+                      </div>
+
+
+                    </div>
+
+
+
+                    <div class="section-title">
+                      Atas Nama
+                    </div>
+
+                    <input
+                      id="atasNamaUrugan"
+                      class="form-control mb-3"
+                      placeholder="Contoh: ANGGUN MEILANI SAFITRI"
+                    >
+
+
+
+                    <div class="section-title">
+                      Bank
+                    </div>
+
+                    <input
+                      id="bankUrugan"
+                      class="form-control mb-3"
+                      placeholder="Contoh: BCA"
+                    >
+
+
+
+                    <div class="section-title">
+                      No. Rekening
+                    </div>
+
+                    <input
+                      id="rekeningUrugan"
+                      class="form-control mb-3"
+                      placeholder="Contoh: 8180220021"
+                    >
+
+
+
+                    <div class="section-title">
+                      Foto Nota Urugan
+                    </div>
+
+
+                    <p class="small text-muted mb-2">
+                      Jumlah foto nota mengikuti jumlah rit.
+                      Contoh: 3 rit = 3 foto nota.
+                    </p>
+
+
+
+                    <div
+                      class="urugan-drop-area nota-urugan-drop"
+                      onclick="document.getElementById('notaUruganInput').click()"
+                      ondragover="dragUruganOver(event, this)"
+                      ondragleave="dragUruganLeave(this)"
+                      ondrop="dropNotaUruganFiles(event, this)"
+                    >
+
+                      <div class="urugan-drop-icon">
+                        🧾
+                      </div>
+
+                      <div class="urugan-drop-title">
+                        Drag & Drop Foto Nota
+                      </div>
+
+                      <div class="urugan-drop-desc">
+                        atau klik untuk upload nota urugan
+                      </div>
+
+                      <div class="urugan-drop-note">
+                        Jumlah nota maksimal mengikuti jumlah rit
+                      </div>
+
+
+                      <input
+                        type="file"
+                        id="notaUruganInput"
+                        hidden
+                        multiple
+                        accept="image/*"
+                        onchange="handleNotaUruganFiles(event)"
+                      >
+
+                    </div>
+
+
+
+                    <div
+                      id="previewNotaUrugan"
+                      class="urugan-preview-grid mb-3"
+                    ></div>
+
+
+
+                    <button
+                      type="button"
+                      onclick="addRitUrugan()"
+                      class="btn btn-sm btn-danger mb-3"
+                    >
+                      + Tambah Dokumentasi Rit
+                    </button>
+
+
+                    <div id="ritUruganContainer"></div>
+
+
+                  </div>
+
+
+
+                  <!-- =======================================
+                       BA OPNAME
+                  ======================================== -->
+
+                  <div
+                    id="opnameBox"
+                    style="display:none;"
+                  >
+
+
+                    <div class="section-title">
+                      Nomor BA Opname
+                    </div>
+
+
+                    <div class="row">
+
+
+                      <div class="col-md-8">
+
+                        <input
+                          id="nomorOpname"
+                          class="form-control mb-2"
+                          readonly
+                          placeholder="Otomatis saat generate"
+                        >
+
+                      </div>
+
+
+                      <div class="col-md-4">
+
+                        <button
+                          type="button"
+                          onclick="resetNomorOpnameBulanIni()"
+                          class="btn btn-sm btn-secondary w-100"
+                        >
+                          Reset Nomor
+                        </button>
+
+                      </div>
+
+
+                    </div>
+
+
+
+                    <div class="section-title mt-2">
+                      Kode Nomor BA
+                    </div>
+
+                    <input
+                      id="kodeOpname"
+                      class="form-control mb-3"
+                      value="BAO/TL/RSP/CRB"
+                      placeholder="Contoh: BAO/TL/RSP/CRB"
+                    >
+
+
+
+                    <div class="section-title">
+                      Tanggal BA
+                    </div>
+
+                    <input
+                      id="tanggalOpname"
+                      type="date"
+                      class="form-control mb-3"
+                    >
+
+
+
+                    <div class="section-title">
+                      Pihak Pertama
+                    </div>
+
+                    <select
+                      id="namaPihak1OpnameSelect"
+                      class="form-control select-modern mb-2"
+                      onchange="setJabatan(this,'jabatanPihak1Opname')"
+                    ></select>
+
+
+                    <input
+                      id="jabatanPihak1Opname"
+                      class="form-control mb-3"
+                      readonly
+                      placeholder="Jabatan Pihak Pertama"
+                    >
+
+
+
+                    <div class="section-title">
+                      Pihak Kedua
+                    </div>
+
+                    <select
+                      id="namaPihak2OpnameSelect"
+                      class="form-control select-modern mb-2"
+                      onchange="setJabatan(this,'jabatanPihak2Opname')"
+                    ></select>
+
+
+                    <input
+                      id="jabatanPihak2Opname"
+                      class="form-control mb-2"
+                      readonly
+                      placeholder="Jabatan Pihak Kedua"
+                    >
+
+
+                    <input
+                      id="perusahaanPihak2Opname"
+                      class="form-control mb-3"
+                      value="Raja Sukses Propertindo"
+                      placeholder="Perusahaan Pihak Kedua"
+                    >
+
+
+
+                    <div class="section-title">
+                      Detail Pekerjaan
+                    </div>
+
+
+                    <input
+                      id="pekerjaanOpname"
+                      class="form-control mb-2"
+                      placeholder="Nama Pekerjaan, contoh: Pekerjaan Footplate Trusmiland Pamengkang"
+                    >
+
+
+                    <input
+                      id="blokOpname"
+                      class="form-control mb-2"
+                      placeholder="Blok, contoh: I79, I80"
+                    >
+
+
+                    <input
+                      id="waktuPelaksanaanOpname"
+                      class="form-control mb-2"
+                      placeholder="Waktu Pelaksanaan, contoh: 10 Agustus 2026"
+                    >
+
+
+                    <input
+                      id="jumlahOpname"
+                      class="form-control mb-2"
+                      placeholder="Jumlah, contoh: 2 Unit (6 Titik / Unit)"
+                    >
+
+
+                    <input
+                      id="progressOpname"
+                      class="form-control mb-3"
+                      value="100%"
+                      placeholder="Progress, contoh: 100%"
+                    >
+
+
+
+                    <div class="section-title">
+                      Data Pemeriksa / Mengetahui
+                    </div>
+
+
+                    <div class="opname-ttd-form">
+
+
+                      <div class="opname-ttd-input">
+
+                        <strong>
+                          PIHAK PERTAMA
+                        </strong>
+
+                        <input
+                          id="ttdOpname1"
+                          type="file"
+                          class="form-control mt-2"
+                          accept="image/*"
+                        >
+
+                      </div>
+
+
+
+                      <div class="opname-ttd-input">
+
+                        <strong>
+                          PIHAK KEDUA
+                        </strong>
+
+                        <input
+                          id="ttdOpname2"
+                          type="file"
+                          class="form-control mt-2"
+                          accept="image/*"
+                        >
+
+                      </div>
+
+
+
+                      <div class="opname-ttd-input">
+
+                        <strong>
+                          DIPERIKSA
+                        </strong>
+
+
+                        <select
+                          id="namaDiperiksaOpnameSelect"
+                          class="form-control select-modern mt-2 mb-2"
+                          onchange="setJabatan(this,'jabatanDiperiksaOpname')"
+                        ></select>
+
+
+                        <input
+                          id="jabatanDiperiksaOpname"
+                          class="form-control mb-2"
+                          readonly
+                          placeholder="Jabatan Pemeriksa"
+                        >
+
+
+                        <input
+                          id="ttdOpname3"
+                          type="file"
+                          class="form-control"
+                          accept="image/*"
+                        >
+
+                      </div>
+
+
+
+                      <div class="opname-ttd-input">
+
+                        <strong>
+                          DIKETAHUI
+                        </strong>
+
+
+                        <select
+                          id="namaDiketahuiOpnameSelect"
+                          class="form-control select-modern mt-2 mb-2"
+                          onchange="setJabatan(this,'jabatanDiketahuiOpname')"
+                        ></select>
+
+
+                        <input
+                          id="jabatanDiketahuiOpname"
+                          class="form-control mb-2"
+                          readonly
+                          placeholder="Jabatan Mengetahui"
+                        >
+
+
+                        <input
+                          id="ttdOpname4"
+                          type="file"
+                          class="form-control"
+                          accept="image/*"
+                        >
+
+                      </div>
+
+
+                    </div>
+
+
+                  </div>
+
+
+                </div>
+
+              </div>
+
+
+            </div>
+
+
+              <!-- =======================================
+                  FORM OPNAME BARU
+              ======================================== -->
+
+              <div
+                id="formOpnameBox"
+                style="display:none;"
+              >
+
+                <div class="section-title">
+                  Form Opname
+                </div>
+
+                <div class="form-opname-info">
+                  Isi data pekerjaan satu kali. Uraian pembayaran,
+                  EAF, retensi 5%, dan pembayaran 95% dibuat otomatis.
+                </div>
+
+
+                <!-- NAMA PROYEK -->
+
+                <label class="form-opname-label">
+                  Nama Proyek
+                </label>
+
+                <input
+                  id="formOpnameProyek"
+                  class="form-control mb-3"
+                  placeholder="Contoh: Trusmiland Cempaka 2"
+                  oninput="syncFormOpnameBaru()"
+                >
+
+
+                <!-- NAMA PEKERJAAN -->
+
+                <label class="form-opname-label">
+                  Nama Pekerjaan
+                </label>
+
+                <input
+                  id="formOpnamePekerjaan"
+                  class="form-control mb-3"
+                  placeholder="Contoh: Pek. Sumur Bor"
+                  oninput="syncFormOpnameBaru()"
+                >
+
+
+                <!-- BLOK / UNIT -->
+
+                <label class="form-opname-label">
+                  Blok / Unit / Detail
+                </label>
+
+                <textarea
+                  id="formOpnameBlok"
+                  class="form-control mb-3"
+                  rows="2"
+                  placeholder="Contoh: C12, E07, F22, F67 (@Rp 1.200.000 x 4 Unit)"
+                  oninput="syncFormOpnameBaru()"
+                ></textarea>
+
+
+                <!-- PEMBORONG -->
+
+                <label class="form-opname-label">
+                  Nama Pemborong
+                </label>
+
+                <input
+                  id="formOpnamePemborong"
+                  class="form-control mb-3"
+                  placeholder="Contoh: Sutejo"
+                  oninput="syncFormOpnameBaru()"
+                >
+
+
+                <!-- TANGGAL -->
+
+                <label class="form-opname-label">
+                  Tanggal
+                </label>
+
+                <input
+                  id="formOpnameTanggal"
+                  type="date"
+                  class="form-control mb-3"
+                  onchange="syncFormOpnameBaru()"
+                >
+
+
+                <!-- NILAI OPNAME -->
+
+                <label class="form-opname-label">
+                  Nilai Opname
+                </label>
+
+                <div class="form-opname-money-input">
+
+                  <span>Rp</span>
+
+                  <input
+                    id="formOpnameNilai"
+                    class="form-control"
+                    type="text"
+                    inputmode="numeric"
+                    placeholder="0"
+                    oninput="formatInputFormOpname(this)"
+                  >
+
+                </div>
+
+
+                <!-- HASIL HITUNG -->
+
+                <div class="form-opname-calc">
+
+                  <div>
+                    <span>Nilai Opname</span>
+                    <strong id="formOpnameTotal">
+                      Rp 0
+                    </strong>
+                  </div>
+
+                  <div class="form-opname-calc-retensi">
+                    <span>Retensi 5%</span>
+                    <strong id="formOpnameRetensi">
+                      Rp 0
+                    </strong>
+                  </div>
+
+                  <div class="form-opname-calc-progress">
+                    <span>Pembayaran 95%</span>
+                    <strong id="formOpnameProgress">
+                      Rp 0
+                    </strong>
+                  </div>
+
+                  <div class="form-opname-calc-total">
+                    <span>Total Yang Diajukan</span>
+                    <strong id="formOpnamePengajuan">
+                      Rp 0
+                    </strong>
+                  </div>
+
+                </div>
+
+              </div>
+
+
+
+            <!-- =============================================
+                 STEP 3
+                 PIHAK TERKAIT
+            ============================================== -->
+
+            <div
+              class="ba-step-content"
+              data-step-content="3"
+            >
+
+
+              <div
+                class="workspace-card pihak-card"
+                id="pihakCard"
+              >
+
+
+                <div class="workspace-card-header">
+
+                  <div>
+
+                    <h2>
+                      Pihak Penandatangan
+                    </h2>
+
+                    <p>
+                      Tentukan pihak yang terlibat dalam dokumen.
+                    </p>
+
+                  </div>
+
+                </div>
+
+
+
+                <div class="workspace-card-body">
+
+
+                  <div class="form-check form-switch mb-3">
+
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="useTtd4"
+                      onchange="toggleTtd4()"
+                    >
+
+                    <label
+                      class="form-check-label"
+                      for="useTtd4"
+                    >
+                      Gunakan 4 Tanda Tangan
+                    </label>
+
+                  </div>
+
+
+
+                  <!-- PIHAK 1 -->
+
+                  <div class="pihak-item">
+
+                    <div class="pihak-left">
+
+                      <div class="pihak-number">
+                        01
+                      </div>
+
+                      <div
+                        class="pihak-role"
+                        id="roleLabel1"
+                      >
+                        DIBUAT
+                      </div>
+
+                    </div>
+
+
+                    <div class="pihak-form">
+
+                      <select
+                        id="nama1"
+                        class="form-control select-modern mb-2"
+                        onchange="setJabatan(this,'jabatan1')"
+                      ></select>
+
+                      <input
+                        id="jabatan1"
+                        class="form-control input-modern"
+                        readonly
+                      >
+
+                    </div>
+
+                  </div>
+
+
+
+                  <!-- PIHAK 2 -->
+
+                  <div class="pihak-item">
+
+                    <div class="pihak-left">
+
+                      <div class="pihak-number">
+                        02
+                      </div>
+
+                      <div
+                        class="pihak-role"
+                        id="roleLabel2"
+                      >
+                        DIKETAHUI
+                      </div>
+
+                    </div>
+
+
+                    <div class="pihak-form">
+
+                      <select
+                        id="nama2"
+                        class="form-control select-modern mb-2"
+                        onchange="setJabatan(this,'jabatan2')"
+                      ></select>
+
+                      <input
+                        id="jabatan2"
+                        class="form-control input-modern"
+                        readonly
+                      >
+
+                    </div>
+
+                  </div>
+
+
+
+                  <!-- PIHAK 3 -->
+
+                  <div class="pihak-item">
+
+                    <div class="pihak-left">
+
+                      <div class="pihak-number">
+                        03
+                      </div>
+
+                      <div
+                        class="pihak-role"
+                        id="roleLabel3"
+                      >
+                        DISETUJUI
+                      </div>
+
+                    </div>
+
+
+                    <div class="pihak-form">
+
+                      <select
+                        id="nama3"
+                        class="form-control select-modern mb-2"
+                        onchange="setJabatan(this,'jabatan3')"
+                      ></select>
+
+                      <input
+                        id="jabatan3"
+                        class="form-control input-modern"
+                        readonly
+                      >
+
+                    </div>
+
+                  </div>
+
+
+
+                  <!-- PIHAK 4 -->
+
+                  <div
+                    class="pihak-item"
+                    id="pihak4Box"
+                    style="display:none;"
+                  >
+
+                    <div class="pihak-left">
+
+                      <div class="pihak-number">
+                        04
+                      </div>
+
+                      <div
+                        class="pihak-role"
+                        id="roleLabel4"
+                      >
+                        DISETUJUI
+                      </div>
+
+                    </div>
+
+
+                    <div class="pihak-form">
+
+                      <select
+                        id="nama4"
+                        class="form-control select-modern mb-2"
+                        onchange="setJabatan(this,'jabatan4')"
+                      ></select>
+
+                      <input
+                        id="jabatan4"
+                        class="form-control input-modern"
+                        readonly
+                      >
+
+                    </div>
+
+                  </div>
+
+
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+
+            <!-- =============================================
+                 STEP 4
+                 LAMPIRAN
+            ============================================== -->
+
+            <div
+              class="ba-step-content"
+              data-step-content="4"
+            >
+
+
+              <div class="workspace-card">
+
+
+                <div class="workspace-card-header">
+
+                  <div>
+
+                    <h2>
+                      Lampiran & Tanda Tangan
+                    </h2>
+
+                    <p>
+                      Upload tanda tangan dan dokumentasi pendukung.
+                    </p>
+
+                  </div>
+
+                </div>
+
+
+
+                <div class="workspace-card-body">
+
+
+                  <!-- OPNAME LAMPIRAN -->
+
+                  <div id="opnameLampiranStep">
+
+
+                    <div class="section-title">
+                      Lampiran Foto Opname
+                    </div>
+
+
+                    <p class="small text-muted mb-2">
+                      Maksimal 6 foto per halaman lampiran.
+                    </p>
+
+
+                    <div
+                      id="opnameDropArea"
+                      class="opname-drop-area"
+                      onclick="document.getElementById('lampiranOpname').click()"
+                      ondragover="dragOpnameOver(event, this)"
+                      ondragleave="dragOpnameLeave(this)"
+                      ondrop="dropOpnameFiles(event, this)"
+                    >
+
+                      <div class="opname-drop-icon">
+                        📷
+                      </div>
+
+                      <div class="opname-drop-title">
+                        Drag & Drop Foto Lampiran Opname
+                      </div>
+
+                      <div class="opname-drop-desc">
+                        atau klik untuk upload foto
+                      </div>
+
+                      <div class="opname-drop-note">
+                        Setiap halaman maksimal 6 foto
+                      </div>
+
+
+                      <input
+                        type="file"
+                        id="lampiranOpname"
+                        hidden
+                        multiple
+                        accept="image/*"
+                        onchange="handleOpnameInputFiles(event)"
+                      >
+
+                    </div>
+
+
+                    <div
+                      id="previewOpnameLampiran"
+                      class="opname-preview-grid"
+                    ></div>
+
+
+                  </div>
+
+
+
+                  <!-- STANDARD TTD -->
+
+                  <div
+                    id="standardTtdLampiranBox"
+                    class="mt-4"
+                  >
+
+
+                    <div class="section-title">
+                      Tanda Tangan
+                    </div>
+
+
+                    <label class="form-label mt-2">
+                      Tanda Tangan 1
+                    </label>
+
+                    <input
+                      type="file"
+                      id="ttd1"
+                      class="form-control mb-2"
+                    >
+
+
+                    <label class="form-label">
+                      Tanda Tangan 2
+                    </label>
+
+                    <input
+                      type="file"
+                      id="ttd2"
+                      class="form-control mb-2"
+                    >
+
+
+                    <label class="form-label">
+                      Tanda Tangan 3
+                    </label>
+
+                    <input
+                      type="file"
+                      id="ttd3"
+                      class="form-control mb-2"
+                    >
+
+
+
+                    <div
+                      id="ttd4Box"
+                      style="display:none;"
+                    >
+
+                      <label class="form-label">
+                        Tanda Tangan 4
+                      </label>
+
+                      <input
+                        type="file"
+                        id="ttd4"
+                        class="form-control mb-3"
+                      >
+
+                    </div>
+
+
+
+                    <div class="section-title mt-3">
+                      Lampiran Foto
+                    </div>
+
+
+                    <div
+                      id="dropArea"
+                      class="drop-area"
+                    >
+
+                      <p>
+                        Drag & Drop gambar di sini
+                        <br>
+                        atau klik untuk upload
+                      </p>
+
+                      <input
+                        type="file"
+                        id="lampiran"
+                        multiple
+                        hidden
+                      >
+
+                    </div>
+
+
+                    <div
+                      id="previewLampiran"
+                      class="lampiran-preview"
+                    ></div>
+
+
+                  </div>
+
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+
+            <!-- =============================================
+                 STEP ACTION
+            ============================================== -->
+
+            <div class="workspace-actions">
+
+
+              <button
+                type="button"
+                id="btnPreviousStep"
+                class="btn btn-outline-modern"
+                onclick="previousBAStep()"
+                disabled
+              >
+                ← Kembali
+              </button>
+
+
+
+              <div class="workspace-actions-right">
+
+
+                <button
+                  type="button"
+                  class="btn btn-outline-modern"
+                  onclick="saveDraft()"
+                >
+                  Simpan Draft
+                </button>
+
+
+                <button
+                  type="button"
+                  id="btnNextStep"
+                  class="btn btn-main"
+                  onclick="nextBAStep()"
+                >
+                  Lanjutkan →
+                </button>
+
+
+              </div>
+
+            </div>
+
+
+          </div>
+
+
+
+          <!-- ===============================================
+               RIGHT PREVIEW
+          ================================================ -->
+
+          <div class="workspace-preview">
+
+
+            <div class="workspace-card preview-workspace-card">
+
+
+              <div class="preview-modern-header">
+
+
+                <div>
+
+                  <h2>
+                    Preview Dokumen
+                  </h2>
+
+                  <span>
+                    A4 • Preview real-time
+                  </span>
+
+                </div>
+
+
+
+                <div class="preview-toolbar">
+
+
+                  <button
+                    type="button"
+                    onclick="previewZoomOut()"
+                    title="Zoom Out"
+                  >
+                    −
+                  </button>
+
+
+                  <button
+                    type="button"
+                    onclick="previewZoomIn()"
+                    title="Zoom In"
+                  >
+                    +
+                  </button>
+
+
+                  <button
+                    type="button"
+                    onclick="previewZoomReset()"
+                    title="Reset Zoom"
+                  >
+                    ⟳
+                  </button>
+
+
+                  <button
+                    type="button"
+                    onclick="printBA()"
+                    title="Print"
+                  >
+                    ⎙
+                  </button>
+
+
+                </div>
+
+              </div>
+
+
+
+              <div class="preview-modern-body">
+
+
+                <!--
+                  ID OUTPUT TETAP SAMA
+                  AGAR GENERATOR LAMA TIDAK RUSAK
+                -->
+
+                <div
+                  id="output"
+                  class="preview"
+                >
+
+
+                  <div class="preview-empty-state">
+
+                    <div class="preview-empty-paper">
+
+                      <span class="preview-empty-label">
+                        PREVIEW
+                      </span>
+
+                      <strong>
+                        BERITA ACARA
+                      </strong>
+
+                      <p>
+                        Isi formulir kemudian klik Generate untuk
+                        menampilkan dokumen.
+                      </p>
+
+                    </div>
+
+                  </div>
+
+
+                </div>
+
+
+              </div>
+
+
+            </div>
+
+
+          </div>
+
+
+        </div>
+
+
+      </section>
+
+
+      <!-- =================================================
+          DRAFT SAYA
+      ================================================== -->
+
+      <section
+        id="page-draft"
+        class="app-page"
+      >
+
+        <div class="draft-page">
+
+          <!-- HEADER -->
+          <div class="draft-page-header">
+
+            <div>
+
+              <span class="draft-page-label">
+                BERITA ACARA
+              </span>
+
+              <h1>
+                Draft Saya
+              </h1>
+
+              <p>
+                Kelola Berita Acara yang belum selesai.
+                Anda dapat melanjutkan, melihat, atau menghapus draft.
+              </p>
+
+            </div>
+
+
+            <button
+              type="button"
+              class="draft-create-btn"
+              onclick="createNewBADraft()"
+            >
+              <span>＋</span>
+              Buat Berita Acara
+            </button>
+
+          </div>
+
+
+          <!-- SUMMARY -->
+          <div class="draft-summary">
+
+            <div class="draft-summary-card">
+
+              <div class="draft-summary-icon">
+                ▤
+              </div>
+
+              <div>
+                <span>
+                  Total Draft
+                </span>
+
+                <strong id="draftTotal">
+                  0
+                </strong>
+              </div>
+
+            </div>
+
+
+            <div class="draft-summary-info">
+
+              <span>
+                Draft disimpan otomatis di perangkat ini.
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <!-- TOOLBAR -->
+          <div class="draft-toolbar">
+
+            <div class="draft-search">
+
+              <span>⌕</span>
+
+              <input
+                type="text"
+                id="draftSearch"
+                placeholder="Cari draft..."
+                oninput="renderDraftList()"
+              >
+
+            </div>
+
+
+            <select
+              id="draftFilterJenis"
+              onchange="renderDraftList()"
+            >
+
+              <option value="">
+                Semua Jenis BA
+              </option>
+
+              <option value="material">
+                BA Material
+              </option>
+
+              <option value="keterangan">
+                BA Keterangan
+              </option>
+
+              <option value="adendum">
+                BA Adendum
+              </option>
+
+              <option value="biaya">
+                BA Pengajuan Biaya
+              </option>
+
+              <option value="urugan">
+                BA Urugan
+              </option>
+
+              <option value="opname">
+                BA Opname
+              </option>
+
+              <option value="form_opname">
+                Form Opname
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <!-- LIST DRAFT -->
+          <div
+            id="draftList"
+            class="draft-list"
+          >
+
+            <!-- Diisi otomatis oleh JavaScript -->
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =================================================
+           RIWAYAT
+      ================================================== -->
+
+      <section
+        id="page-riwayat"
+        class="app-page"
+      >
+
+        <div class="riwayat-page">
+
+          <!-- HEADER -->
+
+          <div class="riwayat-header">
+
+            <div>
+
+              <span class="riwayat-label">
+                BERITA ACARA
+              </span>
+
+              <h1>
+                Riwayat Dokumen
+              </h1>
+
+              <p>
+                Daftar Berita Acara yang telah
+                diselesaikan dan disimpan.
+              </p>
+
+            </div>
+
+            <button
+              type="button"
+              class="riwayat-create-btn"
+              onclick="createNewBADraft()"
+            >
+              <span>＋</span>
+              Buat Berita Acara
+            </button>
+
+          </div>
+
+
+          <!-- SUMMARY -->
+
+          <div class="riwayat-summary">
+
+            <div class="riwayat-summary-card">
+
+              <div class="riwayat-summary-icon">
+                ▤
+              </div>
+
+              <div>
+                <span>Total Dokumen</span>
+                <strong id="riwayatTotal">
+                  0
+                </strong>
+              </div>
+
+            </div>
+
+
+            <div class="riwayat-summary-card">
+
+              <div class="riwayat-summary-icon">
+                ✓
+              </div>
+
+              <div>
+                <span>BA Bulan Ini</span>
+                <strong id="riwayatBulanIni">
+                  0
+                </strong>
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- TOOLBAR -->
+
+          <div class="riwayat-toolbar">
+
+            <div class="riwayat-search">
+
+              <span>⌕</span>
+
+              <input
+                type="text"
+                id="riwayatSearch"
+                placeholder="Cari dokumen..."
+                oninput="renderRiwayat()"
+              >
+
+            </div>
+
+
+            <select
+              id="riwayatFilterJenis"
+              onchange="renderRiwayat()"
+            >
+
+              <option value="">
+                Semua Jenis BA
+              </option>
+
+              <option value="material">
+                BA Material
+              </option>
+
+              <option value="keterangan">
+                BA Keterangan
+              </option>
+
+              <option value="adendum">
+                BA Adendum
+              </option>
+
+              <option value="biaya">
+                BA Pengajuan Biaya
+              </option>
+
+              <option value="urugan">
+                BA Urugan
+              </option>
+
+              <option value="opname">
+                BA Opname
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <!-- TABLE -->
+
+          <div class="riwayat-table-card">
+
+            <div class="riwayat-table-wrapper">
+
+              <table class="riwayat-table">
+
+                <thead>
+
+                  <tr>
+
+                    <th>
+                      DOKUMEN
+                    </th>
+
+                    <th>
+                      JENIS BA
+                    </th>
+
+                    <th>
+                      TANGGAL
+                    </th>
+
+                    <th>
+                      STATUS
+                    </th>
+
+                    <th class="riwayat-action-column">
+                      AKSI
+                    </th>
+
+                  </tr>
+
+                </thead>
+
+
+                <tbody id="riwayatList">
+
+                  <!-- Diisi JavaScript -->
+
+                </tbody>
+
+              </table>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+
+
+      <!-- =================================================
+           LAPORAN
+      ================================================== -->
+
+      <section
+        id="page-laporan"
+        class="app-page"
+      >
+
+        <div class="laporan-page">
+
+          <!-- HEADER -->
+
+          <div class="laporan-header">
+
+            <div>
+              <h1>Laporan Berita Acara</h1>
+
+              <p>
+                Rekapitulasi dan statistik dokumen
+                Berita Acara yang telah selesai.
+              </p>
+            </div>
+
+            <button
+              type="button"
+              class="laporan-export-btn"
+              onclick="exportLaporanCSV()"
+            >
+              ↓ Export CSV
+            </button>
+
+          </div>
+
+
+          <!-- SUMMARY -->
+
+          <div class="laporan-summary-grid">
+
+            <div class="laporan-summary-card">
+
+              <div class="laporan-summary-icon">
+                ▣
+              </div>
+
+              <div>
+                <span>Total Berita Acara</span>
+                <strong id="laporanTotalBA">0</strong>
+              </div>
+
+            </div>
+
+
+            <div class="laporan-summary-card">
+
+              <div class="laporan-summary-icon">
+                ◷
+              </div>
+
+              <div>
+                <span>BA Bulan Ini</span>
+                <strong id="laporanBulanIni">0</strong>
+              </div>
+
+            </div>
+
+
+            <div class="laporan-summary-card">
+
+              <div class="laporan-summary-icon">
+                ▥
+              </div>
+
+              <div>
+                <span>Jenis Terbanyak</span>
+                <strong
+                  id="laporanJenisTerbanyak"
+                  class="laporan-summary-text"
+                >
+                  -
+                </strong>
+              </div>
+
+            </div>
+
+
+            <div class="laporan-summary-card">
+
+              <div class="laporan-summary-icon">
+                ✓
+              </div>
+
+              <div>
+                <span>Jenis BA Aktif</span>
+                <strong id="laporanTotalJenis">0</strong>
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- FILTER -->
+
+          <div class="laporan-filter-card">
+
+            <div class="laporan-filter-title">
+              Filter Laporan
+            </div>
+
+
+            <div class="laporan-filter-grid">
+
+              <div class="laporan-filter-field">
+
+                <label>
+                  Periode
+                </label>
+
+                <input
+                  type="month"
+                  id="laporanFilterBulan"
+                  onchange="renderLaporan()"
+                >
+
+              </div>
+
+
+              <div class="laporan-filter-field">
+
+                <label>
+                  Jenis Berita Acara
+                </label>
+
+                <select
+                  id="laporanFilterJenis"
+                  onchange="renderLaporan()"
+                >
+
+                  <option value="">
+                    Semua Jenis BA
+                  </option>
+
+                  <option value="material">
+                    BA Material
+                  </option>
+
+                  <option value="keterangan">
+                    BA Keterangan
+                  </option>
+
+                  <option value="adendum">
+                    BA Adendum
+                  </option>
+
+                  <option value="biaya">
+                    BA Pengajuan Biaya
+                  </option>
+
+                  <option value="urugan">
+                    BA Urugan
+                  </option>
+
+                  <option value="opname">
+                    BA Opname
+                  </option>
+
+                </select>
+
+              </div>
+
+
+              <button
+                type="button"
+                class="laporan-reset-btn"
+                onclick="resetLaporanFilter()"
+              >
+                Reset Filter
+              </button>
+
+            </div>
+
+          </div>
+
+
+          <!-- CONTENT -->
+
+          <div class="laporan-content-grid">
+
+
+            <!-- STATISTIK JENIS -->
+
+            <div class="laporan-panel">
+
+              <div class="laporan-panel-header">
+
+                <div>
+                  <h3>
+                    Statistik Jenis BA
+                  </h3>
+
+                  <p>
+                    Distribusi dokumen berdasarkan jenis.
+                  </p>
+                </div>
+
+              </div>
+
+
+              <div
+                id="laporanJenisList"
+                class="laporan-stat-list"
+              >
+              </div>
+
+            </div>
+
+
+            <!-- BULANAN -->
+
+            <div class="laporan-panel">
+
+              <div class="laporan-panel-header">
+
+                <div>
+                  <h3>
+                    Rekap per Bulan
+                  </h3>
+
+                  <p>
+                    Jumlah BA selesai setiap bulan.
+                  </p>
+                </div>
+
+              </div>
+
+
+              <div
+                id="laporanBulananList"
+                class="laporan-month-list"
+              >
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- TABLE -->
+
+          <div class="laporan-panel laporan-table-panel">
+
+            <div class="laporan-panel-header">
+
+              <div>
+                <h3>
+                  Detail Dokumen
+                </h3>
+
+                <p>
+                  Data Berita Acara sesuai filter laporan.
+                </p>
+              </div>
+
+              <strong id="laporanFilteredCount">
+                0 Dokumen
+              </strong>
+
+            </div>
+
+
+            <div class="laporan-table-wrap">
+
+              <table class="laporan-table">
+
+                <thead>
+
+                  <tr>
+
+                    <th>
+                      Dokumen
+                    </th>
+
+                    <th>
+                      Jenis
+                    </th>
+
+                    <th>
+                      Tanggal
+                    </th>
+
+                    <th>
+                      Status
+                    </th>
+
+                  </tr>
+
+                </thead>
+
+
+                <tbody id="laporanTableBody">
+
+                  <tr>
+
+                    <td
+                      colspan="4"
+                      class="laporan-empty"
+                    >
+                      Belum ada data.
+                    </td>
+
+                  </tr>
+
+                </tbody>
+
+              </table>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =================================================
+           PROJECT
+      ================================================== -->
+
+        <section
+      id="page-project"
+      class="app-page"
+    >
+
+      <div class="master-project-page">
+
+        <!-- HEADER -->
+
+        <div class="master-project-header">
+
+          <div>
+            <h1>Master Project</h1>
+            <p>
+              Kelola data project yang digunakan
+              dalam pembuatan Berita Acara.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            class="master-project-add-btn"
+            onclick="openProjectModal()"
+          >
+            + Tambah Project
+          </button>
+
+        </div>
+
+
+        <!-- SUMMARY -->
+
+        <div class="master-project-summary">
+
+          <div class="master-project-summary-card">
+
+            <span>
+              Total Project
+            </span>
+
+            <strong id="projectTotal">
+              0
+            </strong>
+
+          </div>
+
+
+          <div class="master-project-summary-card">
+
+            <span>
+              Project Aktif
+            </span>
+
+            <strong id="projectAktif">
+              0
+            </strong>
+
+          </div>
+
+
+          <div class="master-project-summary-card">
+
+            <span>
+              Project Nonaktif
+            </span>
+
+            <strong id="projectNonaktif">
+              0
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <!-- TABLE CARD -->
+
+        <div class="master-project-card">
+
+          <div class="master-project-toolbar">
+
+            <div class="master-project-search">
+
+              <span>⌕</span>
+
+              <input
+                type="text"
+                id="projectSearch"
+                placeholder="Cari kode, project, atau area..."
+                oninput="renderMasterProject()"
+              >
+
+            </div>
+
+
+            <select
+              id="projectStatusFilter"
+              onchange="renderMasterProject()"
+            >
+
+              <option value="">
+                Semua Status
+              </option>
+
+              <option value="aktif">
+                Aktif
+              </option>
+
+              <option value="nonaktif">
+                Nonaktif
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="master-project-table-wrap">
+
+            <table class="master-project-table">
+
+              <thead>
+
+                <tr>
+                  <th>Kode</th>
+                  <th>Nama Project</th>
+                  <th>Area / Kota</th>
+                  <th>Status</th>
+                  <th>Aksi</th>
+                </tr>
+
+              </thead>
+
+
+              <tbody id="masterProjectList">
+
+                <tr>
+                  <td
+                    colspan="5"
+                    class="master-project-empty"
+                  >
+                    Belum ada data project.
+                  </td>
+                </tr>
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- =========================================
+          MODAL PROJECT
+      ========================================== -->
+
+      <div
+        id="projectModal"
+        class="project-modal"
+      >
+
+        <div class="project-modal-backdrop"
+            onclick="closeProjectModal()">
+        </div>
+
+
+        <div class="project-modal-box">
+
+          <div class="project-modal-header">
+
+            <div>
+              <h3 id="projectModalTitle">
+                Tambah Project
+              </h3>
+
+              <p>
+                Lengkapi informasi project.
+              </p>
+            </div>
+
+
+            <button
+              type="button"
+              onclick="closeProjectModal()"
+            >
+              ×
+            </button>
+
+          </div>
+
+
+          <div class="project-modal-body">
+
+            <input
+              type="hidden"
+              id="projectEditId"
+            >
+
+
+            <div class="project-form-group">
+
+              <label>
+                Kode Project
+              </label>
+
+              <input
+              type="text"
+              id="projectKode"
+              placeholder="Terisi otomatis"
+              readonly
+            >
+
+            </div>
+
+
+            <div class="project-form-group">
+
+              <label>
+                Nama Project
+              </label>
+
+              <input
+              type="text"
+              id="projectNama"
+              placeholder="Contoh: RN Sumber"
+              oninput="autoGenerateProjectCode()"
+            >
+
+            </div>
+
+
+            <div class="project-form-group">
+
+              <label>
+                Area / Kota
+              </label>
+
+              <input
+                type="text"
+                id="projectArea"
+                placeholder="Contoh: Cirebon"
+              >
+
+            </div>
+
+
+            <div class="project-form-group">
+
+              <label>
+                Status
+              </label>
+
+              <select id="projectStatus">
+
+                <option value="aktif">
+                  Aktif
+                </option>
+
+                <option value="nonaktif">
+                  Nonaktif
+                </option>
+
+              </select>
+
+            </div>
+
+          </div>
+
+
+          <div class="project-modal-footer">
+
+            <button
+              type="button"
+              class="project-cancel-btn"
+              onclick="closeProjectModal()"
+            >
+              Batal
+            </button>
+
+            <button
+              type="button"
+              class="project-save-btn"
+              onclick="saveMasterProject()"
+            >
+              Simpan Project
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+        </section>
+
+
+      <!-- =================================================
+           USER
+      ================================================== -->
+
+      <section id="page-user" class="app-page">
+
+        <div class="master-user-page">
+
+          <div class="master-user-header">
+
+            <div>
+              <h1>Master User</h1>
+              <p>Kelola pengguna yang dapat mengakses BA Generator.</p>
+            </div>
+
+            <button
+              type="button"
+              class="master-user-add-btn"
+              onclick="openUserModal()"
+            >
+              + Tambah User
+            </button>
+
+          </div>
+
+
+          <div class="master-user-summary">
+
+            <div class="master-user-summary-card">
+              <span>Total User</span>
+              <strong id="userTotal">0</strong>
+            </div>
+
+            <div class="master-user-summary-card">
+              <span>User Aktif</span>
+              <strong id="userAktif">0</strong>
+            </div>
+
+            <div class="master-user-summary-card">
+              <span>Departemen</span>
+              <strong>Purchasing</strong>
+            </div>
+
+          </div>
+
+
+          <div class="master-user-card">
+
+            <div class="master-user-toolbar">
+
+              <div class="master-user-search">
+
+                <span>⌕</span>
+
+                <input
+                  type="text"
+                  id="userSearch"
+                  placeholder="Cari nama atau username..."
+                  oninput="renderMasterUser()"
+                >
+
+              </div>
+
+              <select
+                id="userStatusFilter"
+                onchange="renderMasterUser()"
+              >
+                <option value="">Semua Status</option>
+                <option value="aktif">Aktif</option>
+                <option value="nonaktif">Nonaktif</option>
+              </select>
+
+            </div>
+
+
+            <div class="master-user-table-wrap">
+
+              <table class="master-user-table">
+
+                <thead>
+                  <tr>
+                    <th>Username</th>
+                    <th>Nama Lengkap</th>
+                    <th>Departemen</th>
+                    <th>Akses</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+
+                <tbody id="masterUserList"></tbody>
+
+              </table>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- MODAL -->
+
+        <div id="userModal" class="user-modal">
+
+          <div
+            class="user-modal-backdrop"
+            onclick="closeUserModal()"
+          ></div>
+
+          <div class="user-modal-box">
+
+            <div class="user-modal-header">
+
+              <div>
+                <h3 id="userModalTitle">Tambah User</h3>
+                <p>Lengkapi data pengguna sistem.</p>
+              </div>
+
+              <button
+                type="button"
+                onclick="closeUserModal()"
+              >
+                ×
+              </button>
+
+            </div>
+
+
+            <div class="user-modal-body">
+
+              <input
+                type="hidden"
+                id="userEditId"
+              >
+
+
+              <div class="user-form-group">
+
+                <label>Nama Lengkap</label>
+
+                <input
+                  type="text"
+                  id="userNama"
+                  placeholder="Masukkan nama lengkap"
+                  oninput="autoGenerateUsername()"
+                >
+
+              </div>
+
+
+              <div class="user-form-group">
+
+                <label>Username</label>
+
+                <input
+                  type="text"
+                  id="userUsername"
+                  placeholder="Dibuat otomatis"
+                  readonly
+                >
+
+                <small>
+                  Username dibuat otomatis dari nama depan + 3 angka unik.
+                </small>
+
+              </div>
+
+
+              <div class="user-form-group">
+
+                <label>Password</label>
+
+                <div class="user-password-wrap">
+
+                  <input
+                    type="password"
+                    id="userPassword"
+                    value="admin123"
+                  >
+
+                  <button
+                    type="button"
+                    onclick="toggleMasterUserPassword()"
+                  >
+                    Lihat
+                  </button>
+
+                </div>
+
+              </div>
+
+
+              <div class="user-fixed-info">
+
+                <div>
+                  <span>Departemen</span>
+                  <strong>Purchasing</strong>
+                </div>
+
+                <div>
+                  <span>Role / Akses</span>
+                  <strong>Full Access</strong>
+                </div>
+
+              </div>
+
+
+              <div class="user-form-group">
+
+                <label>Status</label>
+
+                <select id="userStatus">
+                  <option value="aktif">Aktif</option>
+                  <option value="nonaktif">Nonaktif</option>
+                </select>
+
+              </div>
+
+            </div>
+
+
+            <div class="user-modal-footer">
+
+              <button
+                type="button"
+                class="user-cancel-btn"
+                onclick="closeUserModal()"
+              >
+                Batal
+              </button>
+
+              <button
+                type="button"
+                class="user-save-btn"
+                onclick="saveMasterUser()"
+              >
+                Simpan User
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- =================================================
+        MASTER PIHAK
+      ================================================== -->
+
+      <section id="page-pihak" class="app-page">
+
+        <div class="master-pihak-page">
+
+          <div class="master-pihak-header">
+
+            <div>
+              <h1>Master Pihak</h1>
+              <p>
+                Kelola data pihak dan penandatangan
+                yang digunakan pada Berita Acara.
+              </p>
+            </div>
+
+            <button
+              type="button"
+              class="master-pihak-add-btn"
+              onclick="openPihakModal()"
+            >
+              + Tambah Pihak
+            </button>
+
+          </div>
+
+
+          <!-- SUMMARY -->
+
+          <div class="master-pihak-summary">
+
+            <div class="master-pihak-summary-card">
+              <span>Total Pihak</span>
+              <strong id="pihakTotal">0</strong>
+            </div>
+
+            <div class="master-pihak-summary-card">
+              <span>Pihak Aktif</span>
+              <strong id="pihakAktif">0</strong>
+            </div>
+
+            <div class="master-pihak-summary-card">
+              <span>Digunakan Untuk</span>
+              <strong>Berita Acara</strong>
+            </div>
+
+          </div>
+
+
+          <!-- TABLE CARD -->
+
+          <div class="master-pihak-card">
+
+            <div class="master-pihak-toolbar">
+
+              <div class="master-pihak-search">
+
+                <span>⌕</span>
+
+                <input
+                  type="text"
+                  id="pihakSearch"
+                  placeholder="Cari nama atau jabatan..."
+                  oninput="renderMasterPihak()"
+                >
+
+              </div>
+
+
+              <select
+                id="pihakStatusFilter"
+                onchange="renderMasterPihak()"
+              >
+
+                <option value="">
+                  Semua Status
+                </option>
+
+                <option value="aktif">
+                  Aktif
+                </option>
+
+                <option value="nonaktif">
+                  Nonaktif
+                </option>
+
+              </select>
+
+            </div>
+
+
+            <div class="master-pihak-table-wrap">
+
+              <table class="master-pihak-table">
+
+                <thead>
+
+                  <tr>
+
+                    <th>Nama Lengkap</th>
+
+                    <th>Jabatan</th>
+
+                    <th>Departemen</th>
+
+                    <th>Status</th>
+
+                    <th>Aksi</th>
+
+                  </tr>
+
+                </thead>
+
+                <tbody id="masterPihakList"></tbody>
+
+              </table>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+            MODAL MASTER PIHAK
+        ================================================== -->
+
+        <div
+          id="pihakModal"
+          class="pihak-modal"
+        >
+
+          <div
+            class="pihak-modal-backdrop"
+            onclick="closePihakModal()"
+          ></div>
+
+
+          <div class="pihak-modal-box">
+
+
+            <div class="pihak-modal-header">
+
+              <div>
+
+                <h3 id="pihakModalTitle">
+                  Tambah Pihak
+                </h3>
+
+                <p>
+                  Lengkapi data pihak penandatangan.
+                </p>
+
+              </div>
+
+
+              <button
+                type="button"
+                onclick="closePihakModal()"
+              >
+                ×
+              </button>
+
+            </div>
+
+
+            <div class="pihak-modal-body">
+
+
+              <input
+                type="hidden"
+                id="pihakEditId"
+              >
+
+
+              <div class="pihak-form-group">
+
+                <label>
+                  Nama Lengkap
+                </label>
+
+                <input
+                  type="text"
+                  id="pihakNama"
+                  placeholder="Masukkan nama lengkap"
+                >
+
+              </div>
+
+
+              <div class="pihak-form-group">
+
+                <label>
+                  Jabatan
+                </label>
+
+                <input
+                  type="text"
+                  id="pihakJabatan"
+                  placeholder="Contoh: Project Manager"
+                >
+
+              </div>
+
+
+              <div class="pihak-form-group">
+
+                <label>
+                  Departemen
+                </label>
+
+                <input
+                  type="text"
+                  id="pihakDepartemen"
+                  placeholder="Contoh: Production"
+                >
+
+              </div>
+
+
+              <div class="pihak-form-group">
+
+                <label>
+                  Status
+                </label>
+
+                <select id="pihakStatus">
+
+                  <option value="aktif">
+                    Aktif
+                  </option>
+
+                  <option value="nonaktif">
+                    Nonaktif
+                  </option>
+
+                </select>
+
+              </div>
+
+            </div>
+
+
+            <div class="pihak-modal-footer">
+
+              <button
+                type="button"
+                class="pihak-cancel-btn"
+                onclick="closePihakModal()"
+              >
+                Batal
+              </button>
+
+
+              <button
+                type="button"
+                class="pihak-save-btn"
+                onclick="saveMasterPihak()"
+              >
+                Simpan Pihak
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =================================================
+           PENGATURAN
+      ================================================== -->
+
+      <section
+        id="page-pengaturan"
+        class="app-page"
+      >
+
+        <div class="ba-page-header">
+
+          <div>
+
+            <h1 class="ba-page-title">
+              Pengaturan
+            </h1>
+
+            <p class="ba-page-description">
+              Konfigurasi BA Generator.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="empty-page">
+          Pengaturan sistem akan dibuat pada tahap berikutnya.
+        </div>
+
+      </section>
+
+
+    </div>
+
+  </main>
+
+</div>
+
+
+
+<!-- ======================================================
+     FOOTER
+======================================================= -->
+
+<footer class="app-footer">
+
+  <p class="mb-0 small">
+
+    &copy; 2026
+
+    <strong>
+      Admin Project
+    </strong>.
+
+    All rights reserved.
+
   </p>
 
-  <div id="opnameDropArea" class="opname-drop-area"
-    onclick="document.getElementById('lampiranOpname').click()"
-    ondragover="dragOpnameOver(event, this)"
-    ondragleave="dragOpnameLeave(this)"
-    ondrop="dropOpnameFiles(event, this)">
-
-    <div class="opname-drop-icon">📷</div>
-    <div class="opname-drop-title">Drag & Drop Foto Lampiran Opname</div>
-    <div class="opname-drop-desc">atau klik untuk upload foto</div>
-    <div class="opname-drop-note">Setiap halaman maksimal 6 foto</div>
-
-    <input type="file" id="lampiranOpname" hidden multiple accept="image/*"
-      onchange="handleOpnameInputFiles(event)">
-  </div>
-
-  <div id="previewOpnameLampiran" class="opname-preview-grid"></div>
-
-</div>
-
-<div id="standardTtdLampiranBox">
-
-  <div class="section-title">Tanda Tangan</div>
-  <input type="file" id="ttd1" class="form-control mb-1">
-  <input type="file" id="ttd2" class="form-control mb-1">
-  <input type="file" id="ttd3" class="form-control mb-1">
-
-  <div id="ttd4Box" style="display:none;">
-    <input type="file" id="ttd4" class="form-control mb-2">
-  </div>
-
-  <div id="dropArea" class="drop-area">
-    <p>Drag & Drop gambar di sini<br>atau klik untuk upload</p>
-    <input type="file" id="lampiran" multiple hidden>
-  </div>
-
-  <div id="previewLampiran" class="lampiran-preview"></div>
-
-</div>
-
-        <button onclick="generate()" class="btn btn-danger w-100">Generate Dokumen</button>
-        <button onclick="simpanPDF()" class="btn btn-success w-100 mt-2">
-          Simpan & Export PDF
-        </button>
-      </div>
-    </div>
-
-    <!-- PREVIEW -->
-    <div class="preview-panel">
-      <div id="output" class="preview"></div>
-    </div>
-
-  </div>
-
-</div>
+</footer>
 
 
-<!-- 1. JQUERY -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<!-- 2. SELECT2 -->
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<!-- ======================================================
+     LIBRARY
+======================================================= -->
 
-<!-- 3. INIT SELECT2 -->
+<!-- JQUERY -->
+
+<script
+  src="https://code.jquery.com/jquery-3.6.0.min.js">
+</script>
+
+
+<!-- SELECT2 -->
+
+<script
+  src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js">
+</script>
+
+
+<!-- SCRIPT UTAMA -->
+
 <script src="script.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<!-- ======================================================
+     GLOBAL CONFIRMATION MODAL
+======================================================= -->
+<div id="globalConfirmOverlay" class="erp-confirm-overlay">
+
+  <div
+    class="erp-confirm-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="globalConfirmTitle"
+  >
+
+    <button
+      type="button"
+      class="erp-confirm-close"
+      id="globalConfirmClose"
+      aria-label="Tutup"
+    >
+      ×
+    </button>
+
+    <div class="erp-confirm-content">
+
+      <div class="erp-confirm-icon" id="globalConfirmIcon">
+        !
+      </div>
+
+      <div class="erp-confirm-copy">
+
+        <div
+          class="erp-confirm-title"
+          id="globalConfirmTitle"
+        >
+          Konfirmasi
+        </div>
+
+        <div
+          class="erp-confirm-message"
+          id="globalConfirmMessage"
+        >
+          Apakah Anda yakin?
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="erp-confirm-footer">
+
+      <button
+        type="button"
+        class="erp-confirm-btn erp-confirm-btn-cancel"
+        id="globalConfirmCancel"
+      >
+        Batal
+      </button>
+
+      <button
+        type="button"
+        class="erp-confirm-btn erp-confirm-btn-action"
+        id="globalConfirmAction"
+      >
+        Hapus
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
 </body>
 </html>
