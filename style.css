@@ -27515,3 +27515,1198 @@ tr:last-child td{
   height: auto;
   flex: none;
 }
+
+/* =========================================================
+   PROFESSIONAL BA PROCESS MAP
+========================================================= */
+
+.ba-process {
+  margin-top: 18px;
+  width: 100%;
+}
+
+
+/* HEADER */
+
+.ba-process-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+
+  margin-bottom: 12px;
+}
+
+.ba-process-kicker {
+  display: block;
+  margin-bottom: 4px;
+
+  color: #d71920;
+
+  font-size: 7.5px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+}
+
+.ba-process-title h2 {
+  margin: 0;
+
+  color: #172033;
+
+  font-size: 16px;
+  font-weight: 750;
+}
+
+.ba-process-title p {
+  margin: 4px 0 0;
+
+  color: #98a2b3;
+
+  font-size: 8.5px;
+}
+
+
+/* SYSTEM STATUS */
+
+.ba-process-status {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  padding: 6px 9px;
+
+  border: 1px solid #d1fadf;
+  border-radius: 20px;
+
+  background: #ecfdf3;
+
+  color: #027a48;
+
+  font-size: 7px;
+  font-weight: 800;
+
+  letter-spacing: .5px;
+}
+
+.ba-status-dot {
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+
+  background: #12b76a;
+
+  box-shadow:
+    0 0 0 4px
+    rgba(18,183,106,.10);
+
+  animation:
+    baStatusPulse 1.6s infinite;
+}
+
+@keyframes baStatusPulse {
+
+  50% {
+    box-shadow:
+      0 0 0 7px
+      rgba(18,183,106,0);
+  }
+
+}
+
+
+/* =========================================================
+   CANVAS
+========================================================= */
+
+.ba-process-canvas {
+  position: relative;
+
+  width: 100%;
+  height: 590px;
+
+  overflow: hidden;
+
+  border: 1px solid #e4e7ec;
+  border-radius: 12px;
+
+  background:
+    radial-gradient(
+      circle at 15% 15%,
+      rgba(215,25,32,.035),
+      transparent 23%
+    ),
+    radial-gradient(
+      circle at 75% 65%,
+      rgba(215,25,32,.025),
+      transparent 25%
+    ),
+    linear-gradient(
+      #ffffff,
+      #fcfcfd
+    );
+
+  box-shadow:
+    0 2px 8px
+    rgba(16,24,40,.04);
+}
+
+
+/* GRID */
+
+.ba-process-canvas::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  opacity: .35;
+
+  background-image:
+    linear-gradient(
+      #eef0f3 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      #eef0f3 1px,
+      transparent 1px
+    );
+
+  background-size:
+    28px 28px;
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   SVG CONNECTORS
+========================================================= */
+
+.ba-process-lines {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 1;
+
+  width: 100%;
+  height: 100%;
+
+  pointer-events: none;
+}
+
+.ba-route {
+  fill: none;
+
+  stroke: #cfd4dc;
+  stroke-width: 1.5;
+
+  marker-end:
+    url(#baArrow);
+
+  stroke-dasharray:
+    5 5;
+
+  animation:
+    baRouteMove 1.2s linear infinite;
+}
+
+.ba-route-success {
+  stroke: #d71920;
+
+  marker-end:
+    url(#baArrowRed);
+}
+
+.ba-route-return {
+  fill: none;
+
+  stroke: #f79009;
+  stroke-width: 1.4;
+
+  stroke-dasharray:
+    4 5;
+
+  marker-end:
+    url(#baArrow);
+
+  animation:
+    baRouteMove 1.4s linear infinite;
+}
+
+@keyframes baRouteMove {
+
+  to {
+    stroke-dashoffset: -20;
+  }
+
+}
+
+
+/* =========================================================
+   NORMAL NODE
+========================================================= */
+
+.ba-process-node {
+  position: absolute;
+
+  z-index: 4;
+
+  width: 200px;
+  min-height: 92px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+
+  padding: 14px;
+
+  border: 1px solid #e4e7ec;
+  border-radius: 10px;
+
+  background: rgba(255,255,255,.97);
+
+  color: inherit;
+
+  text-align: left;
+
+  box-shadow:
+    0 3px 9px
+    rgba(16,24,40,.05);
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease,
+    border-color .25s ease;
+}
+
+
+/* POSITIONS */
+
+.ba-node-start {
+  left: 3%;
+  top: 59px;
+}
+
+.ba-node-type {
+  left: 24%;
+  top: 59px;
+}
+
+.ba-node-form {
+  left: 46%;
+  top: 59px;
+}
+
+.ba-node-support {
+  left: 70%;
+  top: 59px;
+}
+
+.ba-node-validation {
+  left: 58%;
+  top: 234px;
+}
+
+.ba-node-generate {
+  left: 24%;
+  top: 234px;
+}
+
+.ba-node-preview {
+  left: 40%;
+  top: 420px;
+}
+
+
+/* NODE ICON */
+
+.ba-node-icon {
+  flex: 0 0 39px;
+
+  width: 39px;
+  height: 39px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 9px;
+
+  background: #fff1f2;
+
+  color: #d71920;
+}
+
+.ba-node-icon svg {
+  width: 20px;
+  height: 20px;
+
+  fill: none;
+
+  stroke: currentColor;
+  stroke-width: 1.7;
+
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+
+/* COPY */
+
+.ba-node-copy {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+.ba-node-copy small {
+  color: #d71920;
+
+  font-size: 6.5px;
+  font-weight: 800;
+
+  letter-spacing: .7px;
+}
+
+.ba-node-copy strong {
+  color: #344054;
+
+  font-size: 9.5px;
+  font-weight: 700;
+}
+
+.ba-node-copy span {
+  color: #98a2b3;
+
+  font-size: 7.4px;
+  line-height: 1.4;
+}
+
+
+/* CLICKABLE */
+
+button.ba-process-node {
+  cursor: pointer;
+}
+
+button.ba-process-node:hover {
+  border-color: #f3a7aa;
+
+  transform:
+    translateY(-2px);
+
+  box-shadow:
+    0 7px 16px
+    rgba(16,24,40,.08);
+}
+
+
+/* =========================================================
+   ACTIVE NODE
+========================================================= */
+
+[data-flow-index].process-active {
+  z-index: 7;
+
+  border-color: #d71920;
+
+  box-shadow:
+    0 0 0 4px
+    rgba(215,25,32,.07),
+    0 8px 18px
+    rgba(215,25,32,.12);
+
+  animation:
+    baNodeActive .9s ease-in-out infinite alternate;
+}
+
+[data-flow-index].process-active
+.ba-node-icon {
+  background: #d71920;
+  color: #fff;
+}
+
+[data-flow-index].process-done
+.ba-node-icon {
+  background: #ecfdf3;
+  color: #039855;
+}
+
+@keyframes baNodeActive {
+
+  to {
+    transform:
+      translateY(-3px);
+  }
+
+}
+
+
+/* =========================================================
+   DECISION
+========================================================= */
+
+.ba-decision-wrap {
+  position: absolute;
+
+  z-index: 5;
+
+  left: 42%;
+  top: 222px;
+
+  width: 135px;
+  height: 135px;
+}
+
+.ba-decision {
+  position: absolute;
+
+  left: 22px;
+  top: 22px;
+
+  width: 90px;
+  height: 90px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transform:
+    rotate(45deg);
+
+  border: 1px solid #f3a7aa;
+  border-radius: 8px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fff8f8,
+      #fff
+    );
+
+  box-shadow:
+    0 5px 15px
+    rgba(215,25,32,.08);
+}
+
+.ba-decision-content {
+  width: 80px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 4px;
+
+  transform:
+    rotate(-45deg);
+
+  text-align: center;
+}
+
+.ba-decision-content svg {
+  width: 18px;
+  height: 18px;
+
+  fill: none;
+
+  stroke: #d71920;
+  stroke-width: 1.8;
+}
+
+.ba-decision-content strong {
+  color: #344054;
+
+  font-size: 8px;
+}
+
+.ba-decision-yes,
+.ba-decision-no {
+  position: absolute;
+
+  padding: 2px 5px;
+
+  border-radius: 4px;
+
+  font-size: 6px;
+  font-weight: 800;
+}
+
+.ba-decision-yes {
+  left: -4px;
+  top: 62px;
+
+  background: #ecfdf3;
+  color: #027a48;
+}
+
+.ba-decision-no {
+  right: -7px;
+  bottom: 4px;
+
+  background: #fffaeb;
+  color: #b54708;
+}
+
+
+/* =========================================================
+   RETURN NODE
+========================================================= */
+
+.ba-node-return {
+  left: 72%;
+  top: 235px;
+
+  border-color: #fedf89;
+
+  background: #fffcf5;
+}
+
+.ba-node-return
+.ba-node-icon {
+  background: #fffaeb;
+  color: #f79009;
+}
+
+.ba-node-return
+.ba-node-copy small {
+  color: #b54708;
+}
+
+
+/* =========================================================
+   DATABASE
+========================================================= */
+
+.ba-database-node {
+  position: absolute;
+
+  z-index: 5;
+
+  left: 65%;
+  top: 405px;
+
+  width: 215px;
+  min-height: 115px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 13px;
+
+  padding: 16px;
+
+  border: 1px solid #f3a7aa;
+  border-radius: 11px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #fff7f7,
+      #fff
+    );
+
+  box-shadow:
+    0 5px 15px
+    rgba(215,25,32,.07);
+}
+
+.ba-db-cylinder {
+  flex: 0 0 52px;
+
+  width: 52px;
+  height: 52px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #d71920;
+
+  color: #fff;
+
+  box-shadow:
+    0 0 0 6px
+    rgba(215,25,32,.07);
+}
+
+.ba-db-cylinder svg {
+  width: 28px;
+  height: 28px;
+
+  fill: none;
+
+  stroke: currentColor;
+  stroke-width: 1.5;
+}
+
+.ba-database-node small {
+  display: block;
+
+  margin-bottom: 3px;
+
+  color: #d71920;
+
+  font-size: 6px;
+  font-weight: 800;
+}
+
+.ba-database-node strong {
+  display: block;
+
+  color: #344054;
+
+  font-size: 9px;
+}
+
+.ba-database-node span {
+  display: block;
+
+  margin-top: 3px;
+
+  color: #98a2b3;
+
+  font-size: 7px;
+}
+
+
+/* =========================================================
+   OUTPUT HUB
+========================================================= */
+
+.ba-output-hub {
+  position: absolute;
+
+  z-index: 5;
+
+  right: 2%;
+  top: 380px;
+
+  width: 190px;
+
+  padding: 10px;
+
+  border: 1px solid #e4e7ec;
+  border-radius: 10px;
+
+  background: #fff;
+
+  box-shadow:
+    0 4px 12px
+    rgba(16,24,40,.05);
+}
+
+.ba-output-title {
+  margin-bottom: 6px;
+
+  color: #98a2b3;
+
+  font-size: 6px;
+  font-weight: 800;
+
+  letter-spacing: .8px;
+}
+
+.ba-output-hub button {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  padding: 7px;
+
+  border: none;
+  border-radius: 6px;
+
+  background: transparent;
+
+  cursor: pointer;
+
+  text-align: left;
+
+  transition: .18s ease;
+}
+
+.ba-output-hub button:hover {
+  background: #fff5f5;
+}
+
+.ba-output-hub svg {
+  width: 16px;
+  height: 16px;
+
+  fill: none;
+
+  stroke: #d71920;
+  stroke-width: 1.7;
+}
+
+.ba-output-hub span {
+  display: flex;
+  flex-direction: column;
+
+  gap: 1px;
+}
+
+.ba-output-hub strong {
+  color: #344054;
+
+  font-size: 8px;
+}
+
+.ba-output-hub small {
+  color: #98a2b3;
+
+  font-size: 6.5px;
+}
+
+
+/* =========================================================
+   MOVING SIGNAL
+========================================================= */
+
+.ba-signal {
+  position: absolute;
+
+  z-index: 3;
+
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: #d71920;
+
+  box-shadow:
+    0 0 0 4px
+    rgba(215,25,32,.09),
+    0 0 10px
+    rgba(215,25,32,.3);
+
+  pointer-events: none;
+}
+
+.ba-signal-1 {
+  top: 102px;
+  left: 13%;
+
+  animation:
+    signalOne 4.2s linear infinite;
+}
+
+.ba-signal-2 {
+  top: 277px;
+  left: 65%;
+
+  animation:
+    signalTwo 4.5s linear infinite;
+}
+
+.ba-signal-3 {
+  top: 462px;
+  left: 51%;
+
+  animation:
+    signalThree 4s linear infinite;
+}
+
+@keyframes signalOne {
+
+  0% {
+    left: 12%;
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  90% {
+    opacity: 1;
+  }
+
+  100% {
+    left: 78%;
+    opacity: 0;
+  }
+
+}
+
+@keyframes signalTwo {
+
+  0% {
+    left: 68%;
+    opacity: 0;
+  }
+
+  100% {
+    left: 30%;
+    opacity: 1;
+  }
+
+}
+
+@keyframes signalThree {
+
+  0% {
+    left: 47%;
+    opacity: 0;
+  }
+
+  100% {
+    left: 78%;
+    opacity: 1;
+  }
+
+}
+
+
+/* =========================================================
+   QUICK ACCESS
+========================================================= */
+
+.ba-process-types {
+  margin-top: 13px;
+
+  padding: 14px;
+
+  border: 1px solid #e4e7ec;
+  border-radius: 10px;
+
+  background: #fff;
+
+  box-shadow:
+    0 2px 6px
+    rgba(16,24,40,.03);
+}
+
+.ba-process-types-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 10px;
+}
+
+.ba-process-types-head div {
+  display: flex;
+  flex-direction: column;
+
+  gap: 2px;
+}
+
+.ba-process-types-head strong {
+  color: #344054;
+
+  font-size: 9px;
+}
+
+.ba-process-types-head div span {
+  color: #98a2b3;
+
+  font-size: 7px;
+}
+
+.ba-process-types-head > span {
+  color: #d71920;
+
+  font-size: 6.5px;
+  font-weight: 800;
+
+  letter-spacing: .7px;
+}
+
+
+/* GRID */
+
+.ba-process-type-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(7, minmax(0,1fr));
+
+  gap: 7px;
+}
+
+.ba-process-type-grid button {
+  min-height: 44px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+
+  padding: 8px;
+
+  border: 1px solid #e4e7ec;
+  border-radius: 7px;
+
+  background: #fff;
+
+  color: #475467;
+
+  font-size: 7.3px;
+  font-weight: 650;
+
+  cursor: pointer;
+
+  text-align: left;
+
+  transition: .18s ease;
+}
+
+.ba-process-type-grid button > span {
+  flex: 0 0 25px;
+
+  width: 25px;
+  height: 25px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 6px;
+
+  background: #f2f4f7;
+
+  color: #667085;
+
+  font-size: 6.5px;
+  font-weight: 800;
+}
+
+.ba-process-type-grid button:hover {
+  border-color: #f3a7aa;
+
+  color: #d71920;
+
+  transform:
+    translateY(-1px);
+
+  box-shadow:
+    0 4px 9px
+    rgba(16,24,40,.05);
+}
+
+.ba-process-type-grid button:hover > span {
+  background: #fff1f2;
+  color: #d71920;
+}
+
+.ba-process-type-featured {
+  border-color:
+    #f3a7aa !important;
+
+  background:
+    #fff8f8 !important;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1200px) {
+
+  .ba-process-canvas {
+    overflow-x: auto;
+  }
+
+  .ba-process-lines {
+    min-width: 1100px;
+  }
+
+  .ba-process-type-grid {
+    grid-template-columns:
+      repeat(4,1fr);
+  }
+
+}
+
+@media (max-width: 768px) {
+
+  .ba-process-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .ba-process-canvas {
+    height: 590px;
+    overflow-x: auto;
+  }
+
+  .ba-process-canvas::after {
+    content: "";
+
+    display: block;
+
+    width: 1100px;
+    height: 1px;
+  }
+
+  .ba-process-type-grid {
+    grid-template-columns:
+      repeat(2,1fr);
+  }
+
+}
+
+/* =========================================================
+   DASHBOARD HERO — FULL ASSET BACKGROUND
+========================================================= */
+
+.dashboard-hero {
+  position: relative;
+  overflow: hidden;
+
+  height: 120px !important;
+  min-height: 120px !important;
+
+  padding: 14px 34px !important;
+
+  display: flex;
+  align-items: center;
+
+  /* FULL BACKGROUND — TANPA OVERLAY PUTIH */
+  background-image:
+    url("Asset/hero.png") !important;
+
+  background-size:
+    cover !important;
+
+  background-position:
+    center right !important;
+
+  background-repeat:
+    no-repeat !important;
+}
+
+
+/* =========================================================
+   HERO TEXT — WHITE
+========================================================= */
+
+.dashboard-hero-content {
+  position: relative;
+  z-index: 3;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+
+/* LABEL ATAS */
+
+.dashboard-hero-label {
+  margin-bottom: 6px !important;
+
+  color:
+    rgba(255,255,255,.85) !important;
+
+  font-weight: 700 !important;
+
+  letter-spacing:
+    1px !important;
+}
+
+
+/* JUDUL */
+
+.dashboard-hero-content h1,
+.dashboard-hero-content h1 span {
+  margin:
+    0 0 7px 0 !important;
+
+  color:
+    #ffffff !important;
+
+  text-shadow:
+    0 1px 3px
+    rgba(0,0,0,.15);
+}
+
+
+/* DESKRIPSI */
+
+.dashboard-hero-content p {
+  margin: 0 !important;
+
+  color:
+    rgba(255,255,255,.82) !important;
+}
+
+
+/* =========================================================
+   ILUSTRASI EXISTING
+========================================================= */
+
+.dashboard-hero-visual {
+  position: relative;
+  z-index: 2;
+
+  transform:
+    scale(.82);
+
+  transform-origin:
+    center right;
+}
+
+/* =========================================================
+   DASHBOARD HERO — COMPACT HEIGHT
+========================================================= */
+
+.dashboard-hero {
+  min-height: 0 !important;
+  height: 135px !important;
+
+  padding:
+    18px 34px !important;
+
+  display: flex;
+  align-items: center;
+}
+
+
+/* RAPATKAN ISI TEKS */
+
+.dashboard-hero-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.dashboard-hero-label {
+  margin-bottom: 6px !important;
+}
+
+.dashboard-hero-content h1 {
+  margin:
+    0 0 7px 0 !important;
+}
+
+.dashboard-hero-content p {
+  margin: 0 !important;
+}
+
+
+/* ILUSTRASI KERTAS + PENA TETAP PROPORSIONAL */
+
+.dashboard-hero-visual {
+  transform:
+    scale(.82);
+
+  transform-origin:
+    center right;
+}

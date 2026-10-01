@@ -18885,3 +18885,222 @@ generate = function () {
   }
 
 };
+
+
+/* =========================================================
+   PROFESSIONAL DASHBOARD WORKFLOW
+========================================================= */
+
+function openBAFromDashboard(jenis) {
+
+  if (typeof openPage === "function") {
+    openPage("buatBA");
+  }
+
+  setTimeout(() => {
+
+    const select =
+      document.getElementById("jenisSelect") ||
+      document.getElementById("jenis");
+
+    if (!select) {
+      return;
+    }
+
+    select.value = jenis;
+
+    select.dispatchEvent(
+      new Event("change", {
+        bubbles: true
+      })
+    );
+
+    if (
+      typeof window.jQuery !== "undefined" &&
+      window.jQuery.fn &&
+      window.jQuery.fn.select2
+    ) {
+
+      try {
+
+        window.jQuery(select)
+          .val(jenis)
+          .trigger("change");
+
+      } catch (error) {
+
+        console.warn(
+          "Dashboard BA select sync:",
+          error
+        );
+
+      }
+
+    }
+
+    if (
+      jenis !== "form_opname" &&
+      typeof showBAStep === "function"
+    ) {
+
+      showBAStep(1);
+
+    }
+
+    if (
+      jenis === "form_opname" &&
+      typeof setupFormOpnameSingleProcess ===
+      "function"
+    ) {
+
+      setupFormOpnameSingleProcess();
+
+    }
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+
+  }, 120);
+
+}
+
+
+/* =========================================================
+   PROCESS ANIMATION CONTROLLER
+========================================================= */
+
+function initProfessionalBAWorkflow() {
+
+  const process =
+    document.querySelector(
+      ".ba-process-canvas"
+    );
+
+  if (!process) {
+    return;
+  }
+
+  const nodes = [
+    ...process.querySelectorAll(
+      "[data-flow-index]"
+    )
+  ];
+
+  if (!nodes.length) {
+    return;
+  }
+
+  nodes.sort(
+    (a, b) =>
+      Number(a.dataset.flowIndex) -
+      Number(b.dataset.flowIndex)
+  );
+
+
+  function resetFlow() {
+
+    nodes.forEach(node => {
+
+      node.classList.remove(
+        "process-active",
+        "process-done"
+      );
+
+    });
+
+  }
+
+
+  let current = 0;
+
+
+  function animateFlow() {
+
+    nodes.forEach(
+      (node, index) => {
+
+        node.classList.remove(
+          "process-active"
+        );
+
+        if (index < current) {
+
+          node.classList.add(
+            "process-done"
+          );
+
+        }
+
+      }
+    );
+
+
+    if (nodes[current]) {
+
+      nodes[current].classList.add(
+        "process-active"
+      );
+
+    }
+
+
+    current++;
+
+
+    if (current >= nodes.length) {
+
+      setTimeout(() => {
+
+        resetFlow();
+
+        current = 0;
+
+      }, 1400);
+
+    }
+
+  }
+
+
+  resetFlow();
+
+  animateFlow();
+
+
+  if (
+    window.baProfessionalFlowTimer
+  ) {
+
+    clearInterval(
+      window.baProfessionalFlowTimer
+    );
+
+  }
+
+
+  window.baProfessionalFlowTimer =
+    setInterval(
+      animateFlow,
+      1150
+    );
+
+}
+
+
+/* =========================================================
+   START
+========================================================= */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  function () {
+
+    setTimeout(
+      initProfessionalBAWorkflow,
+      700
+    );
+
+  }
+);

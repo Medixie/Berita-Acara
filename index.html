@@ -846,468 +846,590 @@
 
 
 
-          <!-- =============================================
-              KPI
-          ============================================== -->
+<!-- =========================================================
+     PROFESSIONAL BA PROCESS MAP
+========================================================= -->
+
+<div class="ba-process">
+
+  <!-- HEADER -->
+  <div class="ba-process-head">
+
+    <div class="ba-process-title">
+      <span class="ba-process-kicker">
+        SYSTEM WORKFLOW
+      </span>
+
+      <h2>Alur Proses Berita Acara</h2>
+
+      <p>
+        Proses terintegrasi pembuatan, validasi,
+        finalisasi dan penyimpanan dokumen.
+      </p>
+    </div>
+
+    <div class="ba-process-status">
+      <span class="ba-status-dot"></span>
+      SYSTEM ACTIVE
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       PROCESS CANVAS
+  ====================================================== -->
+
+  <div class="ba-process-canvas">
+
+    <svg
+      class="ba-process-lines"
+      viewBox="0 0 1400 590"
+      preserveAspectRatio="none"
+      aria-hidden="true"
+    >
+
+      <defs>
 
-          <div class="dashboard-kpi-grid">
+        <marker
+          id="baArrow"
+          markerWidth="8"
+          markerHeight="8"
+          refX="7"
+          refY="4"
+          orient="auto"
+        >
+          <path
+            d="M0,0 L8,4 L0,8 Z"
+            fill="#d0d5dd"
+          />
+        </marker>
 
+        <marker
+          id="baArrowRed"
+          markerWidth="8"
+          markerHeight="8"
+          refX="7"
+          refY="4"
+          orient="auto"
+        >
+          <path
+            d="M0,0 L8,4 L0,8 Z"
+            fill="#d71920"
+          />
+        </marker>
 
-            <!-- TOTAL BA -->
+      </defs>
 
-            <div class="dashboard-kpi-card">
 
-              <div class="dashboard-kpi-icon kpi-blue">
-                ▣
-              </div>
+      <!-- ROW 1 -->
+      <path
+        class="ba-route"
+        d="M180 105 H310"
+      />
 
-              <div class="dashboard-kpi-text">
+      <path
+        class="ba-route"
+        d="M510 105 H640"
+      />
 
-                <span>
-                  Total BA
-                </span>
+      <path
+        class="ba-route"
+        d="M840 105 H970"
+      />
 
-                <strong id="statTotalDokumen">
-                  0
-                </strong>
 
-              </div>
+      <!-- TURUN KE VALIDASI -->
+      <path
+        class="ba-route"
+        d="M1070 160 V225 H920"
+      />
 
-            </div>
 
+      <!-- VALIDASI KE DECISION -->
+      <path
+        class="ba-route"
+        d="M810 280 H690"
+      />
 
 
-            <!-- DRAFT -->
+      <!-- YES -->
+      <path
+        class="ba-route ba-route-success"
+        d="M585 280 H480"
+      />
 
-            <div class="dashboard-kpi-card">
 
-              <div class="dashboard-kpi-icon kpi-orange">
-                ▤
-              </div>
+      <!-- GENERATE KE PREVIEW -->
+      <path
+        class="ba-route"
+        d="M380 335 V410 H570"
+      />
 
-              <div class="dashboard-kpi-text">
 
-                <span>
-                  Draft
-                </span>
+      <!-- PREVIEW KE DATABASE -->
+      <path
+        class="ba-route"
+        d="M770 465 H900"
+      />
 
-                <strong id="statDraft">
-                  0
-                </strong>
 
-              </div>
+      <!-- NO / RETURN -->
+      <path
+        class="ba-route-return"
+        d="M620 335 V370 H1040 V160"
+      />
 
-            </div>
 
+      <!-- DATABASE KE OUTPUT -->
+      <path
+        class="ba-route"
+        d="M1010 515 H1120"
+      />
 
+    </svg>
 
-            <!-- APPROVAL -->
 
-            <div class="dashboard-kpi-card">
+    <!-- =================================================
+         MOVING SIGNALS
+    ================================================== -->
 
-              <div class="dashboard-kpi-icon kpi-yellow">
-                ◷
-              </div>
+    <div class="ba-signal ba-signal-1"></div>
+    <div class="ba-signal ba-signal-2"></div>
+    <div class="ba-signal ba-signal-3"></div>
 
-              <div class="dashboard-kpi-text">
 
-                <span>
-                  BA Bulan Ini
-                </span>
+    <!-- =================================================
+         START
+    ================================================== -->
 
-                <strong id="statBulanIni">
-                  0
-                </strong>
+    <button
+      class="ba-process-node ba-node-start"
+      type="button"
+      data-flow-index="0"
+      onclick="openPage('buatBA')"
+    >
 
-              </div>
+      <div class="ba-node-icon">
 
-            </div>
+        <svg viewBox="0 0 24 24">
+          <path d="M12 5v14M5 12h14"/>
+        </svg>
 
+      </div>
 
+      <div class="ba-node-copy">
+        <small>START</small>
+        <strong>Buat Berita Acara</strong>
+        <span>Mulai dokumen baru</span>
+      </div>
 
-            <!-- SELESAI -->
+    </button>
 
-            <div class="dashboard-kpi-card">
 
-              <div class="dashboard-kpi-icon kpi-green">
-                ✓
-              </div>
+    <!-- =================================================
+         PILIH JENIS
+    ================================================== -->
 
-              <div class="dashboard-kpi-text">
+    <div
+      class="ba-process-node ba-node-type"
+      data-flow-index="1"
+    >
 
-                <span>
-                  BA Selesai
-                </span>
+      <div class="ba-node-icon">
 
-                <strong id="statSelesai">
-                  0
-                </strong>
+        <svg viewBox="0 0 24 24">
+          <path d="M5 5h14v14H5z"/>
+          <path d="M8 9h8M8 12h8M8 15h5"/>
+        </svg>
 
-              </div>
+      </div>
 
-            </div>
+      <div class="ba-node-copy">
+        <small>01 · DOCUMENT TYPE</small>
+        <strong>Pilih Jenis BA</strong>
+        <span>Sesuai kebutuhan pekerjaan</span>
+      </div>
 
-          </div>
+    </div>
 
 
+    <!-- =================================================
+         FORM
+    ================================================== -->
 
-          <!-- =============================================
-              QUICK ACTION
-          ============================================== -->
+    <div
+      class="ba-process-node ba-node-form"
+      data-flow-index="2"
+    >
 
-          <div class="dashboard-section-title">
+      <div class="ba-node-icon">
 
-            <div>
+        <svg viewBox="0 0 24 24">
+          <path d="M7 3h8l4 4v14H7z"/>
+          <path d="M15 3v5h5M10 12h6M10 16h6"/>
+        </svg>
 
-              <h2>
-                Quick Action
-              </h2>
+      </div>
 
-              <p>
-                Akses cepat pengelolaan Berita Acara.
-              </p>
+      <div class="ba-node-copy">
+        <small>02 · INPUT</small>
+        <strong>Isi Form BA</strong>
+        <span>Informasi & isi sesuai jenis</span>
+      </div>
 
-            </div>
+    </div>
 
-          </div>
 
+    <!-- =================================================
+         SUPPORTING DATA
+    ================================================== -->
 
-          <div class="dashboard-quick-grid">
+    <div
+      class="ba-process-node ba-node-support"
+      data-flow-index="3"
+    >
 
+      <div class="ba-node-icon">
 
-            <!-- BUAT BA -->
+        <svg viewBox="0 0 24 24">
+          <path d="M12 4v12"/>
+          <path d="M8 8l4-4 4 4"/>
+          <path d="M5 15v5h14v-5"/>
+        </svg>
 
-            <button
-              type="button"
-              class="dashboard-quick-card quick-red"
-              onclick="openPage('buatBA')"
-            >
+      </div>
 
-              <div class="dashboard-quick-icon">
-                ▣
-              </div>
+      <div class="ba-node-copy">
+        <small>03 · SUPPORT</small>
+        <strong>Data Pendukung</strong>
+        <span>Pihak / lampiran bila diperlukan</span>
+      </div>
 
-              <div>
+    </div>
 
-                <strong>
-                  Buat Berita Acara
-                </strong>
 
-                <span>
-                  Mulai buat BA baru
-                </span>
+    <!-- =================================================
+         VALIDATION
+    ================================================== -->
 
-              </div>
+    <div
+      class="ba-process-node ba-node-validation"
+      data-flow-index="4"
+    >
 
-            </button>
+      <div class="ba-node-icon">
 
+        <svg viewBox="0 0 24 24">
+          <path d="M9 12l2 2 4-5"/>
+          <path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z"/>
+        </svg>
 
+      </div>
 
-            <!-- DRAFT -->
+      <div class="ba-node-copy">
+        <small>04 · VALIDATION</small>
+        <strong>Validasi Data</strong>
+        <span>Cek kelengkapan dokumen</span>
+      </div>
 
-            <button
-              type="button"
-              class="dashboard-quick-card quick-orange"
-              onclick="openPage('draft')"
-            >
+    </div>
 
-              <div class="dashboard-quick-icon">
-                ▤
-              </div>
 
-              <div>
+    <!-- =================================================
+         DECISION
+    ================================================== -->
 
-                <strong>
-                  Lihat Draft Saya
-                </strong>
+    <div
+      class="ba-decision-wrap"
+      data-flow-index="5"
+    >
 
-                <span>
-                  Lanjutkan draft tersimpan
-                </span>
+      <div class="ba-decision">
 
-              </div>
+        <div class="ba-decision-content">
 
-            </button>
+          <svg viewBox="0 0 24 24">
+            <path d="M12 8v5"/>
+            <circle cx="12" cy="16.5" r=".7"/>
+          </svg>
 
+          <strong>Data Lengkap?</strong>
 
-            <!-- RIWAYAT -->
+        </div>
 
-              <button
-                type="button"
-                class="dashboard-quick-card quick-yellow"
-                onclick="openPage('riwayat')"
-              >
+      </div>
 
-                <div class="dashboard-quick-icon">
-                  ◷
-                </div>
+      <span class="ba-decision-yes">
+        YA
+      </span>
 
-                <div>
+      <span class="ba-decision-no">
+        TIDAK
+      </span>
 
-                  <strong>
-                    Lihat Riwayat
-                  </strong>
+    </div>
 
-                  <span>
-                    Lihat BA yang telah selesai
-                  </span>
 
-                </div>
+    <!-- =================================================
+         RETURN
+    ================================================== -->
 
-              </button>
+    <button
+      type="button"
+      class="ba-process-node ba-node-return"
+      onclick="openPage('buatBA')"
+    >
 
-            <!-- LAPORAN -->
+      <div class="ba-node-icon">
 
-            <button
-              type="button"
-              class="dashboard-quick-card quick-blue"
-              onclick="openPage('laporan')"
-            >
+        <svg viewBox="0 0 24 24">
+          <path d="M9 7l-4 4 4 4"/>
+          <path d="M5 11h9a5 5 0 010 10h-3"/>
+        </svg>
 
-              <div class="dashboard-quick-icon">
-                ▥
-              </div>
+      </div>
 
-              <div>
+      <div class="ba-node-copy">
+        <small>REVISION LOOP</small>
+        <strong>Kembali ke Form</strong>
+        <span>Perbaiki data belum lengkap</span>
+      </div>
 
-                <strong>
-                  Lihat Laporan
-                </strong>
+    </button>
 
-                <span>
-                  Rekap & statistik BA
-                </span>
 
-              </div>
+    <!-- =================================================
+         GENERATE
+    ================================================== -->
 
-            </button>
+    <div
+      class="ba-process-node ba-node-generate"
+      data-flow-index="6"
+    >
 
-          </div>
+      <div class="ba-node-icon">
 
+        <svg viewBox="0 0 24 24">
+          <path d="M7 3h8l4 4v14H7z"/>
+          <path d="M15 3v5h5"/>
+          <path d="M10 13h6M10 16h6"/>
+        </svg>
 
+      </div>
 
-          <!-- =============================================
-              BAGIAN BAWAH
-          ============================================== -->
+      <div class="ba-node-copy">
+        <small>05 · GENERATE</small>
+        <strong>Generate Dokumen</strong>
+        <span>Membentuk dokumen BA</span>
+      </div>
 
-          <div class="dashboard-bottom-grid">
+    </div>
 
 
-            <!-- BA TERBARU -->
+    <!-- =================================================
+         PREVIEW
+    ================================================== -->
 
-            <div class="dashboard-panel">
+    <div
+      class="ba-process-node ba-node-preview"
+      data-flow-index="7"
+    >
 
-              <div class="dashboard-panel-header">
+      <div class="ba-node-icon">
 
-                <div>
+        <svg viewBox="0 0 24 24">
+          <path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6S2 12 2 12z"/>
+          <circle cx="12" cy="12" r="2.5"/>
+        </svg>
 
-                  <h3>
-                    BA Terbaru
-                  </h3>
+      </div>
 
-                  <p>
-                    Berita Acara yang terakhir dibuat.
-                  </p>
+      <div class="ba-node-copy">
+        <small>06 · REVIEW</small>
+        <strong>Preview & Finalisasi</strong>
+        <span>Review hasil sebelum disimpan</span>
+      </div>
 
-                </div>
+    </div>
 
 
-                <button
-                  type="button"
-                  onclick="openPage('riwayat')"
-                >
-                  Lihat Semua →
-                </button>
+    <!-- =================================================
+         DATABASE
+    ================================================== -->
 
-              </div>
+    <div
+      class="ba-database-node"
+      data-flow-index="8"
+    >
 
+      <div class="ba-db-cylinder">
 
-              <div class="dashboard-table-wrapper">
+        <svg viewBox="0 0 24 24">
+          <ellipse cx="12" cy="5" rx="7" ry="3"/>
+          <path d="M5 5v6c0 1.7 3.1 3 7 3s7-1.3 7-3V5"/>
+          <path d="M5 11v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/>
+        </svg>
 
-                <table class="dashboard-table">
+      </div>
 
-                  <thead>
+      <div>
+        <small>07 · DATABASE</small>
+        <strong>Simpan ke Database</strong>
+        <span>Dokumen tercatat ke sistem</span>
+      </div>
 
-                    <tr>
+    </div>
 
-                      <th>
-                        No. BA
-                      </th>
 
-                      <th>
-                        Tanggal
-                      </th>
+    <!-- =================================================
+         OUTPUT HUB
+    ================================================== -->
 
-                      <th>
-                        Jenis
-                      </th>
+    <div class="ba-output-hub">
 
-                      <th>
-                        Project
-                      </th>
+      <div class="ba-output-title">
+        OUTPUT SYSTEM
+      </div>
 
-                      <th>
-                        Status
-                      </th>
 
-                    </tr>
+      <button
+        type="button"
+        onclick="openPage('riwayat')"
+      >
 
-                  </thead>
+        <svg viewBox="0 0 24 24">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
 
+        <span>
+          <strong>Riwayat</strong>
+          <small>Dokumen tersimpan</small>
+        </span>
 
-                  <tbody id="dashboardRecentBA">
+      </button>
 
-                    <tr class="dashboard-empty">
 
-                      <td colspan="5">
-                        Belum ada Berita Acara.
-                      </td>
+      <button
+        type="button"
+        onclick="openPage('dashboard')"
+      >
 
-                    </tr>
+        <svg viewBox="0 0 24 24">
+          <path d="M4 13h6V4H4zM14 20h6V11h-6zM4 20h6v-3H4zM14 7h6V4h-6z"/>
+        </svg>
 
-                  </tbody>
+        <span>
+          <strong>Dashboard</strong>
+          <small>Monitoring sistem</small>
+        </span>
 
-                </table>
+      </button>
 
-              </div>
 
-            </div>
+      <button
+        type="button"
+        onclick="openPage('laporan')"
+      >
 
+        <svg viewBox="0 0 24 24">
+          <path d="M5 20V10M10 20V5M15 20v-7M20 20V8"/>
+        </svg>
 
+        <span>
+          <strong>Laporan</strong>
+          <small>Rekap & statistik</small>
+        </span>
 
-            <!-- STATISTIK -->
+      </button>
 
-            <div class="dashboard-panel">
 
-              <div class="dashboard-panel-header">
+      <button
+        type="button"
+        onclick="openPage('riwayat')"
+      >
 
-                <div>
+        <svg viewBox="0 0 24 24">
+          <path d="M7 8V3h10v5"/>
+          <path d="M6 17H4V9h16v8h-2"/>
+          <path d="M7 14h10v7H7z"/>
+        </svg>
 
-                  <h3>
-                    Statistik Jenis BA
-                  </h3>
+        <span>
+          <strong>Export / Print</strong>
+          <small>Dokumen final</small>
+        </span>
 
-                  <p>
-                    Distribusi dokumen berdasarkan jenis.
-                  </p>
+      </button>
 
-                </div>
+    </div>
 
-              </div>
+  </div>
 
 
-              <div class="dashboard-stat-content">
+  <!-- =====================================================
+       BA TYPE QUICK ACCESS
+  ====================================================== -->
 
+  <div class="ba-process-types">
 
-                <!-- DONUT -->
+    <div class="ba-process-types-head">
 
-                <div class="dashboard-donut">
+      <div>
+        <strong>Quick Access</strong>
+        <span>Pilih jenis dokumen untuk langsung memulai</span>
+      </div>
 
-                  <div class="dashboard-donut-inner">
+      <span>7 JENIS BA</span>
 
-                    <strong id="dashboardDonutTotal">
-                      0
-                    </strong>
+    </div>
 
-                    <span>
-                      Total BA
-                    </span>
 
-                  </div>
+    <div class="ba-process-type-grid">
 
-                </div>
+      <button onclick="openBAFromDashboard('material')">
+        <span>01</span>
+        Pengajuan Material
+      </button>
 
+      <button onclick="openBAFromDashboard('keterangan')">
+        <span>02</span>
+        Keterangan Pekerjaan
+      </button>
 
+      <button onclick="openBAFromDashboard('adendum')">
+        <span>03</span>
+        Adendum / Kendala
+      </button>
 
-                <!-- LEGEND -->
+      <button onclick="openBAFromDashboard('biaya')">
+        <span>04</span>
+        Pengajuan Biaya
+      </button>
 
-                <div class="dashboard-stat-list">
+      <button onclick="openBAFromDashboard('urugan')">
+        <span>05</span>
+        BA Urugan
+      </button>
 
+      <button onclick="openBAFromDashboard('opname')">
+        <span>06</span>
+        BA Opname Lapangan
+      </button>
 
-                  <div class="dashboard-stat-row">
+      <button
+        class="ba-process-type-featured"
+        onclick="openBAFromDashboard('form_opname')"
+      >
+        <span>07</span>
+        Form Opname
+      </button>
 
-                    <span class="stat-dot material"></span>
+    </div>
 
-                    <span>
-                      Material
-                    </span>
+  </div>
 
-                    <strong id="statMaterial">
-                      0
-                    </strong>
-
-                    <small id="statMaterialPercent">
-                      0%
-                    </small>
-
-                  </div>
-
-
-
-                  <div class="dashboard-stat-row">
-
-                    <span class="stat-dot biaya"></span>
-
-                    <span>
-                      Biaya
-                    </span>
-
-                    <strong id="statBiaya">
-                      0
-                    </strong>
-
-                    <small id="statBiayaPercent">
-                      0%
-                    </small>
-
-                  </div>
-
-
-
-                  <div class="dashboard-stat-row">
-
-                    <span class="stat-dot urugan"></span>
-
-                    <span>
-                      Urugan
-                    </span>
-
-                    <strong id="statUrugan">
-                      0
-                    </strong>
-
-                    <small id="statUruganPercent">
-                      0%
-                    </small>
-
-                  </div>
-
-
-
-                  <div class="dashboard-stat-row">
-
-                    <span class="stat-dot opname"></span>
-
-                    <span>
-                      Opname
-                    </span>
-
-                    <strong id="statOpname">
-                      0
-                    </strong>
-
-                    <small id="statOpnamePercent">
-                      0%
-                    </small>
-
-                  </div>
-
-
-                </div>
-
-              </div>
-
-            </div>
+</div>
 
 
           </div>
