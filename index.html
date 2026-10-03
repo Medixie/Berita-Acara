@@ -784,661 +784,809 @@
 
 
 
-      <!-- =================================================
-           DASHBOARD
-      ================================================== -->
+<!-- =================================================
+     DASHBOARD — SYSTEM WORKFLOW V3
+================================================== -->
 
-      
+<section id="page-dashboard" class="app-page">
 
-      <section
-        id="page-dashboard"
-        class="app-page"
-      >
+  <div class="db3-dashboard">
 
-        <div class="dashboard-welcome">
+    <!-- ============================================
+         HERO
+    ============================================= -->
+    <div class="dashboard-hero">
+
+      <div class="dashboard-hero-content">
+
+        <span class="dashboard-hero-label">
+          DASHBOARD BERITA ACARA
+        </span>
+
+        <h1>
+          Selamat Datang,
+          <span id="dashboardUserName">admin</span>!
+        </h1>
+
+        <p>
+          Kelola seluruh Berita Acara anda dengan
+          lebih mudah dan terorganisir.
+        </p>
+
+      </div>
+
+      <div class="dashboard-hero-visual">
+        <div class="hero-paper">
+          <div class="hero-paper-head"></div>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
+        <div class="hero-pen"></div>
+      </div>
+
+    </div>
 
 
-          <!-- =============================================
-              HERO
-          ============================================== -->
+    <!-- ============================================
+         WORKFLOW PANEL
+    ============================================= -->
+    <section class="db3-workflow-card">
 
-          <div class="dashboard-hero">
+      <!-- HEADER -->
+      <div class="db3-workflow-header">
 
-            <div class="dashboard-hero-content">
+        <div>
+          <span class="db3-eyebrow">
+            SYSTEM WORKFLOW
+          </span>
 
-              <span class="dashboard-hero-label">
-                DASHBOARD BERITA ACARA
-              </span>
+          <h2>Alur Proses Berita Acara</h2>
 
-              <h1>
-                Selamat Datang,
-                <span id="dashboardUserName">
-                  Admin Project
-                </span>!
-              </h1>
+          <p>
+            Proses terintegrasi pembuatan, validasi,
+            finalisasi dan penyimpanan dokumen.
+          </p>
+        </div>
 
-              <p>
-                Kelola seluruh Berita Acara anda dengan
-                lebih mudah dan terorganisir.
-              </p>
+        <div class="db3-system-status">
+          <span></span>
+          SYSTEM ACTIVE
+        </div>
 
+      </div>
+
+
+      <!-- ==========================================
+           PROCESS CANVAS
+      =========================================== -->
+      <div class="db3-flow-canvas">
+
+
+<!-- =====================================================
+     DYNAMIC WORKFLOW CONNECTORS
+====================================================== -->
+
+<svg
+  class="ba-process-lines"
+  id="baWorkflowLines"
+  aria-hidden="true"
+>
+  <defs>
+
+    <marker
+      id="baArrow"
+      markerWidth="8"
+      markerHeight="8"
+      refX="7"
+      refY="4"
+      orient="auto"
+    >
+      <path
+        d="M0,0 L8,4 L0,8 Z"
+        fill="#cfd4dc"
+      />
+    </marker>
+
+    <marker
+      id="baArrowRed"
+      markerWidth="8"
+      markerHeight="8"
+      refX="7"
+      refY="4"
+      orient="auto"
+    >
+      <path
+        d="M0,0 L8,4 L0,8 Z"
+        fill="#d71920"
+      />
+    </marker>
+
+    <marker
+      id="baArrowOrange"
+      markerWidth="8"
+      markerHeight="8"
+      refX="7"
+      refY="4"
+      orient="auto"
+    >
+      <path
+        d="M0,0 L8,4 L0,8 Z"
+        fill="#f79009"
+      />
+    </marker>
+
+  </defs>
+
+  <g id="baWorkflowRoutes"></g>
+</svg>
+
+        <!-- ==========================================
+             01 START
+        =========================================== -->
+        <div
+          class="db3-node db3-start"
+          data-flow-index="1"
+        >
+
+          <div class="db3-start-icon">
+            <span></span>
+            <span></span>
+          </div>
+
+          <div class="db3-node-copy">
+
+            <small>START</small>
+
+            <strong>
+              Buat Berita Acara
+            </strong>
+
+            <span>
+              Mulai dokumen baru
+            </span>
+
+          </div>
+
+          <b class="db3-step-badge">01</b>
+
+        </div>
+
+
+        <!-- ==========================================
+             02 DOCUMENT TYPE
+        =========================================== -->
+        <div
+          class="db3-node db3-document"
+          data-flow-index="2"
+        >
+
+          <div class="db3-icon-box db3-red">
+
+            <svg viewBox="0 0 24 24">
+              <path d="M6 3h9l4 4v14H6z"/>
+              <path d="M15 3v5h4"/>
+              <path d="M9 12h7M9 16h7"/>
+            </svg>
+
+          </div>
+
+          <div class="db3-node-copy">
+
+            <small>DOCUMENT TYPE</small>
+
+            <strong>
+              Pilih Jenis BA
+            </strong>
+
+            <span>
+              Sesuai kebutuhan pekerjaan
+            </span>
+
+          </div>
+
+          <b class="db3-step-badge">02</b>
+
+        </div>
+
+
+        <!-- ==========================================
+             03 INPUT
+        =========================================== -->
+        <div
+          class="db3-node db3-input"
+          data-flow-index="3"
+        >
+
+          <div class="db3-icon-box db3-blue">
+
+            <svg viewBox="0 0 24 24">
+              <path d="M6 3h9l4 4v14H6z"/>
+              <path d="M15 3v5h4"/>
+              <path d="M9 12h7M9 16h7"/>
+            </svg>
+
+          </div>
+
+          <div class="db3-node-copy">
+
+            <small>INPUT FORM</small>
+
+            <strong>
+              Isi Form BA
+            </strong>
+
+            <span>
+              Informasi & isi sesuai jenis
+            </span>
+
+          </div>
+
+          <b class="db3-step-badge">03</b>
+
+        </div>
+
+
+        <!-- ==========================================
+             04 SUPPORT DATA
+        =========================================== -->
+        <div
+          class="db3-node db3-support"
+          data-flow-index="4"
+        >
+
+          <div class="db3-icon-box db3-purple">
+
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M7 18H6a4 4 0 0 1-.4-7.98A6.5 6.5 0 0 1 18 8.5a4.5 4.5 0 0 1 0 9H17"
+              />
+              <path d="M12 17V9"/>
+              <path d="M9 12l3-3 3 3"/>
+            </svg>
+
+          </div>
+
+          <div class="db3-node-copy">
+
+            <small>SUPPORT DATA</small>
+
+            <strong>
+              Data Pendukung
+            </strong>
+
+            <span>
+              Pihak / lampiran bila diperlukan
+            </span>
+
+          </div>
+
+          <b class="db3-step-badge">04</b>
+
+        </div>
+
+
+        <!-- ==========================================
+             05 VALIDATION
+        =========================================== -->
+        <div
+          class="db3-node db3-validation"
+          data-flow-index="5"
+        >
+
+          <div class="db3-icon-box db3-green">
+
+            <svg viewBox="0 0 24 24">
+              <path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z"/>
+              <path d="M8.5 12l2.2 2.2 4.8-5"/>
+            </svg>
+
+          </div>
+
+          <div class="db3-node-copy">
+
+            <small>VALIDATION</small>
+
+            <strong>
+              Validasi Data
+            </strong>
+
+            <span>
+              Cek kelengkapan dokumen
+            </span>
+
+          </div>
+
+          <b class="db3-step-badge">05</b>
+
+        </div>
+
+
+        <!-- ==========================================
+             DECISION
+        =========================================== -->
+        <div
+          class="db3-decision"
+          data-flow-index="6"
+        >
+
+          <div class="db3-decision-inner">
+
+            <div class="db3-warning">
+              !
             </div>
 
+            <strong>
+              Data Lengkap?
+            </strong>
 
-            <div class="dashboard-hero-visual">
+          </div>
 
-              <div class="hero-paper">
+          <span class="db3-yes-label">
+            YA
+          </span>
 
-                <div class="hero-paper-head"></div>
+          <span class="db3-no-label">
+            TIDAK
+          </span>
 
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
+        </div>
 
-              </div>
 
-              <div class="hero-pen"></div>
+        <!-- ==========================================
+             06 REVISION
+        =========================================== -->
+        <div
+          class="db3-node db3-revision"
+          data-flow-index="7"
+        >
 
+          <div class="db3-icon-box db3-orange">
+
+            <svg viewBox="0 0 24 24">
+              <path d="M9 7H5v-4"/>
+              <path d="M5 7c2-3 5-4 8-4 5 0 8 4 8 9s-3 9-8 9c-4 0-7-2-8-5"/>
+            </svg>
+
+          </div>
+
+          <div class="db3-node-copy">
+
+            <small>REVISION LOOP</small>
+
+            <strong>
+              Kembali ke Form
+            </strong>
+
+            <span>
+              Perbaiki data belum lengkap
+            </span>
+
+          </div>
+
+          <b class="db3-step-badge">06</b>
+
+        </div>
+
+
+        <!-- ==========================================
+             07 GENERATE
+        =========================================== -->
+        <div
+          class="db3-node db3-generate"
+          data-flow-index="8"
+        >
+
+          <div class="db3-icon-box db3-red-soft">
+
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"
+              />
+              <path
+                d="M19 13.5v-3l-2-.6-.7-1.7 1-1.8-2.1-2.1-1.8 1-1.7-.7L11 2H8l-.6 2.1-1.7.7-1.8-1-2.1 2.1 1 1.8-.7 1.7L0 10v3l2.1.6.7 1.7-1 1.8 2.1 2.1 1.8-1 1.7.7L8 22h3l.6-2.1 1.7-.7 1.8 1 2.1-2.1-1-1.8.7-1.7z"
+              />
+            </svg>
+
+          </div>
+
+          <div class="db3-node-copy">
+
+            <small>GENERATE</small>
+
+            <strong>
+              Generate Dokumen
+            </strong>
+
+            <span>
+              Membentuk dokumen BA
+            </span>
+
+            <div class="db3-progress">
+              <i></i>
+              <b>80%</b>
             </div>
 
           </div>
 
+          <b class="db3-step-badge">07</b>
+
+        </div>
 
 
-<!-- =========================================================
-     PROFESSIONAL BA PROCESS MAP
-========================================================= -->
-
-<div class="ba-process">
-
-  <!-- HEADER -->
-  <div class="ba-process-head">
-
-    <div class="ba-process-title">
-      <span class="ba-process-kicker">
-        SYSTEM WORKFLOW
-      </span>
-
-      <h2>Alur Proses Berita Acara</h2>
-
-      <p>
-        Proses terintegrasi pembuatan, validasi,
-        finalisasi dan penyimpanan dokumen.
-      </p>
-    </div>
-
-    <div class="ba-process-status">
-      <span class="ba-status-dot"></span>
-      SYSTEM ACTIVE
-    </div>
-
-  </div>
-
-
-  <!-- =====================================================
-       PROCESS CANVAS
-  ====================================================== -->
-
-  <div class="ba-process-canvas">
-
-    <svg
-      class="ba-process-lines"
-      viewBox="0 0 1400 590"
-      preserveAspectRatio="none"
-      aria-hidden="true"
-    >
-
-      <defs>
-
-        <marker
-          id="baArrow"
-          markerWidth="8"
-          markerHeight="8"
-          refX="7"
-          refY="4"
-          orient="auto"
+        <!-- ==========================================
+             08 PREVIEW
+        =========================================== -->
+        <div
+          class="db3-node db3-preview"
+          data-flow-index="9"
         >
-          <path
-            d="M0,0 L8,4 L0,8 Z"
-            fill="#d0d5dd"
-          />
-        </marker>
 
-        <marker
-          id="baArrowRed"
-          markerWidth="8"
-          markerHeight="8"
-          refX="7"
-          refY="4"
-          orient="auto"
+          <div class="db3-icon-box db3-purple-soft">
+
+            <svg viewBox="0 0 24 24">
+              <path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6S2 12 2 12z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+
+          </div>
+
+          <div class="db3-node-copy">
+
+            <small>REVIEW</small>
+
+            <strong>
+              Preview & Finalisasi
+            </strong>
+
+            <span>
+              Review hasil sebelum disimpan
+            </span>
+
+          </div>
+
+          <b class="db3-step-badge">08</b>
+
+        </div>
+
+
+        <!-- ==========================================
+             09 DATABASE
+        =========================================== -->
+        <div
+          class="db3-node db3-database"
+          data-flow-index="10"
         >
-          <path
-            d="M0,0 L8,4 L0,8 Z"
-            fill="#d71920"
-          />
-        </marker>
 
-      </defs>
+          <div class="db3-db-icon">
 
+            <svg viewBox="0 0 24 24">
+              <ellipse cx="12" cy="5" rx="7" ry="3"/>
+              <path d="M5 5v6c0 1.7 3.1 3 7 3s7-1.3 7-3V5"/>
+              <path d="M5 11v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/>
+            </svg>
 
-      <!-- ROW 1 -->
-      <path
-        class="ba-route"
-        d="M180 105 H310"
-      />
+          </div>
 
-      <path
-        class="ba-route"
-        d="M510 105 H640"
-      />
+          <div class="db3-node-copy">
 
-      <path
-        class="ba-route"
-        d="M840 105 H970"
-      />
+            <small>DATABASE</small>
 
+            <strong>
+              Simpan ke Database
+            </strong>
 
-      <!-- TURUN KE VALIDASI -->
-      <path
-        class="ba-route"
-        d="M1070 160 V225 H920"
-      />
+            <span>
+              Dokumen tercatat ke sistem
+            </span>
 
+          </div>
 
-      <!-- VALIDASI KE DECISION -->
-      <path
-        class="ba-route"
-        d="M810 280 H690"
-      />
+          <b class="db3-step-badge">09</b>
 
+        </div>
 
-      <!-- YES -->
-      <path
-        class="ba-route ba-route-success"
-        d="M585 280 H480"
-      />
 
+        <!-- ==========================================
+             OUTPUT SYSTEM
+        =========================================== -->
+        <div
+          class="db3-output"
+          data-flow-index="11"
+        >
 
-      <!-- GENERATE KE PREVIEW -->
-      <path
-        class="ba-route"
-        d="M380 335 V410 H570"
-      />
+          <div class="db3-output-title">
 
+            <span class="db3-output-symbol">
+              <i></i><i></i><i></i><i></i>
+            </span>
 
-      <!-- PREVIEW KE DATABASE -->
-      <path
-        class="ba-route"
-        d="M770 465 H900"
-      />
+            OUTPUT SYSTEM
 
+          </div>
 
-      <!-- NO / RETURN -->
-      <path
-        class="ba-route-return"
-        d="M620 335 V370 H1040 V160"
-      />
 
+          <div class="db3-output-grid">
 
-      <!-- DATABASE KE OUTPUT -->
-      <path
-        class="ba-route"
-        d="M1010 515 H1120"
-      />
+            <button
+              type="button"
+              class="db3-output-item db3-output-red"
+              onclick="db3OpenPage('riwayat')"
+            >
 
-    </svg>
+              <svg viewBox="0 0 24 24">
+                <path d="M8 6h12M8 12h12M8 18h12"/>
+                <circle cx="4" cy="6" r="1"/>
+                <circle cx="4" cy="12" r="1"/>
+                <circle cx="4" cy="18" r="1"/>
+              </svg>
 
+              <strong>Riwayat</strong>
+              <small>Dokumen tersimpan</small>
 
-    <!-- =================================================
-         MOVING SIGNALS
-    ================================================== -->
+            </button>
 
-    <div class="ba-signal ba-signal-1"></div>
-    <div class="ba-signal ba-signal-2"></div>
-    <div class="ba-signal ba-signal-3"></div>
 
+            <button
+              type="button"
+              class="db3-output-item db3-output-blue"
+              onclick="db3OpenPage('dashboard')"
+            >
 
-    <!-- =================================================
-         START
-    ================================================== -->
+              <svg viewBox="0 0 24 24">
+                <rect x="3" y="3" width="7" height="7"/>
+                <rect x="14" y="3" width="7" height="7"/>
+                <rect x="3" y="14" width="7" height="7"/>
+                <rect x="14" y="14" width="7" height="7"/>
+              </svg>
 
-    <button
-      class="ba-process-node ba-node-start"
-      type="button"
-      data-flow-index="0"
-      onclick="openPage('buatBA')"
-    >
+              <strong>Dashboard</strong>
+              <small>Monitoring sistem</small>
 
-      <div class="ba-node-icon">
+            </button>
 
-        <svg viewBox="0 0 24 24">
-          <path d="M12 5v14M5 12h14"/>
-        </svg>
 
-      </div>
+            <button
+              type="button"
+              class="db3-output-item db3-output-purple"
+              onclick="db3OpenPage('laporan')"
+            >
 
-      <div class="ba-node-copy">
-        <small>START</small>
-        <strong>Buat Berita Acara</strong>
-        <span>Mulai dokumen baru</span>
-      </div>
+              <svg viewBox="0 0 24 24">
+                <path d="M5 20V11M10 20V5M15 20v-8M20 20V3"/>
+              </svg>
 
-    </button>
+              <strong>Laporan</strong>
+              <small>Rekap & statistik</small>
 
+            </button>
 
-    <!-- =================================================
-         PILIH JENIS
-    ================================================== -->
 
-    <div
-      class="ba-process-node ba-node-type"
-      data-flow-index="1"
-    >
+            <button
+              type="button"
+              class="db3-output-item db3-output-green"
+              onclick="db3DashboardPrint()"
+            >
 
-      <div class="ba-node-icon">
+              <svg viewBox="0 0 24 24">
+                <path d="M6 9V3h12v6"/>
+                <path d="M6 17H4V9h16v8h-2"/>
+                <path d="M7 14h10v7H7z"/>
+              </svg>
 
-        <svg viewBox="0 0 24 24">
-          <path d="M5 5h14v14H5z"/>
-          <path d="M8 9h8M8 12h8M8 15h5"/>
-        </svg>
+              <strong>Export / Print</strong>
+              <small>Dokumen final</small>
 
-      </div>
+            </button>
 
-      <div class="ba-node-copy">
-        <small>01 · DOCUMENT TYPE</small>
-        <strong>Pilih Jenis BA</strong>
-        <span>Sesuai kebutuhan pekerjaan</span>
-      </div>
-
-    </div>
-
-
-    <!-- =================================================
-         FORM
-    ================================================== -->
-
-    <div
-      class="ba-process-node ba-node-form"
-      data-flow-index="2"
-    >
-
-      <div class="ba-node-icon">
-
-        <svg viewBox="0 0 24 24">
-          <path d="M7 3h8l4 4v14H7z"/>
-          <path d="M15 3v5h5M10 12h6M10 16h6"/>
-        </svg>
-
-      </div>
-
-      <div class="ba-node-copy">
-        <small>02 · INPUT</small>
-        <strong>Isi Form BA</strong>
-        <span>Informasi & isi sesuai jenis</span>
-      </div>
-
-    </div>
-
-
-    <!-- =================================================
-         SUPPORTING DATA
-    ================================================== -->
-
-    <div
-      class="ba-process-node ba-node-support"
-      data-flow-index="3"
-    >
-
-      <div class="ba-node-icon">
-
-        <svg viewBox="0 0 24 24">
-          <path d="M12 4v12"/>
-          <path d="M8 8l4-4 4 4"/>
-          <path d="M5 15v5h14v-5"/>
-        </svg>
-
-      </div>
-
-      <div class="ba-node-copy">
-        <small>03 · SUPPORT</small>
-        <strong>Data Pendukung</strong>
-        <span>Pihak / lampiran bila diperlukan</span>
-      </div>
-
-    </div>
-
-
-    <!-- =================================================
-         VALIDATION
-    ================================================== -->
-
-    <div
-      class="ba-process-node ba-node-validation"
-      data-flow-index="4"
-    >
-
-      <div class="ba-node-icon">
-
-        <svg viewBox="0 0 24 24">
-          <path d="M9 12l2 2 4-5"/>
-          <path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z"/>
-        </svg>
-
-      </div>
-
-      <div class="ba-node-copy">
-        <small>04 · VALIDATION</small>
-        <strong>Validasi Data</strong>
-        <span>Cek kelengkapan dokumen</span>
-      </div>
-
-    </div>
-
-
-    <!-- =================================================
-         DECISION
-    ================================================== -->
-
-    <div
-      class="ba-decision-wrap"
-      data-flow-index="5"
-    >
-
-      <div class="ba-decision">
-
-        <div class="ba-decision-content">
-
-          <svg viewBox="0 0 24 24">
-            <path d="M12 8v5"/>
-            <circle cx="12" cy="16.5" r=".7"/>
-          </svg>
-
-          <strong>Data Lengkap?</strong>
+          </div>
 
         </div>
 
       </div>
 
-      <span class="ba-decision-yes">
-        YA
-      </span>
 
-      <span class="ba-decision-no">
-        TIDAK
-      </span>
-
-    </div>
-
-
-    <!-- =================================================
-         RETURN
-    ================================================== -->
-
-    <button
-      type="button"
-      class="ba-process-node ba-node-return"
-      onclick="openPage('buatBA')"
-    >
-
-      <div class="ba-node-icon">
-
-        <svg viewBox="0 0 24 24">
-          <path d="M9 7l-4 4 4 4"/>
-          <path d="M5 11h9a5 5 0 010 10h-3"/>
-        </svg>
-
-      </div>
-
-      <div class="ba-node-copy">
-        <small>REVISION LOOP</small>
-        <strong>Kembali ke Form</strong>
-        <span>Perbaiki data belum lengkap</span>
-      </div>
-
-    </button>
-
-
-    <!-- =================================================
-         GENERATE
-    ================================================== -->
-
-    <div
-      class="ba-process-node ba-node-generate"
-      data-flow-index="6"
-    >
-
-      <div class="ba-node-icon">
-
-        <svg viewBox="0 0 24 24">
-          <path d="M7 3h8l4 4v14H7z"/>
-          <path d="M15 3v5h5"/>
-          <path d="M10 13h6M10 16h6"/>
-        </svg>
-
-      </div>
-
-      <div class="ba-node-copy">
-        <small>05 · GENERATE</small>
-        <strong>Generate Dokumen</strong>
-        <span>Membentuk dokumen BA</span>
-      </div>
-
-    </div>
-
-
-    <!-- =================================================
-         PREVIEW
-    ================================================== -->
-
-    <div
-      class="ba-process-node ba-node-preview"
-      data-flow-index="7"
-    >
-
-      <div class="ba-node-icon">
-
-        <svg viewBox="0 0 24 24">
-          <path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6S2 12 2 12z"/>
-          <circle cx="12" cy="12" r="2.5"/>
-        </svg>
-
-      </div>
-
-      <div class="ba-node-copy">
-        <small>06 · REVIEW</small>
-        <strong>Preview & Finalisasi</strong>
-        <span>Review hasil sebelum disimpan</span>
-      </div>
-
-    </div>
-
-
-    <!-- =================================================
-         DATABASE
-    ================================================== -->
-
-    <div
-      class="ba-database-node"
-      data-flow-index="8"
-    >
-
-      <div class="ba-db-cylinder">
-
-        <svg viewBox="0 0 24 24">
-          <ellipse cx="12" cy="5" rx="7" ry="3"/>
-          <path d="M5 5v6c0 1.7 3.1 3 7 3s7-1.3 7-3V5"/>
-          <path d="M5 11v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/>
-        </svg>
-
-      </div>
-
-      <div>
-        <small>07 · DATABASE</small>
-        <strong>Simpan ke Database</strong>
-        <span>Dokumen tercatat ke sistem</span>
-      </div>
-
-    </div>
-
-
-    <!-- =================================================
-         OUTPUT HUB
-    ================================================== -->
-
-    <div class="ba-output-hub">
-
-      <div class="ba-output-title">
-        OUTPUT SYSTEM
-      </div>
-
-
-      <button
-        type="button"
-        onclick="openPage('riwayat')"
-      >
-
-        <svg viewBox="0 0 24 24">
-          <path d="M4 6h16M4 12h16M4 18h16"/>
-        </svg>
-
-        <span>
-          <strong>Riwayat</strong>
-          <small>Dokumen tersimpan</small>
-        </span>
-
-      </button>
-
-
-      <button
-        type="button"
-        onclick="openPage('dashboard')"
-      >
-
-        <svg viewBox="0 0 24 24">
-          <path d="M4 13h6V4H4zM14 20h6V11h-6zM4 20h6v-3H4zM14 7h6V4h-6z"/>
-        </svg>
-
-        <span>
-          <strong>Dashboard</strong>
-          <small>Monitoring sistem</small>
-        </span>
-
-      </button>
-
-
-      <button
-        type="button"
-        onclick="openPage('laporan')"
-      >
-
-        <svg viewBox="0 0 24 24">
-          <path d="M5 20V10M10 20V5M15 20v-7M20 20V8"/>
-        </svg>
-
-        <span>
-          <strong>Laporan</strong>
-          <small>Rekap & statistik</small>
-        </span>
-
-      </button>
-
-
-      <button
-        type="button"
-        onclick="openPage('riwayat')"
-      >
-
-        <svg viewBox="0 0 24 24">
-          <path d="M7 8V3h10v5"/>
-          <path d="M6 17H4V9h16v8h-2"/>
-          <path d="M7 14h10v7H7z"/>
-        </svg>
-
-        <span>
-          <strong>Export / Print</strong>
-          <small>Dokumen final</small>
-        </span>
-
-      </button>
-
-    </div>
-
-  </div>
-
-
-  <!-- =====================================================
-       BA TYPE QUICK ACCESS
-  ====================================================== -->
-
-  <div class="ba-process-types">
-
-    <div class="ba-process-types-head">
-
-      <div>
-        <strong>Quick Access</strong>
-        <span>Pilih jenis dokumen untuk langsung memulai</span>
-      </div>
-
-      <span>7 JENIS BA</span>
-
-    </div>
-
-
-    <div class="ba-process-type-grid">
-
-      <button onclick="openBAFromDashboard('material')">
-        <span>01</span>
-        Pengajuan Material
-      </button>
-
-      <button onclick="openBAFromDashboard('keterangan')">
-        <span>02</span>
-        Keterangan Pekerjaan
-      </button>
-
-      <button onclick="openBAFromDashboard('adendum')">
-        <span>03</span>
-        Adendum / Kendala
-      </button>
-
-      <button onclick="openBAFromDashboard('biaya')">
-        <span>04</span>
-        Pengajuan Biaya
-      </button>
-
-      <button onclick="openBAFromDashboard('urugan')">
-        <span>05</span>
-        BA Urugan
-      </button>
-
-      <button onclick="openBAFromDashboard('opname')">
-        <span>06</span>
-        BA Opname Lapangan
-      </button>
-
-      <button
-        class="ba-process-type-featured"
-        onclick="openBAFromDashboard('form_opname')"
-      >
-        <span>07</span>
-        Form Opname
-      </button>
-
-    </div>
-
-  </div>
-
-</div>
-
-
+      <!-- ==========================================
+           QUICK ACCESS
+      =========================================== -->
+      <div class="db3-quick">
+
+        <div class="db3-quick-head">
+
+          <div>
+            <span>QUICK ACCESS</span>
+            <strong>Pilih Jenis Berita Acara</strong>
+            <small>
+              Pilih jenis dokumen untuk langsung memulai
+            </small>
           </div>
+
+          <b>7 JENIS BA</b>
+
+        </div>
+
+
+        <div class="db3-quick-grid">
+
+
+          <button
+            type="button"
+            class="db3-quick-item q-red"
+            onclick="openBAFromDashboard('material')"
+          >
+
+            <i>
+              <svg viewBox="0 0 24 24">
+                <path d="M4 7l8-4 8 4-8 4z"/>
+                <path d="M4 7v10l8 4 8-4V7"/>
+                <path d="M12 11v10"/>
+              </svg>
+            </i>
+
+            <span>
+              Pengajuan
+              <strong>Material</strong>
+            </span>
+
+            <b>›</b>
+
+          </button>
+
+
+          <button
+            type="button"
+            class="db3-quick-item q-blue"
+            onclick="openBAFromDashboard('keterangan')"
+          >
+
+            <i>
+              <svg viewBox="0 0 24 24">
+                <path d="M6 3h9l4 4v14H6z"/>
+                <path d="M15 3v5h4"/>
+                <path d="M9 12h7M9 16h7"/>
+              </svg>
+            </i>
+
+            <span>
+              Keterangan
+              <strong>Pekerjaan</strong>
+            </span>
+
+            <b>›</b>
+
+          </button>
+
+
+          <button
+            type="button"
+            class="db3-quick-item q-orange"
+            onclick="openBAFromDashboard('adendum')"
+          >
+
+            <i>
+              <svg viewBox="0 0 24 24">
+                <path d="M12 3L2 21h20z"/>
+                <path d="M12 9v5"/>
+                <path d="M12 18h.01"/>
+              </svg>
+            </i>
+
+            <span>
+              Adendum /
+              <strong>Kendala</strong>
+            </span>
+
+            <b>›</b>
+
+          </button>
+
+
+          <button
+            type="button"
+            class="db3-quick-item q-red"
+            onclick="openBAFromDashboard('biaya')"
+          >
+
+            <i>
+              <svg viewBox="0 0 24 24">
+                <path d="M4 6h16v13H4z"/>
+                <path d="M4 9h16"/>
+                <path d="M15 13h5v4h-5z"/>
+              </svg>
+            </i>
+
+            <span>
+              Pengajuan
+              <strong>Biaya</strong>
+            </span>
+
+            <b>›</b>
+
+          </button>
+
+
+          <button
+            type="button"
+            class="db3-quick-item q-cyan"
+            onclick="openBAFromDashboard('urugan')"
+          >
+
+            <i>
+              <svg viewBox="0 0 24 24">
+                <path d="M4 20h16"/>
+                <path d="M7 20l2-9h6l2 9"/>
+                <path d="M9 11l3-7 3 7"/>
+              </svg>
+            </i>
+
+            <span>
+              BA
+              <strong>Urugan</strong>
+            </span>
+
+            <b>›</b>
+
+          </button>
+
+
+          <button
+            type="button"
+            class="db3-quick-item q-purple"
+            onclick="openBAFromDashboard('opname')"
+          >
+
+            <i>
+              <svg viewBox="0 0 24 24">
+                <path d="M12 21s7-6 7-12a7 7 0 1 0-14 0c0 6 7 12 7 12z"/>
+                <circle cx="12" cy="9" r="2"/>
+              </svg>
+            </i>
+
+            <span>
+              BA Opname
+              <strong>Lapangan</strong>
+            </span>
+
+            <b>›</b>
+
+          </button>
+
+
+          <button
+            type="button"
+            class="db3-quick-item q-featured"
+            onclick="openBAFromDashboard('form_opname')"
+          >
+
+            <i>
+              <svg viewBox="0 0 24 24">
+                <path d="M6 3h9l4 4v14H6z"/>
+                <path d="M15 3v5h4"/>
+                <path d="M9 12h7M9 16h7"/>
+              </svg>
+            </i>
+
+            <span>
+              Form
+              <strong>Opname</strong>
+            </span>
+
+            <b>›</b>
+
+          </button>
 
 
         </div>
 
-      </section>
+      </div>
 
+    </section>
+
+  </div>
+
+</section>
 
       <!-- =================================================
            BUAT BERITA ACARA

@@ -19104,3 +19104,1220 @@ document.addEventListener(
 
   }
 );
+
+/* =========================================================
+   DASHBOARD V3
+   WORKFLOW ANIMATION + NAVIGATION
+   DASHBOARD ONLY
+========================================================= */
+
+(function () {
+
+  let db3FlowTimer = null;
+  let db3FlowPosition = 0;
+
+
+  /* =======================================================
+     WORKFLOW ANIMATION
+  ======================================================= */
+
+  function initDashboardWorkflowV3() {
+
+    const dashboard =
+      document.getElementById("page-dashboard");
+
+    if (!dashboard) return;
+
+
+    const nodes =
+      Array.from(
+        dashboard.querySelectorAll(
+          "[data-flow-index]"
+        )
+      )
+      .sort(
+        (a, b) =>
+          Number(a.dataset.flowIndex) -
+          Number(b.dataset.flowIndex)
+      );
+
+
+    if (!nodes.length) return;
+
+
+    if (db3FlowTimer) {
+      clearInterval(db3FlowTimer);
+      db3FlowTimer = null;
+    }
+
+
+    nodes.forEach(node => {
+      node.classList.remove(
+        "db3-flow-active"
+      );
+    });
+
+
+    db3FlowPosition = 0;
+
+
+    function activateNextNode() {
+
+      nodes.forEach(node => {
+        node.classList.remove(
+          "db3-flow-active"
+        );
+      });
+
+
+      const activeNode =
+        nodes[db3FlowPosition];
+
+
+      if (activeNode) {
+
+        activeNode.classList.add(
+          "db3-flow-active"
+        );
+
+      }
+
+
+      db3FlowPosition++;
+
+      if (
+        db3FlowPosition >= nodes.length
+      ) {
+
+        db3FlowPosition = 0;
+
+      }
+
+    }
+
+
+    activateNextNode();
+
+
+    db3FlowTimer =
+      setInterval(
+        activateNextNode,
+        1150
+      );
+
+  }
+
+
+  /* =======================================================
+     PAUSE ANIMATION WHEN TAB HIDDEN
+  ======================================================= */
+
+  document.addEventListener(
+    "visibilitychange",
+    function () {
+
+      if (document.hidden) {
+
+        if (db3FlowTimer) {
+          clearInterval(db3FlowTimer);
+          db3FlowTimer = null;
+        }
+
+        return;
+      }
+
+
+      const dashboard =
+        document.getElementById(
+          "page-dashboard"
+        );
+
+
+      if (
+        dashboard &&
+        dashboard.classList.contains("active")
+      ) {
+
+        initDashboardWorkflowV3();
+
+      }
+
+    }
+  );
+
+
+  /* =======================================================
+     INIT
+  ======================================================= */
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+      const dashboard =
+        document.getElementById(
+          "page-dashboard"
+        );
+
+
+      if (
+        dashboard &&
+        dashboard.classList.contains("active")
+      ) {
+
+        initDashboardWorkflowV3();
+
+      }
+
+    }
+  );
+
+
+  /* expose */
+  window.initDashboardWorkflowV3 =
+    initDashboardWorkflowV3;
+
+})();
+
+
+/* =========================================================
+   QUICK ACCESS
+========================================================= */
+
+function openBAFromDashboard(jenis) {
+
+  const allowedJenis = [
+    "material",
+    "keterangan",
+    "adendum",
+    "biaya",
+    "urugan",
+    "opname",
+    "form_opname"
+  ];
+
+
+  if (!allowedJenis.includes(jenis)) {
+    return;
+  }
+
+
+  /* buka halaman Buat BA */
+  if (typeof openPage === "function") {
+
+    openPage("buatBA");
+
+  } else {
+
+    document
+      .querySelectorAll(".app-page")
+      .forEach(page => {
+        page.classList.remove("active");
+      });
+
+
+    document
+      .getElementById("page-buatBA")
+      ?.classList.add("active");
+
+  }
+
+
+  /* pilih jenis BA */
+  setTimeout(function () {
+
+    const jenisSelect =
+      document.getElementById(
+        "jenisSelect"
+      );
+
+
+    const jenisHidden =
+      document.getElementById(
+        "jenis"
+      );
+
+
+    if (jenisSelect) {
+
+      jenisSelect.value = jenis;
+
+
+      jenisSelect.dispatchEvent(
+        new Event(
+          "change",
+          {
+            bubbles: true
+          }
+        )
+      );
+
+
+      /* Select2 jika aktif */
+      if (
+        window.jQuery &&
+        window.jQuery.fn &&
+        window.jQuery.fn.select2
+      ) {
+
+        try {
+
+          window
+            .jQuery(jenisSelect)
+            .val(jenis)
+            .trigger("change");
+
+        } catch (error) {
+
+          console.warn(
+            "Dashboard Select2 sync:",
+            error
+          );
+
+        }
+
+      }
+
+    }
+
+
+    if (jenisHidden) {
+      jenisHidden.value = jenis;
+    }
+
+
+    /* ===============================================
+       FORM OPNAME
+    =============================================== */
+
+    if (
+      jenis === "form_opname" &&
+      typeof setupFormOpnameSingleProcess ===
+        "function"
+    ) {
+
+      setupFormOpnameSingleProcess();
+
+      return;
+
+    }
+
+
+    /* ===============================================
+       BA NORMAL
+    =============================================== */
+
+    if (
+      typeof showBAStep ===
+        "function"
+    ) {
+
+      showBAStep(1);
+
+    }
+
+
+    if (
+      typeof syncStepByJenis ===
+        "function"
+    ) {
+
+      syncStepByJenis();
+
+    }
+
+  }, 80);
+
+}
+
+
+/* =========================================================
+   OUTPUT SYSTEM NAVIGATION
+========================================================= */
+
+function db3OpenPage(pageName) {
+
+  if (
+    typeof openPage === "function"
+  ) {
+
+    openPage(pageName);
+
+  }
+
+}
+
+
+/* =========================================================
+   EXPORT / PRINT
+========================================================= */
+
+function db3DashboardPrint() {
+
+  /*
+    Dashboard tidak langsung mem-print,
+    karena print aplikasi diarahkan ke
+    dokumen BA pada #page-buatBA.
+
+    Maka tombol ini membuka halaman BA.
+  */
+
+  if (
+    typeof openPage === "function"
+  ) {
+
+    openPage("buatBA");
+
+  }
+
+}
+
+
+/* =========================================================
+   OPTIONAL:
+   RESTART ANIMATION SETELAH openPage("dashboard")
+========================================================= */
+
+function db3RefreshDashboardAnimation() {
+
+  setTimeout(function () {
+
+    if (
+      typeof initDashboardWorkflowV3 ===
+        "function"
+    ) {
+
+      initDashboardWorkflowV3();
+
+    }
+
+  }, 120);
+
+}
+
+/* =========================================================
+   DASHBOARD WORKFLOW — DYNAMIC CONNECTORS FIX
+   MATCHING CURRENT db3-* NODES
+========================================================= */
+
+function initBAWorkflowConnectors() {
+
+  const dashboard =
+    document.getElementById("page-dashboard");
+
+  if (!dashboard) return;
+
+
+  const canvas =
+    dashboard.querySelector(".db3-flow-canvas");
+
+  const svg =
+    document.getElementById("baWorkflowLines");
+
+  const routes =
+    document.getElementById("baWorkflowRoutes");
+
+
+  if (!canvas || !svg || !routes) {
+
+    console.warn(
+      "Workflow connector: canvas / svg / routes tidak ditemukan."
+    );
+
+    return;
+  }
+
+
+  /* =====================================================
+     GET NODE
+  ====================================================== */
+
+  function getNode(selector) {
+
+    return canvas.querySelector(selector);
+
+  }
+
+
+  /* =====================================================
+     GET CONNECTION POINT
+  ====================================================== */
+
+  function point(element, side, gap = 8) {
+
+    if (!element) return null;
+
+
+    const canvasRect =
+      canvas.getBoundingClientRect();
+
+    const rect =
+      element.getBoundingClientRect();
+
+
+    const left =
+      rect.left - canvasRect.left;
+
+    const top =
+      rect.top - canvasRect.top;
+
+    const right =
+      left + rect.width;
+
+    const bottom =
+      top + rect.height;
+
+    const centerX =
+      left + rect.width / 2;
+
+    const centerY =
+      top + rect.height / 2;
+
+
+    switch (side) {
+
+      case "left":
+
+        return {
+          x: left - gap,
+          y: centerY
+        };
+
+
+      case "right":
+
+        return {
+          x: right + gap,
+          y: centerY
+        };
+
+
+      case "top":
+
+        return {
+          x: centerX,
+          y: top - gap
+        };
+
+
+      case "bottom":
+
+        return {
+          x: centerX,
+          y: bottom + gap
+        };
+
+
+      default:
+
+        return {
+          x: centerX,
+          y: centerY
+        };
+
+    }
+
+  }
+
+
+  /* =====================================================
+     CREATE SVG PATH
+  ====================================================== */
+
+  function addPath(
+  d,
+  className = "",
+  flowStep = ""
+) {
+
+  if (!d) return;
+
+
+  const path =
+    document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "path"
+    );
+
+
+  path.setAttribute(
+    "d",
+    d
+      .replace(/\s+/g, " ")
+      .trim()
+  );
+
+
+  path.setAttribute(
+    "class",
+    `ba-dynamic-route ${className}`.trim()
+  );
+
+
+  if (flowStep) {
+
+    path.dataset.flowStep =
+      flowStep;
+
+  }
+
+
+  routes.appendChild(path);
+
+  return path;
+
+}
+
+
+  /* =====================================================
+     HORIZONTAL CONNECTION
+  ====================================================== */
+
+  function horizontal(
+    start,
+    end,
+    className = ""
+  ) {
+
+    if (!start || !end) return;
+
+
+    /*
+      Bila Y hampir sama:
+      buat benar-benar lurus.
+    */
+
+    if (
+      Math.abs(start.y - end.y) < 8
+    ) {
+
+      addPath(
+        `
+        M ${start.x} ${start.y}
+        H ${end.x}
+        `,
+        className
+      );
+
+      return;
+
+    }
+
+
+    const middleX =
+      start.x +
+      (end.x - start.x) / 2;
+
+
+    addPath(
+      `
+      M ${start.x} ${start.y}
+      H ${middleX}
+      V ${end.y}
+      H ${end.x}
+      `,
+      className
+    );
+
+  }
+
+
+  /* =====================================================
+     VERTICAL CONNECTION
+  ====================================================== */
+
+  function vertical(
+    start,
+    end,
+    className = ""
+  ) {
+
+    if (!start || !end) return;
+
+
+    if (
+      Math.abs(start.x - end.x) < 8
+    ) {
+
+      addPath(
+        `
+        M ${start.x} ${start.y}
+        V ${end.y}
+        `,
+        className
+      );
+
+      return;
+
+    }
+
+
+    const middleY =
+      start.y +
+      (end.y - start.y) / 2;
+
+
+    addPath(
+      `
+      M ${start.x} ${start.y}
+      V ${middleY}
+      H ${end.x}
+      V ${end.y}
+      `,
+      className
+    );
+
+  }
+
+
+  /* =====================================================
+     LABEL
+  ====================================================== */
+
+  function createLabel(
+    text,
+    x,
+    y,
+    className
+  ) {
+
+    const label =
+      document.createElement("span");
+
+
+    label.className =
+      `ba-route-label ${className}`;
+
+
+    label.textContent =
+      text;
+
+
+    label.style.left =
+      `${x}px`;
+
+    label.style.top =
+      `${y}px`;
+
+
+    canvas.appendChild(label);
+
+  }
+
+
+  /* =====================================================
+     DRAW
+  ====================================================== */
+
+  function drawBAWorkflow() {
+
+    routes.innerHTML = "";
+
+
+    canvas
+      .querySelectorAll(".ba-route-label")
+      .forEach(el => el.remove());
+
+
+    const width =
+      canvas.clientWidth;
+
+    const height =
+      canvas.clientHeight;
+
+
+    if (!width || !height) {
+      return;
+    }
+
+
+    svg.setAttribute(
+      "viewBox",
+      `0 0 ${width} ${height}`
+    );
+
+
+    svg.setAttribute(
+      "preserveAspectRatio",
+      "none"
+    );
+
+
+    /* ===================================================
+       SELECTOR SESUAI DASHBOARD AKTUAL
+    ==================================================== */
+
+    const start =
+      getNode(".db3-start");
+
+    const documentType =
+      getNode(".db3-document");
+
+    const input =
+      getNode(".db3-input");
+
+    const support =
+      getNode(".db3-support");
+
+    const validation =
+      getNode(".db3-validation");
+
+    const decision =
+      getNode(".db3-decision");
+
+    const revision =
+      getNode(".db3-revision");
+
+    const generate =
+      getNode(".db3-generate");
+
+    const preview =
+      getNode(".db3-preview");
+
+    const database =
+      getNode(".db3-database");
+
+    const output =
+      getNode(".db3-output");
+
+
+    /*
+      Safety check.
+    */
+
+    const requiredNodes = {
+      start,
+      documentType,
+      input,
+      support,
+      validation,
+      decision,
+      revision,
+      generate,
+      preview,
+      database,
+      output
+    };
+
+
+    const missing =
+      Object.entries(requiredNodes)
+        .filter(([, node]) => !node)
+        .map(([name]) => name);
+
+
+    if (missing.length) {
+
+      console.warn(
+        "Workflow nodes tidak ditemukan:",
+        missing
+      );
+
+      return;
+    }
+
+
+    /* ===================================================
+       01 → 02
+       START → DOCUMENT TYPE
+    ==================================================== */
+
+    horizontal(
+      point(start, "right", 7),
+      point(documentType, "left", 7)
+    );
+
+
+    /* ===================================================
+       02 → 03
+       DOCUMENT TYPE → INPUT
+    ==================================================== */
+
+    horizontal(
+      point(documentType, "right", 7),
+      point(input, "left", 7)
+    );
+
+
+    /* ===================================================
+       03 → 04
+       INPUT → SUPPORT
+    ==================================================== */
+
+    horizontal(
+      point(input, "right", 7),
+      point(support, "left", 7)
+    );
+
+
+    /* ===================================================
+       04 → 05
+       SUPPORT → VALIDATION
+    ==================================================== */
+
+    const supportBottom =
+      point(support, "bottom", 8);
+
+    const validationRight =
+      point(validation, "right", 8);
+
+
+    if (
+      supportBottom &&
+      validationRight
+    ) {
+
+      const turnY =
+        validationRight.y;
+
+
+      addPath(
+        `
+        M ${supportBottom.x} ${supportBottom.y}
+        V ${turnY}
+        H ${validationRight.x}
+        `
+      );
+
+    }
+
+
+    /* ===================================================
+       05 → DECISION
+       VALIDATION → DATA LENGKAP?
+    ==================================================== */
+
+    horizontal(
+      point(validation, "left", 8),
+      point(decision, "right", 8)
+    );
+
+
+    /* ===================================================
+       DECISION → GENERATE
+       YA
+    ==================================================== */
+
+    const decisionLeft =
+      point(decision, "left", 8);
+
+    const generateRight =
+      point(generate, "right", 8);
+
+
+    horizontal(
+      decisionLeft,
+      generateRight,
+      "is-success"
+    );
+
+
+
+/* ===================================================
+   DECISION → REVISION
+   TIDAK — FULL BOTTOM ROUTE
+   Tidak bertabrakan dengan jalur abu-abu
+=================================================== */
+
+if (
+  decision &&
+  revision &&
+  validation
+) {
+
+  const canvasRect =
+    canvas.getBoundingClientRect();
+
+  const dRect =
+    decision.getBoundingClientRect();
+
+  const rRect =
+    revision.getBoundingClientRect();
+
+  const vRect =
+    validation.getBoundingClientRect();
+
+
+  /* =================================================
+     START
+     Keluar dari bawah diamond
+  ================================================= */
+
+  const startX =
+    dRect.left -
+    canvasRect.left +
+    (dRect.width / 2);
+
+  const startY =
+    dRect.bottom -
+    canvasRect.top +
+    2;
+
+
+  /* =================================================
+     END
+     Masuk dari bawah card Kembali ke Form
+  ================================================= */
+
+  const endX =
+    rRect.left -
+    canvasRect.left +
+    (rRect.width / 2);
+
+  const endY =
+    rRect.bottom -
+    canvasRect.top +
+    2;
+
+
+  /* =================================================
+     POSISI JALUR BAWAH
+
+     Jalur dipaksa berada di bawah:
+     - Diamond
+     - Validation
+     - Revision
+
+     supaya tidak menabrak connector utama.
+  ================================================= */
+
+  const validationBottom =
+    vRect.bottom -
+    canvasRect.top;
+
+  const revisionBottom =
+    rRect.bottom -
+    canvasRect.top;
+
+  const decisionBottom =
+    dRect.bottom -
+    canvasRect.top;
+
+
+  const routeY =
+    Math.max(
+      validationBottom,
+      revisionBottom,
+      decisionBottom
+    ) + 30;
+
+
+  const radius = 10;
+
+
+  /* =================================================
+     DRAW TIDAK
+
+     Diamond
+        ↓
+        ╰──────────────╮
+                       ↑
+                  Kembali ke Form
+  ================================================= */
+
+  addPath(
+    `
+      M ${startX} ${startY}
+
+      V ${routeY - radius}
+
+      Q ${startX} ${routeY}
+        ${startX + radius} ${routeY}
+
+      H ${endX - radius}
+
+      Q ${endX} ${routeY}
+        ${endX} ${routeY - radius}
+
+      V ${endY}
+    `,
+    "is-return"
+  );
+
+}
+
+
+/* ===================================================
+   REVISION → INPUT FORM
+   LOOP KEMBALI
+
+   Jalur:
+   atas Revision
+   ↑
+   naik ke jalur bawah Input Form
+   ←
+   masuk ke bawah Input Form
+=================================================== */
+
+const revisionTop =
+  point(revision, "top", 8);
+
+const inputBottom =
+  point(input, "bottom", 8);
+
+
+if (
+  revisionTop &&
+  inputBottom
+) {
+
+  /*
+    Jalur horizontal ditempatkan di tengah
+    ruang kosong antara row atas dan row tengah.
+  */
+
+  const returnY =
+    inputBottom.y + 22;
+
+
+  addPath(
+    `
+    M ${revisionTop.x} ${revisionTop.y}
+    V ${returnY}
+    H ${inputBottom.x}
+    V ${inputBottom.y}
+    `,
+    "is-return"
+  );
+
+}
+
+
+    /* ===================================================
+       GENERATE → PREVIEW
+    ==================================================== */
+
+    vertical(
+      point(generate, "bottom", 8),
+      point(preview, "top", 8)
+    );
+
+
+    /* ===================================================
+       PREVIEW → DATABASE
+    ==================================================== */
+
+    horizontal(
+      point(preview, "right", 8),
+      point(database, "left", 8)
+    );
+
+
+    /* ===================================================
+       DATABASE → OUTPUT
+    ==================================================== */
+
+    horizontal(
+      point(database, "right", 8),
+      point(output, "left", 8)
+    );
+
+  }
+
+
+  /* =====================================================
+     EXPOSE REDRAW
+  ====================================================== */
+
+  window.redrawBAWorkflow =
+    drawBAWorkflow;
+
+
+  /* =====================================================
+     INITIAL DRAW
+  ====================================================== */
+
+  setTimeout(
+    drawBAWorkflow,
+    100
+  );
+
+
+  setTimeout(
+    drawBAWorkflow,
+    400
+  );
+
+
+  /* =====================================================
+     RESIZE
+  ====================================================== */
+
+  let resizeTimer = null;
+
+
+  window.addEventListener(
+    "resize",
+    function () {
+
+      clearTimeout(
+        resizeTimer
+      );
+
+
+      resizeTimer =
+        setTimeout(
+          drawBAWorkflow,
+          80
+        );
+
+    }
+  );
+
+
+  /* =====================================================
+     RESIZE OBSERVER
+  ====================================================== */
+
+  if (
+    typeof ResizeObserver !==
+    "undefined"
+  ) {
+
+    const observer =
+      new ResizeObserver(
+        function () {
+
+          clearTimeout(
+            resizeTimer
+          );
+
+
+          resizeTimer =
+            setTimeout(
+              drawBAWorkflow,
+              60
+            );
+
+        }
+      );
+
+
+    observer.observe(
+      canvas
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   INIT
+========================================================= */
+
+if (
+  document.readyState ===
+  "loading"
+) {
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    initBAWorkflowConnectors
+  );
+
+} else {
+
+  initBAWorkflowConnectors();
+
+}
