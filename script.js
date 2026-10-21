@@ -20321,3 +20321,499 @@ if (
   initBAWorkflowConnectors();
 
 }
+
+/* =========================================================
+   BA GENERATOR — MASTER DROPDOWN PATCH V1
+   Project    : Master Project
+   Pihak      : Master Pihak
+   Atas Nama  : Master Pihak
+   Scope      : Halaman Buat BA
+========================================================= */
+
+(function () {
+  "use strict";
+
+  const PAGE_ID = "page-buatBA";
+
+  const PROJECT_TERMS = [
+    "project",
+    "proyek",
+    "perumahan"
+  ];
+
+  const PIHAK_TERMS = [
+    "pihak",
+    "penandatangan",
+    "penanda tangan",
+    "atas nama",
+    "nama kontraktor"
+  ];
+
+  const EXCLUDE_TERMS = [
+    "jabatan",
+    "tanggal",
+    "nomor",
+    "alamat",
+    "telepon",
+    "email",
+    "keterangan",
+    "uraian",
+    "pekerjaan",
+    "nilai",
+    "nominal",
+    "blok",
+    "luas",
+    "volume",
+    "material"
+  ];
+
+  let updating = false;
+
+  function normalize(value) {
+    return String(value || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+  }
+
+  function getPage() {
+    return document.getElementById(PAGE_ID);
+  }
+
+  function readMaster(functionName) {
+    try {
+      const getter = window[functionName];
+
+      if (typeof getter !== "function") {
+        return [];
+      }
+
+      const result = getter();
+
+      return Array.isArray(result)
+        ? result
+        : [];
+
+    } catch (error) {
+      console.warn(
+        "[BA Dropdown] Gagal membaca " + functionName,
+        error
+      );
+
+      return [];
+    }
+  }
+
+  function isActive(item) {
+    const status = normalize(
+      item.status ?? item.is_active ?? "aktif"
+    );
+
+    return ![
+      "nonaktif",
+      "inactive",
+      "disabled",
+      "false",
+      "0"
+    ].includes(status);
+  }
+
+  function uniqueNames(items, keys) {
+    const names = new Map();
+
+    items
+      .filter(isActive)
+      .forEach(item => {
+        const name = keys
+          .map(key => item[key])
+          .find(value =>
+            typeof value === "string" &&
+            value.trim()
+          );
+
+        if (!name) return;
+
+        const clean = name.trim();
+        const key = normalize(clean);
+
+        if (!names.has(key)) {
+          names.set(key, clean);
+        }
+      });
+
+    return [...names.values()]
+      .sort((a, b) =>
+        a.localeCompare(b, "id")
+      );
+  }
+
+  function getProjectOptions() {
+    return uniqueNames(
+      readMaster("getMasterProjects"),
+      [
+        "nama",
+        "namaProject",
+        "projectName",
+        "name"
+      ]
+    );
+  }
+
+  function getPihakOptions() {
+    return uniqueNames(
+      readMaster("getMasterPihak"),
+      [
+        "nama",
+        "namaPihak",
+        "name"
+      ]
+    );
+  }
+
+  function getFieldText(element) {
+    const texts = [];
+
+    if (element.id) {
+      texts.push(element.id);
+    }
+
+    if (element.name) {
+      texts.push(element.name);
+    }
+
+    if (element.placeholder) {
+      texts.push(element.placeholder);
+    }
+
+    if (element.id) {
+      const label = document.querySelector(
+        `label[for="${CSS.escape(element.id)}"]`
+      );
+
+      if (label) {
+        texts.push(label.textContent);
+      }
+    }
+
+    const parent = element.closest(
+      ".mb-3, .form-group, .project-form-group, .col-md-6, .col-md-12, .opname-ttd-input"
+    );
+
+    if (parent) {
+      const title = parent.querySelector(
+        "label, .section-title, strong"
+      );
+
+      if (title) {
+        texts.push(title.textContent);
+      }
+    }
+
+    return normalize(texts.join(" "));
+  }
+
+  function detectType(element) {
+    const id = normalize(element.id);
+    const text = getFieldText(element);
+
+    // BA Urugan: selalu Master Pihak
+    if (id === "atasnamaurugan") {
+      return "pihak";
+    }
+
+    // Abaikan input yang tidak terkait
+    if (
+      EXCLUDE_TERMS.some(term =>
+        text.includes(term)
+      )
+    ) {
+      return null;
+    }
+
+    if (
+      PROJECT_TERMS.some(term =>
+        text.includes(term)
+      )
+    ) {
+      return "project";
+    }
+
+    if (
+      PIHAK_TERMS.some(term =>
+        text.includes(term)
+      )
+    ) {
+      return "pihak";
+    }
+
+    return null;
+  }
+
+  function dispatchUpdate(element) {
+    element.dispatchEvent(
+      new Event("input", {
+        bubbles: true
+      })
+    );
+
+    element.dispatchEvent(
+      new Event("change", {
+        bubbles: true
+      })
+    );
+  }
+
+  function createDropdown(input, type) {
+    if (
+      !input ||
+      input.dataset.masterDropdown === "true"
+    ) {
+      return;
+    }
+
+    const select = document.createElement("select");
+
+    select.id = input.id;
+    select.name = input.name;
+    select.className = input.className;
+
+    select.required = input.required;
+    select.disabled = input.disabled;
+
+    select.dataset.masterDropdown = "true";
+    select.dataset.masterType = type;
+
+    select.setAttribute(
+      "aria-label",
+      type === "project"
+        ? "Pilih Project"
+        : "Pilih Pihak"
+    );
+
+    const initialValue = input.value || "";
+
+    // Input asli dipertahankan agar pembacaan JS lama
+    // tetap mendapatkan nilai melalui ID yang sama.
+    input.removeAttribute("id");
+    input.removeAttribute("name");
+    input.required = false;
+
+    input.dataset.masterOriginal = "true";
+    input.style.display = "none";
+
+    input.parentNode.insertBefore(
+      select,
+      input
+    );
+
+    select.dataset.initialValue = initialValue;
+
+    select.addEventListener("change", () => {
+      input.value = select.value;
+
+      dispatchUpdate(input);
+
+      // Sinkronkan jabatan jika ada
+      if (type === "pihak") {
+        syncJabatan(select);
+      }
+    });
+
+    refreshDropdown(select);
+  }
+
+  function refreshDropdown(select) {
+    const type = select.dataset.masterType;
+
+    const options = type === "project"
+      ? getProjectOptions()
+      : getPihakOptions();
+
+    const oldValue =
+      select.value ||
+      select.dataset.initialValue ||
+      "";
+
+    const fragment = document.createDocumentFragment();
+
+    const placeholder = document.createElement("option");
+
+    placeholder.value = "";
+    placeholder.textContent = type === "project"
+      ? "-- Pilih Project --"
+      : "-- Pilih Nama Pihak --";
+
+    fragment.appendChild(placeholder);
+
+    options.forEach(name => {
+      const option = document.createElement("option");
+
+      option.value = name;
+      option.textContent = name;
+
+      fragment.appendChild(option);
+    });
+
+    // Pertahankan nilai lama untuk draft historis
+    if (
+      oldValue &&
+      !options.some(name =>
+        normalize(name) === normalize(oldValue)
+      )
+    ) {
+      const historical = document.createElement("option");
+
+      historical.value = oldValue;
+      historical.textContent =
+        oldValue + " (data tersimpan)";
+
+      fragment.appendChild(historical);
+    }
+
+    select.replaceChildren(fragment);
+    select.value = oldValue;
+
+    if (window.jQuery?.fn?.select2) {
+      const $select = window.jQuery(select);
+
+      if ($select.hasClass("select2-hidden-accessible")) {
+        $select.trigger("change.select2");
+      } else {
+        $select.select2({
+          width: "100%",
+          placeholder: type === "project"
+            ? "Cari Project"
+            : "Cari Nama Pihak",
+          allowClear: !select.required
+        });
+      }
+    }
+  }
+
+  function syncJabatan(select) {
+    const nama = normalize(select.value);
+
+    if (!nama) return;
+
+    const pihak = readMaster("getMasterPihak")
+      .find(item =>
+        normalize(item.nama || item.namaPihak) === nama
+      );
+
+    if (!pihak || !pihak.jabatan) {
+      return;
+    }
+
+    const group = select.closest(
+      ".pihak-item, .opname-ttd-input, .form-group"
+    );
+
+    if (!group) return;
+
+    const jabatanField = group.querySelector(
+      'input[id*="jabatan" i], select[id*="jabatan" i], input[name*="jabatan" i]'
+    );
+
+    if (!jabatanField) return;
+
+    jabatanField.value = pihak.jabatan;
+    dispatchUpdate(jabatanField);
+  }
+
+  function scanFields() {
+    const page = getPage();
+
+    if (!page || updating) return;
+
+    updating = true;
+
+    try {
+      const inputs = page.querySelectorAll(
+        'input[type="text"], input:not([type])'
+      );
+
+      inputs.forEach(input => {
+        if (
+          input.dataset.masterOriginal === "true" ||
+          input.dataset.masterDropdown === "true"
+        ) {
+          return;
+        }
+
+        const type = detectType(input);
+
+        if (!type) return;
+
+        createDropdown(input, type);
+      });
+
+    } finally {
+      updating = false;
+    }
+  }
+
+  function refreshAll() {
+    scanFields();
+
+    const page = getPage();
+
+    if (!page) return;
+
+    page.querySelectorAll(
+      'select[data-master-dropdown="true"]'
+    ).forEach(refreshDropdown);
+  }
+
+  function init() {
+    const page = getPage();
+
+    if (!page) return;
+
+    scanFields();
+
+    // Form dinamis: termasuk pergantian jenis BA
+    const observer = new MutationObserver(() => {
+      if (!updating) {
+        scanFields();
+      }
+    });
+
+    observer.observe(page, {
+      childList: true,
+      subtree: true
+    });
+
+    // Refresh saat kembali ke halaman Buat BA
+    document.addEventListener("click", event => {
+      if (
+        event.target.closest(
+          '[onclick*="showPage"], .sidebar-item'
+        )
+      ) {
+        setTimeout(refreshAll, 100);
+      }
+    });
+
+    // Master data dapat berubah selama aplikasi dibuka
+    window.addEventListener(
+      "storage",
+      refreshAll
+    );
+
+    window.refreshBAMasterDropdowns = refreshAll;
+
+    console.info(
+      "[BA Dropdown] Master dropdown aktif"
+    );
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener(
+      "DOMContentLoaded",
+      init
+    );
+  } else {
+    init();
+  }
+
+})();
