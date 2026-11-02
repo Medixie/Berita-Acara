@@ -1123,7 +1123,10 @@ function getNamaJenisBA(jenis) {
       "BA Opname Lapangan",
 
     form_opname:
-      "Form Opname"
+      "Form Opname",
+
+    form_retensi:
+      "Form Retensi Opname"
 
   };
 
@@ -2423,8 +2426,7 @@ function loadDraft(id) {
    FORM OPNAME BARU
 ========================================================= */
 
-if (jenis === "form_opname") {
-
+if (isJenisFormOpname(jenis)) {
   const pageFormOpname =
     buildFormOpnamePages(
       kop,
@@ -2833,7 +2835,10 @@ function setJenisDropdown(value){
       "BA opname lapangan dengan data pekerjaan, progress, tanda tangan, dan lampiran foto.",
 
     form_opname:
-      "Form pencairan opname dengan perhitungan nominal, retensi 5%, progress 95%, dan EAF."
+    "Form pencairan opname dengan perhitungan nominal, retensi 5%, progress 95%, dan EAF.",
+
+    form_retensi:
+      "Form pencairan retensi 5% dari nilai opname pekerjaan, dilengkapi EAF."
 
   };
 
@@ -7475,7 +7480,7 @@ function syncStepByJenis() {
 
 
   const isFormOpname =
-    jenis === "form_opname";
+    isJenisFormOpname(jenis);
 
 
   /* =========================================
@@ -7575,9 +7580,7 @@ function initJenisWatcher() {
         /*
           FORM OPNAME
         */
-        if (
-          jenis === "form_opname"
-        ) {
+          if (isJenisFormOpname(jenis)) {
 
           syncStepByJenis();
 
@@ -17589,7 +17592,7 @@ function updateFormOpnameBaruUI() {
   if (box) {
 
     box.style.display =
-      jenis === "form_opname"
+      isJenisFormOpname(jenis)
         ? "block"
         : "none";
 
@@ -17601,9 +17604,7 @@ function updateFormOpnameBaruUI() {
     pastikan box BA existing tidak muncul.
   */
 
-  if (
-    jenis === "form_opname"
-  ) {
+if (isJenisFormOpname(jenis)) {
 
     const existingBoxes = [
 
@@ -17684,6 +17685,16 @@ function getJenisBAAktif() {
   );
 }
 
+/* =========================================================
+   HELPER JENIS FORM OPNAME
+========================================================= */
+
+function isJenisFormOpname(jenis) {
+  return [
+    "form_opname",
+    "form_retensi"
+  ].includes(jenis);
+}
 
 /* =========================================================
    FORMAT ANGKA
@@ -17749,44 +17760,28 @@ function tanggalFormOpname(value) {
 ========================================================= */
 
 function getDataFormOpnameFinal() {
+  const ambil = (id) =>
+    document.getElementById(id)?.value?.trim() || "";
 
-  const proyek =
-    document.getElementById(
-      "formOpnameProyek"
-    )?.value.trim() || "";
+  const proyek = ambil("formOpnameProyek");
+  const pekerjaan = ambil("formOpnamePekerjaan");
+  const blok = ambil("formOpnameBlok");
+  const pemborong = ambil("formOpnamePemborong");
+  const tanggal = ambil("formOpnameTanggal");
 
-  const pekerjaan =
-    document.getElementById(
-      "formOpnamePekerjaan"
-    )?.value.trim() || "";
+  const nilai = getAngkaFormOpname(
+    ambil("formOpnameNilai")
+  );
 
-  const blok =
-    document.getElementById(
-      "formOpnameBlok"
-    )?.value.trim() || "";
+  const retensi = Math.round(nilai * 0.05);
+  const pembayaran = nilai - retensi;
 
-  const pemborong =
-    document.getElementById(
-      "formOpnamePemborong"
-    )?.value.trim() || "";
+  const jenis = getJenisBAAktif();
 
-  const tanggal =
-    document.getElementById(
-      "formOpnameTanggal"
-    )?.value || "";
-
-  const nilai =
-    getAngkaFormOpname(
-      document.getElementById(
-        "formOpnameNilai"
-      )?.value
-    );
-
-  const retensi =
-    Math.round(nilai * 0.05);
-
-  const pembayaran =
-    nilai - retensi;
+  const totalPengajuan =
+    jenis === "form_retensi"
+      ? retensi
+      : pembayaran;
 
   return {
     proyek,
@@ -17796,9 +17791,9 @@ function getDataFormOpnameFinal() {
     tanggal,
     nilai,
     retensi,
-    pembayaran
+    pembayaran,
+    totalPengajuan
   };
-
 }
 
 
@@ -17807,65 +17802,28 @@ function getDataFormOpnameFinal() {
 ========================================================= */
 
 function syncFormOpnameFinal() {
+  const jenis = getJenisBAAktif();
 
-  if (
-    getJenisBAAktif() !==
-    "form_opname"
-  ) {
+  if (!isJenisFormOpname(jenis)) {
     return;
   }
 
-  const data =
-    getDataFormOpnameFinal();
+  const data = getDataFormOpnameFinal();
 
-  const total =
-    document.getElementById(
-      "formOpnameTotal"
-    );
+  const setNilai = (id, nominal) => {
+    const elemen = document.getElementById(id);
 
-  const retensi =
-    document.getElementById(
-      "formOpnameRetensi"
-    );
+    if (elemen) {
+      elemen.textContent = rupiahFormOpname(nominal);
+    }
+  };
 
-  const progress =
-    document.getElementById(
-      "formOpnameProgress"
-    );
-
-  const pengajuan =
-    document.getElementById(
-      "formOpnamePengajuan"
-    );
-
-
-  if (total) {
-    total.textContent =
-      rupiahFormOpname(data.nilai);
-  }
-
-  if (retensi) {
-    retensi.textContent =
-      rupiahFormOpname(data.retensi);
-  }
-
-  if (progress) {
-    progress.textContent =
-      rupiahFormOpname(
-        data.pembayaran
-      );
-  }
-
-  if (pengajuan) {
-    pengajuan.textContent =
-      rupiahFormOpname(
-        data.pembayaran
-      );
-  }
-
+  setNilai("formOpnameTotal", data.nilai);
+  setNilai("formOpnameRetensi", data.retensi);
+  setNilai("formOpnameProgress", data.pembayaran);
+  setNilai("formOpnamePengajuan", data.totalPengajuan);
 
   renderFormOpnameFinal();
-
 }
 
 
@@ -17978,12 +17936,9 @@ function getLogoTrusmiFormOpname() {
 
 function renderFormOpnameFinal() {
 
-  if (
-    getJenisBAAktif() !==
-    "form_opname"
-  ) {
-    return;
-  }
+if (!isJenisFormOpname(getJenisBAAktif())) {
+  return;
+}
 
 
   const output =
@@ -18305,7 +18260,7 @@ const logoTrusmi =
                 class="fo-money fo-bold"
               >
                 ${rupiahFormOpname(
-                  data.pembayaran
+                  data.totalPengajuan
                 )}
               </td>
 
@@ -18553,11 +18508,11 @@ const logoTrusmi =
               </td>
 
 
-              <td class="fo-money">
-                ${rupiahFormOpname(
-                  data.pembayaran
-                )}
-              </td>
+            <td class="fo-money">
+              ${rupiahFormOpname(
+                data.totalPengajuan
+              )}
+            </td>
 
               <td></td>
 
@@ -18649,7 +18604,7 @@ function setupFormOpnameSingleProcess() {
     getJenisBAAktif();
 
   const isFormOpname =
-    jenis === "form_opname";
+  isJenisFormOpname(jenis);
 
 
   /*
@@ -18795,13 +18750,8 @@ document.addEventListener(
 
           setupFormOpnameSingleProcess();
 
-          if (
-            getJenisBAAktif() ===
-            "form_opname"
-          ) {
-
+          if (isJenisFormOpname(getJenisBAAktif())) {
             syncFormOpnameFinal();
-
           }
 
         },
