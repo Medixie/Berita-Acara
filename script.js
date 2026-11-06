@@ -3839,8 +3839,15 @@ function buildUruganPhotoGrid(files, ritNumber){
   return html;
 }
 
-function buildUruganNotaGrid(files, startIndex = 0){
-  if (!files || files.length === 0) {
+
+/* =========================================================
+   BA URUGAN — DYNAMIC NOTA GRID
+   Maksimal 6 nota per halaman
+========================================================= */
+
+function buildUruganNotaGrid(files, startIndex = 0) {
+
+  if (!Array.isArray(files) || files.length === 0) {
     return `
       <div class="urugan-empty-photo">
         Belum ada dokumentasi nota urugan
@@ -3848,18 +3855,28 @@ function buildUruganNotaGrid(files, startIndex = 0){
     `;
   }
 
-  const count = Math.min(files.length, 6);
+  const foto = files.slice(0, 6);
+  const count = foto.length;
 
-  let html = `<div class="urugan-photo-grid urugan-nota-grid nota-count-${count}">`;
+  let html = `
+    <div class="urugan-photo-grid urugan-nota-grid nota-count-${count}">
+  `;
 
-  files.slice(0, 6).forEach((file, i) => {
+  foto.forEach((file, index) => {
+
     const url = URL.createObjectURL(file);
-    const nomorNota = startIndex + i + 1;
+    const nomorNota = startIndex + index + 1;
 
     html += `
       <div class="urugan-photo-item">
-        <img src="${url}">
-        <div class="urugan-photo-caption">Nota Rit ${nomorNota}</div>
+        <img
+          src="${url}"
+          alt="Nota Rit ${nomorNota}"
+        >
+
+        <div class="urugan-photo-caption">
+          Nota Rit ${nomorNota}
+        </div>
       </div>
     `;
   });
@@ -3868,6 +3885,7 @@ function buildUruganNotaGrid(files, startIndex = 0){
 
   return html;
 }
+
 
 function buildUruganPages(kop, foot){
   const nomor = document.getElementById("nomorUrugan").value || "";
